@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EDOneuro Séance 2</title>
+
+    <!--MATHJAX typing maths like in latex-->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- MATHJAX-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Matlab highlighter -->
+    <link href="../../css/matlab-highlighter-1.55.css" rel="stylesheet" type="text/css">
+    <script src="../../js/matlab-highlighter-1.55.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+
+
+   <!--<body style="padding-top: 50px;">-->
+  <body onload="highlightMATLABCode();">
+
+    <div class="container-fluid">
+      <div class="row">
+
+
+        <!--CONTENT HERE-->
+
+        <ol class="breadcrumb">
+            <li><a href="../../edoneuro.html">EDOneuro</a></li>
+            <li class="active">TP de la séance 2</li>
+        </ol>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+          <div class="alert alert-info" role="alert">
+            Code Matlab à télécharger: <a href="kuramoto.m">kuramoto.m</a>
+          </div>
+
+          <h2>Modèle de Kuramoto</h2>
+          <p>Le modele d'oscillateur le plus simple est l'<strong>oscillateur de phase</strong>
+
+          $$\frac{d\phi}{dt} = \omega$$
+
+          La variabe $\phi$ représente la phase d'une trajectoire sur un cercle de rayon 1 en coordonnées polaires. En coordonnées cartésiennes, la trajectoire est $$(\cos(\omega t+\phi_{init}),\sin(\omega t+\phi_{init}))$$. L'oscillateur de phase a une periode $T = 2\pi/\omega$. Le paramètre $\omega$ est la <strong>fréquence</strong> naturelle ou intrinsèque de l'oscillateur. On peut rajouter un terme de forçage $I(t)$:</p>
+          
+            $$\frac{d\phi}{dt} = \omega + I(t)$$
+
+          <p>Si le terme $I(t)$ est suffisament petit, la solution reste oscillante ($\phi$ repasse toujours par zéro).</p>
+
+          <p>On s'intéresse maintenant à une population de $N$ oscillateurs de phase couplés entre eux. Chaque oscillateur a sa propre frequence naturelle $\omega_i$, pour $i=1,...,N$. Chaque oscillateur interagit avec tous les oscillateurs sinusoïdalement, pour donner</p>
+
+            $$\frac{d\phi_i}{dt} = \omega_i + \frac{K}{N}\sum_{j=1}^{N} \sin(\phi_j-\phi_i)$$
+
+          <p>Le paramètre $K$ est la <strong>force de couplage</strong> et $N$ le nombre d'oscillateurs. Ce modèle est le <strong>modèle de Kuramoto</strong>.</p>
+
+          <p>On peut coupler chaque oscillateur avec seulement une partie des autres oscillateurs. En ce cas, la force de couplage devient une matrice $K$ de taille $N \times N$, avec $K_{i,j}$ la force de couplage de l'oscillateur $j$ sur l'oscillateur $i$
+
+            $$\frac{d\phi_i}{dt} = \omega_i + \sum_{j=1}^{N} K_{i,j} \sin(\phi_j-\phi_i).$$
+
+          Quand $K_{i,j} = K/N$, on retrouve le modèle de Kuramoto.</p>
+
+          <p>Le code <a href="kuramoto.m"><tt>kuramoto.m</tt></a> permet de simuler un système d'oscillateurs de phase et de tracer les solutions.</p>
+
+          <h2>Le code de kuramoto.m</h2>
+
+          <p>Le code est divisé en trois parties: initialisation, resolution, analyse. L'entête est standard.</p>
+
+          <h3>Entête</h3>
+<pre class="matlab-code">
+function sol = kuramoto
+% KURAMOTO Systeme d'oscillateurs de phase couples
+%   sol = kuramoto resoud un systeme de N d'oscillateurs de phase couples</pre>
+
+          <h3>Initialisation des variables et paramètres</h3>
+<pre class="matlab-code">
+% intervalle d'integration
+t0 = 0;
+tfinal = 500;
+
+% nombre d'oscillateurs
+N = 400;
+
+% parametres des equations
+% frequences intrinseques aleatoires
+mean_freq = 1.0;
+std_freq = 0.05;
+omega = mean_freq + std_freq*randn(N,1);
+
+% conditions initiales aleatoires uniforme sur le cercle
+phi0 = 2*pi*rand(N,1);
+
+% on definit la matrice de couplage
+C = computeCouplingMatrix('local');</pre>
+
+          <h3>Résolution</h3>
+<pre class="matlab-code">
+[t,phi]=solveKuramoto;</pre>
+
+          <h3>Analyse</h3>
+<pre class="matlab-code">
+mean_field = mean(exp(1i*phi),1);
+order_parameter = abs(mean(exp(1i*phi),1));
+angle_parameter = angle(mean_field);
+
+plotSolution('local')
+
+% on met la solution dans une structure de sortie
+sol.t=t;
+sol.phi=phi;
+sol.C = C;
+sol.K = couplingStrength(t);
+sol.mean_field = mean_field;
+sol.order_parameter = order_parameter;
+sol.angle_parameter = angle_parameter;</pre>
+
+          <h3>Fonction imbriquées</h3>
+<pre class="matlab-code">
+% FONCTIONS IMBRIQUEES----------------------------------------------------</pre>
+
+          <p><tt>solveKuramoto</tt> Résolution du système avec la méthode d'Euler. Quand la phase d'un des oscillateurs traverse $2\pi$, sa phase est remise à zéro. La fonction <tt>phaseEq</tt> est le membre de droite du système d'équations et la fonction <tt>coupling</tt> calcule le terme de couplage.
+          </p>
+<pre class="matlab-code">
+    function [t,x] = solveKuramoto
+        % SOLVEKURAMOTO resoud le systeme avec Euler
+        
+        % parametres de simulation
+        dt = 0.5;
+        nsteps = (tfinal-t0)/dt+1;
+        t = t0:dt:tfinal;
+        
+        x = zeros(N,nsteps);
+        x(:,1) = phi0;
+        
+        for ii = 1:nsteps-1
+            % integre avec Euler
+            x(:,ii+1) = x(:,ii) + dt * phaseEq(t(ii),x(:,ii));
+            
+            % reinitialisation
+            ifire = (x(:,ii+1)>=2*pi);
+            x(ifire,ii+1) = x(ifire,ii+1) - 2*pi;
+        end
+        
+        function dphidt = phaseEq(t,phi)
+            % PHASEEQ equations du systeme
+            
+            dphidt = omega + couplingStrength(t)*coupling(phi);
+            
+        end
+        
+        function c = coupling(phi)
+            % COUPLING terme de couplage
+            
+            phase_diff = bsxfun(@minus,phi',phi);
+            c = sum(C.*sin(phase_diff),2);
+            
+        end
+        
+    end</pre>
+
+            <p><tt>couplingStrength</tt> est la force de couplage $K$. Elle varie dans le temps, d'abord croissante jusqu'à atteindre la valeur <code>maxK</code> et rediminue ensuite.
+            </p>
+<pre class="matlab-code">
+    function y = couplingStrength(t)
+    % COUPLINGSTRENGTH force de couplage variable
+            
+        maxK = 0.4;
+        midT = (tfinal-t0)/2;
+        y = maxK/midT*t.*(t<=midT)+(2*maxK-maxK/midT*t).*(t>midT);
+        
+    end</pre>
+
+            <p><tt>computeCouplingMatrix</tt> permet de générer une matrice de couplage. Pour $N$ oscillateurs, la matrice $C$ est une matrice $N \times N$. L'oscillateur $j$ affecte l'oscillateur $i$ avec une force $C_{i,j}$. Par défaut, la somme des lignes est normalisée à 1 si au moins un coefficient de la ligne est non-nul. Ce code n'est pas optimal pour générer un couplage de type local, mais permet de facilement construire d'autres types de couplages.
+            </p>
+<pre class="matlab-code">
+    function C = computeCouplingMatrix(type)
+    % COMPUTECOUPLINGMATRIX calcule la matrice de couplage
+    % La matrice de couplage est une matrice NxN. L'entree
+    % M(i,j)=1 si l'oscillateur i recoit une connexion de l'oscillateur j. La
+    % matrice M est ensuite normalisee de telle sorte que la somme de chaque
+    % ligne soit 1, si il y a au moins un j non-nul, ou 0 si toute la ligne est
+    % nulle.
+        
+        switch lower(type)
+            case 'local'
+                % Pour un couplage local, M est une matrice NxN
+                % On dispose les N oscillateurs sur une lattice (prendre N carre)
+                % On connecte deux oscillateurs si ils sont voisins (4 voisins, conditions
+                % de bord periodiques)
+                % xi position en x des oscillateurs;
+                % yi position en y des oscillateurs;
+                
+                if sqrt(N)~=round(sqrt(N))
+                    error('N doit etre carre');
+                end
+                sN = sqrt(N);
+                xi = mod((0:(N-1)),sN);
+                yi = reshape(repmat(0:(sN-1),sN,1),N,1);
+                distX = abs(bsxfun(@minus,xi',xi));
+                distX(distX==(sN-1))=1;
+                distY = abs(bsxfun(@minus,yi',yi));
+                distY(distY==(sN-1))=1;
+                dist = distX+distY;
+                M = dist<=1 & dist>0;
+                sumM = sum(M,2);
+                C = bsxfun(@rdivide,M,sumM);
+                C(isnan(C))=0;
+                C = sparse(C);
+                
+            otherwise
+                % Pour un couplage global (par defaut), M reste
+                % un scalaire: M(i,j) = 1 pour tout i et j.
+                M=1;
+                C=M/N;
+        end
+        
+    end</pre>
+
+          <p><tt>plotSolution</tt> trace la solution en temps réel. Pour le couplage local, trois panneaux sont affichés. À gauche, chaque oscillateur est un carré disposé sur une grille $N \times N$. La couleur de l'oscillateur représente sa phase: $\phi = 0$ en <em>noir</em> et $\phi = 2 \pi$ en <em>blanc</em>. Au milieu, la moyenne des sinus des oscillateurs en <em>bleu</em> et le paramètre d'ordre en <em>rouge</em> en fonction du temps. À droite, la position de chaque oscillateur sur le cercle unité en <em>bleu</em> et le centre de masse des oscillateurs en <em>rouge</em>. Les trois panneaux évoluent avec le temps. 
+          </p>
+<pre class="matlab-code">
+    function plotSolution(type)
+        % PLOTSOLUTION Trace la solution phi
+        
+        figure(1); clf;
+        n = size(phi,2);
+        
+        
+        colormap gray;
+        
+        switch lower(type)
+            case 'local'
+                sN = sqrt(N);
+                for i=1:n
+                    subplot(131)
+                    m = reshape(sin(phi(:,i)),sN,sN);
+                    image((m+1)/2*64)
+                    
+                    subplot(132)
+                    hold off
+                    plot(t(1:i),mean(sin(phi(:,1:i)),1))
+                    hold on
+                    plot(t(1:i),order_parameter(1:i),'r')
+                    
+                    subplot(133)
+                    theta = linspace(0,2*pi,100);
+                    circle = exp(1i*theta);
+                    hold off
+                    plot(circle,'k')
+                    hold on
+                    plot(exp(1i*phi(:,i)),'o','MarkerFaceColor','b')
+                    plot(mean_field(i),'*r');
+                    pause(0.01)
+                end
+            otherwise
+                theta = linspace(0,2*pi,100);
+                circle = exp(1i*theta);
+                for i = 1:n
+                    hold off
+                    plot(circle,'k')
+                    hold on
+                    plot(exp(1i*phi(:,i)),'o','MarkerFaceColor','b')
+                    hold on
+                    plot(mean_field(i),'*r');
+                    pause(0.0001)
+                end
+        end
+    end</pre>
+
+<pre class="matlab-code">
+% FIN FONCTIONS IMBRIQUEES----------------------------------------------------
+
+end</pre>
+
+          <h2>Exemples</h2>
+          <p>Lancez une simulation depuis la <tt>Command Window</tt>.
+          <pre class="matlab-code">sol = kuramoto;</pre>
+
+<pre class="matlab-code">
+sol = 
+
+                  t: [1x1001 double]
+                phi: [400x1001 double]
+                  C: [400x400 double]
+                  K: [1x1001 double]
+         mean_field: [1x1001 double]
+    order_parameter: [1x1001 double]
+    angle_parameter: [1x1001 double]</pre>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <h2>Exercices</h2>
+          <h3>1 Exploration</h3>
+          <p>Effectuez des simulations avec les paramètres par défaut de <tt>kuramoto</tt>. Interprétez ce que vous voyez. Changez certain des paramètres: type de couplage, taille du système (pas trop gros !), etc.</p>
+
+          <h3>2 Effet de la fréquence naturelle moyenne</h3>
+          <p>Simulez le modèle en gardant la fréquence moyenne à 1.0.</p>
+
+<pre class="matlab-code">
+% frequences intrinseques aleatoires
+mean_freq = 1.0;
+std_freq = 0.05;
+omega = mean_freq + std_freq*randn(N,1);
+</pre>
+          
+          <p>Maintenant fixez la fréquence moyenne à 0.0: <code>mean_freq = 0.0;</code>, et simulez. Qu'observez-vous? Gardez la fréquence moyenne à 0.0 pour les simulations suivantes.</p> 
+
+          <h3>3 Clusters</h3>
+          <p>Modifier l'interaction <code>sin</code> la fonction <tt>coupling</tt> par une somme de fonction périodiques, de façcon à avoir une fonction de couplage de la forme</p>
+
+            $$a \sin(\Delta \phi) + b \sin(2 \Delta \phi).$$
+
+          <p>Fixez $a = 0.5$ et $b = 1.0$, et simulez. Qu'observez-vous?</p>
+
+          <p>Prenez <code>N = 81;</code> et modifiez les conditions initiales des oscillateurs pour que les phases forment un X sur la grille de simulation.
+
+<pre class="matlab-code">
+% conditions initiales en X bruité
+phi0 =  [1     1    -1    -1    -1    -1    -1     1     1;
+        -1     1     1    -1    -1    -1     1     1    -1;
+        -1    -1     1     1    -1     1     1    -1    -1;
+        -1    -1    -1     1     1     1    -1    -1    -1;
+        -1    -1    -1    -1     1    -1    -1    -1    -1;
+        -1    -1    -1     1     1     1    -1    -1    -1;
+        -1    -1     1     1    -1     1     1    -1    -1;
+        -1     1     1    -1    -1    -1     1     1    -1;
+         1     1    -1    -1    -1    -1    -1     1     1];
+phi0 = reshape(phi0,N,1) + 2*pi/20*randn(N,1);
+</pre>
+
+        <p>Modifiez la fonction <tt>couplingStrength</tt> pour avoir une force de couplage constante.</p>
+
+<pre class="matlab-code">
+function y = couplingStrength(t)
+% COUPLINGSTRENGTH force de couplage variable
+    y = 0.3;  
+end
+</pre>
+        
+        <p>Simulez. Avec un peu de chance vous reconnaîtrez le X, qui devrait rester visible. Si ça ne marche pas, quels paramètres pouvez vous changer pour améliorer la stabilité?</pre>
+
+        </div>
+
+      </div>
+
+            </div><!--container-fluid-->
+
+
+    <hr>
+
+      <footer>
+        <!--<p>&copy; Company 2014</p>-->
+      </footer>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

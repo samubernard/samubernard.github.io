@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>enseignement | EDO pour les neurosciences</title>
+
+    <!--MATHJAX typing maths like in latex-->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- MATHJAX-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- JSXgraph -->
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.3/jsxgraphcore.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <!-- style for JSXgraph -->
+  <style>
+    .jxgbox {
+      width:100px; 
+      height:100px;
+    }
+  
+
+    @media screen and (min-width: 600px) {
+      .jxgbox {
+        width:200px; 
+        height:200px;
+      }
+    }
+  </style>
+
+
+   <!--<body style="padding-top: 50px;">-->
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0px;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html"><img alt="Home" src="images/mybrand.png" class="img-responsive img-circle"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="teaching.html" class="active">Teaching</a></li>
+            <!--drop-down-->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">EDOneuro<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li> <a href="#ressources">Ressources</a></li> 
+                <li> <a href="#applet">Applet</a></li>  
+                <li class="divider"></li>
+                <li> <a href="#s1">01 Modèles ioniques des neurones</a></li>
+                <li> <a href="#s2">02 Oscillateurs couplés</a></li>
+                <li> <a href="#s2">03 Réseaux de Hopfield</a></li>
+              </ul>
+            </li>
+            <!--drop-down-->
+
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="address.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="jumbotron">
+      <div class="container">
+            <h1>EDOneuro</h1>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <!--CONTENT HERE-->
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="ressources">
+          <h2>Logiciels/Numérique</h2>
+          <ul>
+            <li><a href="matlab.html">Court tutoriel Matlab</li>
+            <li><a href="http://www.math.pitt.edu/~bard/xpp/xpp.html" target=_blank>Logiciel XPP</a> (Windows, Mac, Linux, iPhone/iPad) sur le site de Bart Ermentrout à l'Université de Pittsburgh.</li>
+            <li><a href="http://www.numpy.org">numpy (Python)</a></li>
+          </ul>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="s3">
+          <h2>Séance 3 - Réseaux de Hopfield</h2>
+
+          <a href="teach/edoneuro/edoneuro3.html">TP de la séance 3</a>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="s2">
+          <h2>Séance 2 - Oscillateurs couplés</h2>
+
+          <a href="teach/edoneuro/edoneuro2.html">TP de la séance 2</a>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="s1">
+          <h2>Séance 1 - Modèles ioniques des neurones</h2>
+
+          <a href="teach/edoneuro/edoneuro1.html">TP de la séance 1</a>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="applet">
+        <h3>Applet Réseau Hopfield</h3>
+
+        <div class="col-xs-12">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary active">
+              <input type="radio" name="options" id="img0" autocomplete="off" checked> 1
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="img1" autocomplete="off"> 2
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="img2" autocomplete="off"> 3
+            </label>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-primary" name="pm" id="minus" data-min-text="min"
+            onclick="dt=-10;update();">-</button>
+            <button type="submit" class="btn btn-primary" name="pm" 
+            id="time_info">50</button>
+            <button type="submit" class="btn btn-primary" name="pm" id="plus" data-max-text="max"
+            onclick="dt=10;update();">+</button>
+          </div>
+      </div>
+         
+        
+        
+          
+          <div class="col-xs-6 col-md-3">
+            <h4>Image 1</h4>
+            <div id="p1" class="jxgbox"></div> 
+          </div>
+          <div class="col-xs-6 col-md-3">
+            <h4>Image 2</h4>
+            <div id="p2" class="jxgbox"></div>
+          </div>
+          <div class="col-xs-6 col-md-3"> 
+            <h4>Image 3</h4>
+            <div id="p3" class="jxgbox"></div> 
+          </div>
+
+          <div class="col-xs-6 col-md-3"> 
+            <h4>Résultat</h4>
+            <div id="resultbox" class="jxgbox" ></div> 
+          </div>
+        
+
+      </div><!--row-->
+    </div><!--container-fluid-->
+
+
+    <script>
+   
+      p =  [[1,1,-1,-1,-1, 1,1,-1,-1,-1, 1,1,-1,-1,-1, 1,1,1,1,-1, 1,1,1,1,-1],
+            [1,1,1,1,1, 1,1,1,1,1, -1,1,1,-1,-1, -1,1,1,-1,-1, -1,-1,1,1,-1],
+            [-1,1,1,1,-1, 0,1,-1,1,0, 1,1,-1,1,1, 0,1,-1,1,0, -1,1,1,1,-1]];
+      systemSize = p[0].length;
+      var len = 5;
+      plot_time = 50;
+      dt = 0;
+      runimage=0;
+
+      function hebbianLearning(p) {
+      // Regle d'apprentissage de Hebb
+          var m = p.length;
+
+          var W = JXG.Math.matrix(systemSize);
+          
+          for(var i = 0; i<systemSize; i++) {
+            for(var j = 0; j<systemSize; j++) {
+              var pavg = 0;
+              for(var k = 0; k<m; k++) {
+                pavg += p[k][i]*p[k][j]/m;
+              }
+                W[i][j]=pavg;
+            }
+            W[i][i] = 0;
+          }
+
+          return W;  
+      }
+
+      W = hebbianLearning(p);
+      // console.log(W);
+
+      // Initialise ODE and solve it with JXG.Math.Numerics.rungeKutta()
+      function ode() {
+          // evaluation interval
+          var tspan = [0, 1.0];
+
+          // Number of steps. 1000 should be enough
+          var N = 101;
+
+          // Right hand side of the ODE dx/dt = f(t, x)
+          var hopfield = function(t, x) {
+              // parameters
+              var tau = 1.0;
+              var a = 20;
+              //var n = x.length;
+
+              var y = [];
+              var atanax = [];
+
+              for(var i=0;i<systemSize;i++){
+                atanax[i] = Math.atan(a*x[i]);
+              }
+
+              var wx = JXG.Math.matVecMult(W, atanax);
+              
+              for(var i=0;i<systemSize;i++){
+                y[i] = -x[i]/tau + wx[i];
+              }
+   
+              return y;
+          }
+
+
+   
+          // Initial value
+          var x0 = []; 
+          for(var i=0;i<systemSize;i++){
+                x0[i] = 0.5*p[runimage][i] + -1.0 + 2.0*Math.random();
+              }
+   
+          // Solve ode
+          var data = JXG.Math.Numerics.rungeKutta('rk4', x0, tspan, N, hopfield);
+   
+          // to plot the data against time we need the times where the equations were solved
+          var t = [];
+          var q = tspan[0];
+          var h = (tspan[1]-tspan[0])/N;
+          for(var i=0; i<data.length; i++) {
+              data[i].push(q);
+              q += h;
+          }
+   
+          return data;
+      }
+   
+      
+
+      
+
+   
+      // copy data to 2D array so we can plot as a heat map
+      var data2d = function(datalin,len) {
+        var d = [];
+        var dmin = Infinity;
+        var dmax = -Infinity;
+        for(var i=0; i<len; i++) {
+          d[i] = [];
+          for(var j=0; j<len; j++) {
+            d[i][j] = datalin[i*len + j];
+            dmin = Math.min(d[i][j],dmin);
+            dmax = Math.max(d[i][j],dmax);
+          }
+        }
+        for(var i=0; i<len; i++) {
+          for(var j=0; j<len; j++) {
+            d[i][j] = (d[i][j]-dmin)/(dmax-dmin);
+          }
+        }
+        return d;
+      };
+
+      
+      
+      // creating the heat map.
+      var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:true});
+
+       
+      // spot() creates a quadratic single filled curve centered around (x,y). 
+      var spot = function(board, y, x, v, maxVal) {
+        var colFunc = function() {
+                  // return JXG.hsv2rgb(0.0, v/maxVal, 1.0);
+                  var levRG = ( Math.floor((256*(1-v/maxVal))) ).toString();
+                  var levB  = (Math.floor(192 + 0.25*levRG)).toString()
+                  return "rgb(" + levRG + "," + levRG + "," + levB + ")";
+              };
+       
+        var cu = board.create('curve', 
+          [[x-0.5, x+0.5, x+0.5, x-0.5, x-0.5],
+           [y-0.5, y-0.5, y+0.5, y+0.5, y-0.5]],
+          {strokeWidth:0, fillColor:colFunc, highlightFillColor:colFunc, highlightFillOpacity:0.8});
+       
+        // Turn off highlighting to increase efficiency.
+        cu.hasPoint = function() { return false;};
+        return cu;
+      };
+       
+      var createHeatMap = function(board, arr2D, xlen, ylen, maxVal) {
+        var i, j, heat = [];
+       
+        //board.suspendUpdate();
+        for (i=0; i<ylen; i++) {  
+          heat[i] = [];
+          for (j=0; j<xlen; j++) {  
+            heat[i][j] = spot(board, len-i, j, arr2D[i][j], maxVal);
+          }
+        }
+        //board.unsuspendUpdate();
+        return heat;
+      };
+
+      // creating the heat map.
+      var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false});
+      var brdp1 = JXG.JSXGraph.initBoard('p1', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false});
+      var brdp2 = JXG.JSXGraph.initBoard('p2', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false}); 
+      var brdp3 = JXG.JSXGraph.initBoard('p3', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false});
+      
+      
+      createHeatMap(brdp1, data2d(p[0],len), len, len, 1.0);
+      createHeatMap(brdp2, data2d(p[1],len), len, len, 1.0);
+      createHeatMap(brdp3, data2d(p[2],len), len, len, 1.0);
+
+      $(function(){
+        $("#img0").change( function () {
+          runimage=0;
+          runHopfield();
+        });
+        $("#img1").change( function () {
+          runimage=1;
+          runHopfield();
+        });
+        $("#img2").change( function () {
+          runimage=2;
+          runHopfield();
+        });
+      });
+
+      function runHopfield() {
+        data = ode();
+        var d = data2d(data[plot_time],len);
+        createHeatMap(brd, d, len, len, 1.0);
+      }
+
+      function update() {
+        plot_time+=dt; 
+        plot_time=Math.min(plot_time,100);
+        plot_time=Math.max(plot_time,0);
+        if (plot_time >= 100) {
+          $("#plus").button("max");
+          $("#plus").prop('disabled', true);
+        } else {
+          $("#plus").button("reset");
+          $("#plus").prop('disabled', false);
+        }
+        if (plot_time <= 0 ) {
+          $("#minus").button("min");
+          $("#minus").prop('disabled', true);
+        } else {
+          $("#minus").button("reset");
+          $("#minus").prop('disabled', false);
+        }
+
+
+        $( "#time_info" ).html(plot_time.toString());
+
+        var d = data2d(data[plot_time],len);
+        createHeatMap(brd, d, len, len, 1.0);
+      }
+
+      data = [];
+      runHopfield();
+
+
+    </script>    
+
+    <script>
+
+    </script>
+
+    <hr>
+
+    <footer>
+        <!--<p>&copy; Company 2014</p>-->
+    </footer>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
