@@ -108,8 +108,15 @@
             <button type="submit" class="btn btn-primary" name="pm" id="plus" data-max-text="max"
             onclick="dt=10;update();">+</button>
           </div>
-      </div>
-         
+        </div>
+        <div class="col-xs-12">   
+           <div class="input-group">
+              <span class="input-group-addon" id="p-input">pattern</span>
+               <input type="text" class="form-control" placeholder="enter 25 numbers separated by commas" aria-describedby="p-input" id="newp">
+            </div>
+            <button type="submit" class="btn btn-primary" id="update-p"
+                onclick="update_p();">update pattern</button>
+        <div class="col-xs-12">
         
         
           
@@ -300,7 +307,6 @@
       var brdp3 = JXG.JSXGraph.initBoard('p3', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
         keepaspectratio:false, showNavigation:false});
       
-      
       createHeatMap(brdp1, data2d(p[0],len), len, len, 1.0);
       createHeatMap(brdp2, data2d(p[1],len), len, len, 1.0);
       createHeatMap(brdp3, data2d(p[2],len), len, len, 1.0);
@@ -350,6 +356,19 @@
 
         var d = data2d(data[plot_time],len);
         createHeatMap(brd, d, len, len, 1.0);
+      }
+
+      function update_p() {
+        var e = document.getElementById("newp");
+        // console.log((e.value).split(","));
+        var newp = (e.value).split(",");
+        for (var i=0; i<25; i++) {
+          p[runimage][i] = parseFloat(newp[i]);
+        }
+        console.log(p);
+        createHeatMap(brdp1, data2d(p[runimage],len), len, len, 1.0);
+        W = hebbianLearning(p);
+        runHopfield();
       }
 
       data = [];
