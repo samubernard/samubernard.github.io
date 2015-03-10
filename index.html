@@ -300,16 +300,17 @@
       // creating the heat map.
       var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
         keepaspectratio:false, showNavigation:false});
-      var brdp1 = JXG.JSXGraph.initBoard('p1', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+      var brdp = []; 
+      brdp[0] = JXG.JSXGraph.initBoard('p1', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
         keepaspectratio:false, showNavigation:false});
-      var brdp2 = JXG.JSXGraph.initBoard('p2', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+      brdp[1] = JXG.JSXGraph.initBoard('p2', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
         keepaspectratio:false, showNavigation:false}); 
-      var brdp3 = JXG.JSXGraph.initBoard('p3', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+      brdp[2] = JXG.JSXGraph.initBoard('p3', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
         keepaspectratio:false, showNavigation:false});
       
-      createHeatMap(brdp1, data2d(p[0],len), len, len, 1.0);
-      createHeatMap(brdp2, data2d(p[1],len), len, len, 1.0);
-      createHeatMap(brdp3, data2d(p[2],len), len, len, 1.0);
+      createHeatMap(brdp[0], data2d(p[0],len), len, len, 1.0);
+      createHeatMap(brdp[1], data2d(p[1],len), len, len, 1.0);
+      createHeatMap(brdp[2], data2d(p[2],len), len, len, 1.0);
 
       $(function(){
         $("#img0").change( function () {
@@ -366,7 +367,7 @@
           p[runimage][i] = parseFloat(newp[i]);
         }
         console.log(p);
-        createHeatMap(brdp1, data2d(p[runimage],len), len, len, 1.0);
+        createHeatMap(brdp[runimage], data2d(p[runimage],len), len, len, 1.0);
         W = hebbianLearning(p);
         runHopfield();
       }
