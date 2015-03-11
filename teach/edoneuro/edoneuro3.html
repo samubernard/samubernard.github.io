@@ -122,7 +122,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12">
         <h3>Exercice 1</h3>
         <p>A l'aide des codes <tt>jpg2vect</tt>, <tt>hebbianLearning</tt> et <tt>hopfield</tt>, entraînez un réseau de Hopfield à mémoriser les trois images <em>pontcanal_small</em>, <em>campagne_small</em> et <em>ville_small</em>. 
-        Utilisez <tt>jpg2vect</tt> pour générer trois vecteurs colonnes stockés dans une matrice <code>p = [p1, p2, p3];</code>. Générez la matrice <code>W = hebbianLearning(p);</code> et lancez une simulation <code>sol = hopfield(W,ics);</code>, où <code>ics</code> est une matrice <var>n x m</var> représentant une image (prenez par exemple une combinaison linéaire de deux images parmis les trois apprises par le réseau). Ici, <var>n x m = 40 x 40</var>. Le réseau de Hopfield devrait converger vers l'image la plus "proche".</p>
+        Utilisez <tt>jpg2vect</tt> pour générer trois vecteurs colonnes stockés dans une matrice <code>p = [p1, p2, p3];</code>. Générez la matrice <code>W = hebbianLearning(p);</code> et lancez une simulation <code>sol = hopfield(W,ics);</code>, où <code>ics</code> est une matrice <var>n x m</var> représentant une image (prenez par exemple <code>ics = reshape(p1-0.4+0.8*rand(1600,1),40,40);</code>). Ici, <var>n x m = 40 x 40</var>. Le réseau de Hopfield devrait converger vers l'image la plus "proche".</p>
 
         <h3>Exercice 2</h3>
         <p>Ajoutez une image de votre choix aux images déjà apprises. L'image doit être du même format que les trois images de départ, c.-à-d. une image JPG de taille 40 x 40 pixels. La fonction <tt>jpg2vect</tt> convertit une image couleur en niveaux de gris en extrayant le canal R (rouge) de l'image.</p>
