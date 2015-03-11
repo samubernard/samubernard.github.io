@@ -119,6 +119,37 @@
 
       </div>
 
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <h3>Exercice 1</h3>
+        <p>A l'aide des codes <tt>jpg2vect</tt>, <tt>hebbianLearning</tt> et <tt>hopfield</tt>, entraînez un réseau de Hopfield à mémoriser les trois images <em>pontcanal_small</em>, <em>campagne_small</em> et <em>ville_small</em>. 
+        Utilisez <tt>jpg2vect</tt> pour générer trois vecteurs colonnes stockés dans une matrice <code>p = [p1, p2, p3];</code>. Générez la matrice <code>W = hebbianLearning(p);</code> et lancez une simulation <code>sol = hopfield(W,ics);</code>, où <code>ics</code> est une matrice <var>n x m</var> représentant une image (prenez par exemple une combinaison linéaire de deux images parmis les trois apprises par le réseau). Ici, <var>n x m = 40 x 40</var>. Le réseau de Hopfield devrait converger vers l'image la plus "proche".</p>
+
+        <h3>Exercice 2</h3>
+        <p>Ajoutez une image de votre choix aux images déjà apprises. L'image doit du même format que les trois images de départ, c.-à-d. une image JPG de taille 40 x 40 pixels. La fonction <tt>jpg2vect</tt> convertit une image couleur en niveaux de gris en extrayant le canal R (rouge) de l'image.</p>
+
+        <h3>Exercice 3</h3>
+        <p>Implémentez une fonction <tt>energie</tt> qui calcule la fonction énergie le long des trajectoires du réseau.</p>
+        <pre class="matlab-code">function E = energie(x,W,tau,a)
+% ENERGIE fonction energie du reseau de Hopfield
+%   E = energie(x,W,tau,a) prend en parametre une trajectoire X du reseau de Hopfield,
+%   la matrice W de connectivite et les parametre du systeme TAU et A. X est une matrice
+%   NxT et W une matrice NxN, avec N le nombre de neurones dans le reseau et T le nombre
+%   de points temporels ou la trajectoire a ete calculee.</pre>
+
+        <p>La fonction énergie est
+
+          $$E = - \frac{1}{2} \mathbf{v}^* W \mathbf{v} + \sum_{j=1}^N \frac{1}{\tau} \int_0^{v_j} \frac{\tan(v)}{a} dv$$
+
+        où $\mathbf{v} = \arctan(a \mathbf{x})$. Vous pouvez calculer l'intégrale numériquement à l'aide de la fonction <tt>integral</tt>, ou bien utiliser la primitive suivante</p>
+
+          $$\int \tan(x)dx = - \ln[\cos(x)].$$
+
+        <p>Calculez diverses trajectoires du réseau de Hopfield et affichez l'évolution énergie. 
+          Confirmez que <var>E</var> est décroissante.</p>
+
+
+      </div>
+
             </div><!--container-fluid-->
 
 
