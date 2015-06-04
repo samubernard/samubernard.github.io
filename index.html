@@ -34,17 +34,24 @@
 
   <!-- style for JSXgraph -->
   <style>
-    .jxgbox {
-      width:100px; 
-      height:100px;
-    }
+
   
 
-    @media screen and (min-width: 600px) {
+    @media screen and (min-width: 800px) {
       .jxgbox {
         width:200px; 
         height:200px;
       }
+
+    html, body {height: 100%;}
+
+    #title {height: 100%;}
+
+    .jxgbox {
+      width:100px; 
+      height:100px;
+    }
+
     }
 
     #title {
@@ -53,7 +60,7 @@
     background-position: 0% 25%;
     background-size: cover;
     background-repeat: no-repeat;
-    min-height: 600px;
+    height: 100%;
 }
 
   .thumbnail {
@@ -112,7 +119,7 @@
             <h2>Exemples</h2>
           </div>
 
-          <div class="col-sm-12 col-md-4">
+          <div class="col-xs-12 col-sm-4">
             <div class="thumbnail">
               <img src="images/hopfield.png" alt="Hopfield">
               <div class="caption">
@@ -124,7 +131,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-4">
+          <div class="col-xs-12 col-sm-4">
             <div class="thumbnail">
               <img src="images/fitz.png" alt="Fitzhugh-Nagumo">
               <div class="caption">
@@ -134,7 +141,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-4">
+          <div class="col-xs-12 col-sm-4">
             <div class="thumbnail">
               <img src="images/kuramoto.png" alt="Kuramoto">
               <div class="caption">
