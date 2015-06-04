@@ -47,13 +47,20 @@
       }
     }
 
-    .jumbotron {
+    #title {
     margin-bottom: 0px;
     background-image: url(images/bandeau-s.jpg);
     background-position: 0% 25%;
     background-size: cover;
     background-repeat: no-repeat;
+    min-height: 600px;
 }
+
+  .thumbnail {
+    background-color: transparent;
+    border: none;
+  }
+
   </style>
 
 
@@ -88,22 +95,19 @@
       </div>
     </nav>
 
-    <div class="jumbotron">
-        <div class="container">
-            <h1>Représentation réactive de systèmes dyamiques avec javascript
-              <small><br>Réunion d'équipe <a href="http://dracula.univ-lyon1.fr">Inria Dracula</a></small></h1>
-                <p>juin 2015</p>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-      
-
-      <div class="row">
 
         <!--CONTENT HERE-->
 
+        <div class="jumbotron" id="title">
+          <div class="container">
+            <h1>Représentation réactive de systèmes dyamiques avec javascript
+              <small><br>Réunion d'équipe <a href="http://dracula.univ-lyon1.fr">Inria Dracula</a></small></h1>
+                <p>juin 2015</p>
+          </div>
+        </div>
 
+        <div class="jumbotron">
+          <div class="container">
           <div class="col-xs-12 col-sm-12 col-md-12" id="ressources">
             <h2>Exemples</h2>
           </div>
@@ -113,6 +117,9 @@
               <img src="images/hopfield.png" alt="Hopfield">
               <div class="caption">
                 <h3>Réseau Hopfield</h3>
+                <p>Une réseau de Hopfield est un réseau récurrent de neurones artificiels. Chaque neurones est décrit par une seule variable $x$, régie par l'équation</p>
+
+            $$\frac{dx(t)}{dt} = -\frac{x(t)}{\tau} + I(t).$$
                 <p><a href="reseau_hopfield.html" class="btn btn-default" role="button">Testez-moi</a></p>
               </div>
             </div>
@@ -122,6 +129,7 @@
               <img src="images/fitz.png" alt="Fitzhugh-Nagumo">
               <div class="caption">
                 <h3>Fitzhugh-Nagumo</h3>
+                <p>Le modèle de FitzHugh-Nagumo (FHN) est une simplification du modèle de Hodgkin-Huxley pour le potentiel d'action des axones géantes du calmar.</p>
                 <p><a href="fitzhughnagumo.html" class="btn btn-default" role="button">Testez-moi</a></p>
               </div>
             </div>
@@ -130,14 +138,20 @@
             <div class="thumbnail">
               <img src="images/kuramoto.png" alt="Kuramoto">
               <div class="caption">
-                <h3>Kuramoto</h3>
+                <h3>Oscillateurs couplés</h3>
+                <p>Le modèle d'oscillateur le plus simple est l'oscillateur de phase
+
+          $$\frac{d\phi}{dt} = \omega.$$
                 <p><a href="oscillateurs.html" class="btn btn-default" role="button">Testez-moi</a></p>
               </div>
             </div>
           </div>
+          </div>
+        </div>
 
+    <div class="container-fluid">  
 
-
+      <div class="row">
 
         <div class="col-xs-12 col-sm-12 col-md-12" id="ressources">
           <h2>Ressources</h2>
