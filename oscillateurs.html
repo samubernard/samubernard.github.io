@@ -85,9 +85,36 @@
 
         <!--CONTENT HERE-->
 
+
         <div class="col-xs-12 col-sm-12 col-md-12" id="applet">
           <h3>Applet Oscillateurs de phase couplés</h3>
           <div id="kuramotobox" class="jxgbox" ></div> 
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+          <h2>Modèle de Kuramoto</h2>
+          <p>Le modele d'oscillateur le plus simple est l'<strong>oscillateur de phase</strong>
+
+          $$\frac{d\phi}{dt} = \omega$$
+
+          La variabe $\phi$ représente la phase d'une trajectoire sur un cercle de rayon 1 en coordonnées polaires. En coordonnées cartésiennes, la trajectoire est $$(\cos(\omega t+\phi_{init}),\sin(\omega t+\phi_{init})).$$ L'oscillateur de phase a une periode $T = 2\pi/\omega$. Le paramètre $\omega$ est la <strong>fréquence</strong> naturelle ou intrinsèque de l'oscillateur. On peut rajouter un terme de forçage $I(t)$:</p>
+          
+            $$\frac{d\phi}{dt} = \omega + I(t)$$
+
+          <p>Si le terme $I(t)$ est suffisament petit, la solution reste oscillante ($\phi$ repasse toujours par zéro).</p>
+
+          <p>On s'intéresse maintenant à une population de $N$ oscillateurs de phase couplés entre eux. Chaque oscillateur a sa propre frequence naturelle $\omega_i$, pour $i=1,...,N$. Chaque oscillateur interagit avec tous les oscillateurs sinusoïdalement, pour donner</p>
+
+            $$\frac{d\phi_i}{dt} = \omega_i + \frac{K}{N}\sum_{j=1}^{N} \sin(\phi_j-\phi_i)$$
+
+          <p>Le paramètre $K$ est la <strong>force de couplage</strong> et $N$ le nombre d'oscillateurs. Ce modèle est le <strong>modèle de Kuramoto</strong>.</p>
+
+          <p>On peut coupler chaque oscillateur avec seulement une partie des autres oscillateurs. En ce cas, la force de couplage devient une matrice $K$ de taille $N \times N$, avec $K_{i,j}$ la force de couplage de l'oscillateur $j$ sur l'oscillateur $i$
+
+            $$\frac{d\phi_i}{dt} = \omega_i + \sum_{j=1}^{N} K_{i,j} \sin(\phi_j-\phi_i).$$
+
+          Quand $K_{i,j} = K/N$, on retrouve le modèle de Kuramoto.</p>
         </div>
 
       </div><!--row-->

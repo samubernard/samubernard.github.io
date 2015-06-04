@@ -141,6 +141,24 @@
           <div id="resultbox" class="jxgbox" ></div> 
         </div>
         
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <h2>Réseaux de Hopfield</h2>
+
+          <p>Une réseau de Hopfield est un réseau récurrent de neurones artificiels. Chaque neurones est décrit par une seule variable $x$, régie par l'équation</p>
+
+            $$\frac{dx(t)}{dt} = -\frac{x(t)}{\tau} + I(t),$$
+
+          <p>La stimulation $I(t)$ provient des neurones voisins. Une matrice $W$ définit la force de couplage entre deux neurones. Pour $N$ neurones, la matrice $W$ sera de taille $N \times N$. On suppose que la stimulation des neurones est saturée. Le réseau est décrit par le système de $N$ équations différentielles</p>
+
+            $$\frac{d\mathbf{x}(t)}{dt} = -\frac{\mathbf{x}(t)}{\tau} + W \arctan(a \mathbf{x}),$$
+
+          <p>avec $\mathbf{x} \in \mathbb{R}^N$, et où le terme $W \arctan(a \mathbf{x})$ s'entend comme le produit de la matrice $W$ et du vecteur $\arctan(a \mathbf{x})$.</p> 
+
+          <p><em>Note: une formulation en temps discret et états discrets est aussi possible.</em></p>
+
+          <p>On stocke de l'information (mémoire) en stabilisant les états à mémoriser. Selon les conditions initiales, le système convergera vers l'un ou l'autre des états stables. L'apprentissage hebbien est une façon d'entraîner un réseau de neurones à mémoriser des états donnés.</p>
+
+        </div>
 
       </div><!--row-->
     </div><!--container-fluid-->
