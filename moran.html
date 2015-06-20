@@ -65,16 +65,6 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="index.html" class="active">Home</a></li>
-            <!--drop-down-->
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Exemples<span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li> <a href="reseau_hopfield.html">Réseau Hopfield</a></li> 
-                <li> <a href="fitzhughnagumo.html">Fitzhugh-Nagumo</a></li>  
-                <li> <a href="oscillateurs.html">Oscillateurs couplés</a></li>
-              </ul>
-            </li>
-            <!--drop-down-->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -86,9 +76,9 @@
         <!--CONTENT HERE-->
 
         <div class="col-xs-12 col-sm-12 col-md-12" id="applet">
-        <h3>Moran Process</h3>
+        <h2>Moran Process</h2>
 
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
           <p>Time</p>
           <div class="btn-group" role="group">
             <button type="submit" class="btn btn-primary" name="pm" id="minus" data-min-text="min"
@@ -105,12 +95,14 @@
         <div class="col-xs-12 col-md-8">
           <p>Parameters</p>
           <div class="input-group">
-            <span class="input-group-addon" id="inputN">Cell number</span>
+            <span class="input-group-addon" id="inputN"><var>N</var></span>
             <input type="text" class="form-control" id="newN" placeholder="10" value="10" aria-describedby="inputN">
-            <span class="input-group-addon" id="inputFit">Fitness Factor</span>
+            <span class="input-group-addon" id="inputFit"><var>F</var></span>
             <input type="text" class="form-control" id="newF" placeholder="0.9" value="0.9" aria-describedby="inputFit">
-            <span class="input-group-addon" id="inputLoss">Prob Loss</span>
+            <span class="input-group-addon" id="inputLoss"><var>L</var></span>
             <input type="text" class="form-control" id="newL" placeholder="0.0" value="0.0" aria-describedby="inputLoss">
+            <span class="input-group-addon" id="inputVar">$\sigma$</span>
+            <input type="text" class="form-control" id="newV" placeholder="0.0" value="0.0" aria-describedby="inputVar">
           </div>
       </div>
 
@@ -122,12 +114,17 @@
         </div>
 
         <div class="col-xs-12 col-md-6">
-          <h4>Clonality score</h4>
+          <h4>Clonality score (red) / Mean fitness (blue)</h4>
           <div id="clonebox" class="jxgbox"></div> 
         </div>
         
         <div class="col-xs-12 col-sm-12 col-md-12">
-          <h2>Details</h2>
+          <h4>Details</h4>
+          <p><var>Cell number N</var> is the total cell number, which remains constant throughout the simulation. <var>Fitness factor F</var> is the multiplicative factor by which the fitness of a dividing cell is changed. Both daughter cells inherit the new fitness. <var>Probability of loss L</var> is the probability of a cell to lose all proliferative capacity (fitness=0) when it divides. Loss of proliferative capacity is inherited by the two daughter cells. The <var>standard deviation</var> $\sigma$ is the relative standard deviation of the inital fitness distribution ($\sigma$ = 0.1 means a standard deviation of 10% of the mean fitness).</p>
+
+          <p>The cell population is displayed on a 2D plane at arbitrary positions. When a cell is replaced, the new cell is put at a position in the vicinity of the cell that replicated. The color coding is indicative of the <var>diversity marker</var> of the cell. Diversity markers are inherited by the two daughter cell at division. No new diversity marker is created. Diversity is maximal at <var>T=0.0</var>, and the number of unique diversity marker can only decrease. The <var>clonality score</var> is defined as the probability of two cells drawn randomly to share the same diversity marker. The <var>mean fitness</var> is the average fitness across the population.</p> 
+
+          <p>Time is scaled with respect to the fitness of the cells. The fitness if a cell is defined as the propensity of the cell to divide. Cells divide with a probablity proportional to their fitness, and the higher the fitness the more frequent cell divisions are. This means that divisions occur at random times determined by the total proliferation rate. The process is simulated with the stochastic simulation algorithm. The total number of division events is capped at 50000.</p> 
 
         </div>
 
@@ -141,6 +138,7 @@
       var N = 10;
       var fitF = 0.9;
       var prbL = 0.0;
+      var sigma = 0.0
       dt = 0;
       var maxSteps = 50000;
 
@@ -176,6 +174,19 @@
         return Math.log(1/(1-Math.random()))/mu;
       }
 
+      function randn(mu, sigma)
+      {
+        var u, v, x, y, q;
+        do {
+            u = Math.random();
+            v = 1.7156*( Math.random()-0.5 );
+            x = u - 0.449871;
+            y = Math.abs(v) + 0.386595;
+            q = x*x + y*(0.19600*y-0.25472*x);
+        } while ( q > 0.27597 && (q > 0.27846 || v*v > -4.0*Math.log(u)*u*u) );
+        return (mu + sigma*v/u);
+      }
+
 
       // Initialise the process and solve it
       function solveMoran() {
@@ -197,7 +208,7 @@
         data.meanfitness[0] = 0.0;
         for(var i=0;i<N;i++)
         {
-          r[i] = 0.2;
+          r[i] = 0.2*(1+randn(0,sigma));
           data.meanfitness[0] += r[i];
         }
         data.meanfitness[0] /= N;
@@ -320,20 +331,24 @@
 
       function resetBoard() {
         var newN =  $("#newN").val();
-        console.log(newN);
+        //console.log(newN);
         if (newN > 0) {
           N = newN;
         }
         var newF =  $("#newF").val();
-        console.log(newF);
+        //console.log(newF);
         if (newF >= 0.0) {
           fitF = newF;
-        }
-        
+        }        
         var newL =  $("#newL").val();
-        console.log(newL);
+        //console.log(newL);
         if (newL >= 0.0) {
           prbL = newL;
+        }
+        var newV =  $("#newV").val();
+        //console.log(newL);
+        if (newV >= 0.0) {
+          sigma = newV;
         }
         JXG.JSXGraph.freeBoard(brd);
         JXG.JSXGraph.freeBoard(brdclon);
