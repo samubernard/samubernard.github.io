@@ -98,18 +98,20 @@
             <button type="submit" class="btn btn-primary" name="pm" id="plus" data-max-text="max"
             onclick="dt=1;update();">+</button>
           </div>
+          <button type="submit" class="btn btn-primary" id="run" 
+            onclick="resetBoard();runMoran();">Run</button>
         </div>
 
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-8">
           <p>Parameters</p>
           <div class="input-group">
             <span class="input-group-addon" id="inputN">Cell number</span>
-            <input type="text" class="form-control" id="newN" placeholder="3" aria-describedby="inputN">
-            <span class="input-group-addon" id="inputFit">Fitness drop</span>
-            <input type="text" class="form-control" id="fitFact" placeholder="0.7" aria-describedby="inputFit">
+            <input type="text" class="form-control" id="newN" placeholder="10" value="10" aria-describedby="inputN">
+            <span class="input-group-addon" id="inputFit">Fitness Factor</span>
+            <input type="text" class="form-control" id="newF" placeholder="0.9" value="0.9" aria-describedby="inputFit">
+            <span class="input-group-addon" id="inputLoss">Prob Loss</span>
+            <input type="text" class="form-control" id="newL" placeholder="0.0" value="0.0" aria-describedby="inputLoss">
           </div>
-          <button type="submit" class="btn btn-primary" id="run" 
-            onclick="resetBoard();runMoran();">Run</button>
       </div>
 
       <div class="clearfix visible-md-block"></div>
@@ -137,7 +139,8 @@
 
       // population size
       var N = 10;
-      var fitF = 0.7;
+      var fitF = 0.9;
+      var prbL = 0.0;
       dt = 0;
 
       // creating the heat map.
@@ -147,26 +150,42 @@
         keepaspectratio:false, showNavigation:false, axis: true,});
 
       // cumsum
-      function cumsum(x) 
+      function relcumsum(x) 
       {
         var c = [];
+        var n = x.length;
         c[0] = x[0];
-        for(var i=1;i<x.length;i++)
+        for(var i=1; i<n;i++)
         {
           c[i] = x[i] + c[i-1];
-        }
-        for(i=0;i<x.length;i++)
+        }  
+        for(i=0;i<n;i++)
         {
-          c[i] /= c[x.length-1];
+          c[i] /= c[n-1];
         }
         return c;
+      }
+
+      function sum(array)
+      {
+        var total = 0.0;
+        for (var i = 0, n = array.length; i < n; i++)
+        {
+          total += array[i];
+        }
+        return total;
+      }
+
+      function exprand(mu)
+      {
+        return Math.log(1/(1-Math.random()))/mu;
       }
 
 
       // Initialise the process and solve it
       function solveMoran() {
 
-        var data = {div:[], fit:[], clon:[], t:[], px:[], py:[]};
+        var data = {div:[], fit:[], clon:[], t:[], px:[], py:[], meanfitness:[], tscaled:[]};
         // Number of time steps.
         var T = 100;
 
@@ -179,11 +198,13 @@
         // fitnesses
         var r = []; 
         data.fit[0] = [];
+        data.meanfitness[0] = 0.0;
         for(var i=0;i<N;i++)
         {
-          r[i] = 1.0;
+          r[i] = 0.2;
+          data.meanfitness[0] += r[i];
         }
-        r[N-1] = N;
+        data.meanfitness[0] /= N;
         data.fit[0] = r.slice();
         
         // diversity
@@ -192,7 +213,7 @@
         {
           x[i] = Math.floor((Math.random() * 100*N)); 
         }
-        x[N-1] = 200*N;
+        //x[N-1] = 200*N;
         data.div[0] = x.slice();
         data.clon[0] = computeDiversity(data.div[0]);
         data.t[0] = 0;
@@ -207,30 +228,31 @@
         }
         data.px[0] = px.slice();
         data.py[0] = py.slice();
+        data.tscaled[0] = 0.0;
 
         // Solve 
         for(var j=0;j<T;j++)
         {
           // pick a cell to replicate
           u = Math.random(); // uniform [0,1]
-          cs = cumsum(r);
-          //console.log(u);
-          //console.log(cs);
-          rep=0;
-          while(u>cs[rep])
+          cs = relcumsum(r);
+          if(cs[N-1]>0) // then some cell has fitness > 0
           {
-            rep++;
+            rep=0;
+            while(u>cs[rep])
+            {
+              rep++;
+            }
+
+            // pick a cell to being replaced
+            die = Math.floor((Math.random() * N));
+            //update the system
+            r[rep] *= fitF*(Math.random() >= prbL);
+            x[die] = x[rep];
+            r[die] = r[rep];
+            px[die] = Math.max(Math.min(px[rep]+1/N*(Math.random()-0.5),1.0),0.0);
+            py[die] = Math.max(Math.min(py[rep]+1/N*(Math.random()-0.5),1.0),0.0);
           }
-
-          // pick a cell to being replaced
-          die = Math.floor((Math.random() * N));
-          //update the system
-          r[rep] *= fitF;
-          x[die] = x[rep];
-          r[die] = r[rep];
-          px[die] = px[rep]+1/N*(Math.random()-0.5);
-          py[die] = py[rep]+1/N*(Math.random()-0.5);
-
 
           data.div[j+1] = x.slice();
           data.fit[j+1] = r.slice();
@@ -238,6 +260,8 @@
           data.t[j+1] = j+1;
           data.px[j+1] = px.slice();
           data.py[j+1] = py.slice();
+          data.meanfitness[j+1] = sum(r)/N;
+          data.tscaled[j+1] = data.tscaled[j] + exprand(data.meanfitness[j]);
           //console.log(rep.toString() + ' ' + die.toString() + ' with fitness ' + r[rep].toString() + ' and div ' + x[rep].toString()  );
 
         }
@@ -300,12 +324,20 @@
 
       function resetBoard() {
         var newN =  $("#newN").val();
+        console.log(newN);
         if (newN > 0) {
           N = newN;
         }
         var newF =  $("#newF").val();
-        if (newF > 0) {
+        console.log(newF);
+        if (newF >= 0.0) {
           fitF = newF;
+        }
+        
+        var newL =  $("#newL").val();
+        console.log(newL);
+        if (newL >= 0.0) {
+          prbL = newL;
         }
         JXG.JSXGraph.freeBoard(brd);
         JXG.JSXGraph.freeBoard(brdclon);
@@ -321,10 +353,11 @@
         data = [];
         data = solveMoran();
         g1 = brdclon.createElement('curve', [data.t, data.clon], {strokeColor:'red', strokeWidth:'2px'});
-        g2 = brdclon.create('point', [function () { return data.t[plot_time]; }, function (){ return data.clon[plot_time]; }], {strokeColor:'red', 
-        strokeWidth:'2px',fixed:true});
+        g2 = brdclon.create('point', [function () { return data.t[plot_time]; }, function (){ return data.clon[plot_time]; }], 
+          {strokeColor:'red', strokeWidth:'2px',fixed:true});
+        g3 = brdclon.createElement('curve', [data.t, data.meanfitness], {strokeColor:'blue', strokeWidth:'2px'});
+        //console.log(data.meanfitness);
         var d = normalizedata(data.div[0],N);
-        console.log(d);
         createHeatMap(brd, d, N, 1.0);
       }
 
@@ -344,7 +377,7 @@
       {
         var colFunc = function() {
                   // return JXG.hsv2rgb(0.0, v/maxVal, 1.0);
-                  var levRG = ( Math.floor((256*(1-v/maxVal))) ).toString();
+                  var levRG = ( Math.floor((192*(1-v/maxVal))) ).toString();
                   var levB  = (Math.floor(192 + 0.25*levRG)).toString()
                   return "rgb(" + levRG + "," + levRG + "," + levB + ")";
               };
@@ -382,7 +415,7 @@
 
 
         $( "#time_info" ).html(plot_time.toString());
-        //console.log(data.clon[plot_time]);
+        //console.log(data.fit[plot_time]);
         //console.log(data.div[plot_time]);
         var d = normalizedata(data.div[plot_time],N);
         JXG.JSXGraph.freeBoard(brd);
