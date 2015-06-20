@@ -91,6 +91,7 @@
           </div>
           <button type="submit" class="btn btn-primary" id="run" 
             onclick="resetBoard();runMoran();">Run</button>
+          <p class="text-info"><small>use the +/– buttons to change time. Press run to run a new simulation.</small></p>
         </div>
 
         <div class="col-xs-12 col-md-8">
@@ -121,7 +122,7 @@
         
         <div class="col-xs-12 col-sm-12 col-md-12">
           <h4>Moran process</h4>
-          <p>A cell population is made up of several different cells. At each time step, a cell is picked up to replicate, or divide, with a probability proportional to its fitness. Then a cell picked at random is replaced by a copy of the dividing cell. The process is then repeated. In a finite population with at least one cell with positive fitness, the population will end up being made up entirely by the progeny of a single-cell.</p>
+          <p>A cell population is made up of several different cells. At each time step, a cell is picked up to replicate, or divide, with a probability proportional to its fitness. Then a cell picked at random is replaced by a copy of the dividing cell. The process is then repeated. In a finite population with at least one cell with positive fitness, the population will end up being made up entirely by the progeny of a single cell.</p>
 
           <p>This applet simulates a population of <var>N</var> proliferating cells, with individual fitness that can increase or decrease by a factor <var>F</var> with the number of divisions they made. Cells can also lose their proliferative capacity with a probablity <var>L</var>. The initial variability of the fitness in the population is given by $\sigma$.</p>
 
@@ -262,8 +263,8 @@
             r[rep] *= fitF*(Math.random() >= prbL);
             x[die] = x[rep];
             r[die] = r[rep];
-            px[die] = Math.max(Math.min(px[rep]+1/N*(Math.random()-0.5),1.0),0.0);
-            py[die] = Math.max(Math.min(py[rep]+1/N*(Math.random()-0.5),1.0),0.0);
+            px[die] = Math.max(Math.min(px[rep]+0.05*(Math.random()-0.5),1.0),0.0);
+            py[die] = Math.max(Math.min(py[rep]+0.05*(Math.random()-0.5),1.0),0.0);
           }
 
           // update data
