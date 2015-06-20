@@ -100,11 +100,11 @@
           </div>
         </div>
 
-        <div class="col-xs-12 col-md-8">
+        <div class="col-xs-12 col-md-3">
           <p>Parameters</p>
           <div class="input-group">
-            <span class="input-group-addon" id="inputLen">Grid Size</span>
-            <input type="text" class="form-control" id="newlen" placeholder="3" aria-describedby="inputLen">
+            <span class="input-group-addon" id="inputN">Cell number</span>
+            <input type="text" class="form-control" id="newN" placeholder="3" aria-describedby="inputN">
           </div>
           <button type="submit" class="btn btn-primary" id="run" 
             onclick="resetBoard();runMoran();">Run</button>
@@ -133,13 +133,12 @@
 
     <script>
 
-      var len = 3;
       // population size
-      var N = len*len;
+      var N = 10;
       dt = 0;
 
       // creating the heat map.
-      var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+      var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
         keepaspectratio:false, showNavigation:false});
       var brdclon = JXG.JSXGraph.initBoard('clonebox', {boundingbox:[-0.5,1.05, 100.5, -0.05], 
         keepaspectratio:false, showNavigation:false, axis: true,});
@@ -164,7 +163,7 @@
       // Initialise the process and solve it
       function solveMoran() {
 
-        var data = {div:[], fit:[], clon:[], t:[]};
+        var data = {div:[], fit:[], clon:[], t:[], px:[], py:[]};
         // Number of time steps.
         var T = 100;
 
@@ -194,8 +193,17 @@
         data.div[0] = x.slice();
         data.clon[0] = computeDiversity(data.div[0]);
         data.t[0] = 0;
-        //console.log(data.div);
-        
+
+        // position
+        var px = [];
+        var py = [];
+        for(i=0;i<N;i++)
+        {
+          px[i] = Math.random(); 
+          py[i] = Math.random();
+        }
+        data.px[0] = px.slice();
+        data.py[0] = py.slice();
 
         // Solve 
         for(var j=0;j<T;j++)
@@ -216,11 +224,16 @@
           //update the system
           x[die] = x[rep];
           r[die] = r[rep];
+          px[die] = px[rep]+1/N*(Math.random()-0.5);
+          py[die] = py[rep]+1/N*(Math.random()-0.5);
+
 
           data.div[j+1] = x.slice();
           data.fit[j+1] = r.slice();
           data.clon[j+1] = computeDiversity(x);
           data.t[j+1] = j+1;
+          data.px[j+1] = px.slice();
+          data.py[j+1] = py.slice();
           //console.log(rep.toString() + ' ' + die.toString() + ' with fitness ' + r[rep].toString() + ' and div ' + x[rep].toString()  );
 
         }
@@ -265,37 +278,30 @@
         return clon;
       }
 
-      var data2d = function(datalin,len) {
+      var normalizedata = function(datan,nbr) {
         var d = [];
         var dmin = Infinity;
         var dmax = -Infinity;
         // console.log(datalin);
-        for(var i=0; i<len; i++) {
-          d[i] = [];
-          for(var j=0; j<len; j++) {
-            d[i][j] = datalin[i*len + j];
-            dmin = Math.min(d[i][j],dmin);
-            dmax = Math.max(d[i][j],dmax);
-          }
+        for(var i=0; i<nbr; i++) {
+          d[i] = datan[i];
+          dmin = Math.min(d[i],dmin);
+          dmax = Math.max(d[i],dmax);
         }
-        for(var i=0; i<len; i++) {
-          for(var j=0; j<len; j++) {
-            d[i][j] = (d[i][j]-dmin)/(dmax-dmin);
-          }
+        for(var i=0; i<nbr; i++) {
+            d[i] = (d[i]-dmin)/(dmax-dmin);
         }
         return d;
       };
 
       function resetBoard() {
-        var newlen =  $("#newlen").val();
-        if (newlen > 0) {
-          len = newlen;
-          N = len*len;
-          console.log(len);
+        var newN =  $("#newN").val();
+        if (newN > 0) {
+          N = newN;
         }
         JXG.JSXGraph.freeBoard(brd);
         JXG.JSXGraph.freeBoard(brdclon);
-        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
         keepaspectratio:false, showNavigation:false});
         brdclon = JXG.JSXGraph.initBoard('clonebox', {boundingbox:[-0.5,1.05, 100.5, -0.05], 
         keepaspectratio:false, showNavigation:false, axis: true,});
@@ -309,23 +315,18 @@
         g1 = brdclon.createElement('curve', [data.t, data.clon], {strokeColor:'red', strokeWidth:'2px'});
         g2 = brdclon.create('point', [function () { return data.t[plot_time]; }, function (){ return data.clon[plot_time]; }], {strokeColor:'red', 
         strokeWidth:'2px',fixed:true});
-        var d = data2d(data.div[0],len);
+        var d = normalizedata(data.div[0],N);
         console.log(d);
-        createHeatMap(brd, d, len, len, 1.0);
+        createHeatMap(brd, d, N, 1.0);
       }
 
-      var createHeatMap = function(board, arr2D, xlen, ylen, maxVal) {
-        var i, j, heat = [];
-       //console.log(data.fit);
-        //board.suspendUpdate();
-        for (i=0; i<ylen; i++) {  
-          heat[i] = [];
-          for (j=0; j<xlen; j++) {  
-            heat[i][j] = spot(board, len-i, j, arr2D[i][j], maxVal);
-            //heat[i][j] = spot(board, data.fit[plot_time][i]*len, data.div[plot_time][j]/Math.max(data.div[plot_time]), arr2D[i][j], maxVal);
-          }
+      var createHeatMap = function(board, nd, nbr, maxVal) {
+        var i, heat = [];
+        board.suspendUpdate();
+        for (i=0; i<nbr; i++) {  
+            heat[i] = spot(board, data.px[plot_time][i], data.py[plot_time][i] , nd[i], maxVal);
         }
-        //board.unsuspendUpdate();
+        board.unsuspendUpdate();
         return heat;
       };
 
@@ -375,12 +376,12 @@
         $( "#time_info" ).html(plot_time.toString());
         //console.log(data.clon[plot_time]);
         //console.log(data.div[plot_time]);
-        var d = data2d(data.div[plot_time],len);
+        var d = normalizedata(data.div[plot_time],N);
         JXG.JSXGraph.freeBoard(brd);
-        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
         keepaspectratio:false, showNavigation:false});
         //createHeatMap(brd, d, len, len, 1.0);
-        createHeatMap(brd, d, len, len, 1.0);
+        createHeatMap(brd, d, N, 1.0);
         brdclon.update();
       }
 
