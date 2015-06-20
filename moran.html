@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Moran process</title>
+
+    <!--MATHJAX typing maths like in latex-->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- MATHJAX-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- JSXgraph -->
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.3/jsxgraphcore.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <!-- style for JSXgraph -->
+  <style>
+    .jxgbox {
+      width:200px; 
+      height:200px;
+    }
+  
+
+    @media screen and (min-width: 600px) {
+      .jxgbox {
+        width:300px; 
+        height:300px;
+      }
+    }
+  </style>
+
+
+   <!--<body style="padding-top: 50px;">-->
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0px;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html" class="active">Home</a></li>
+            <!--drop-down-->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Exemples<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li> <a href="reseau_hopfield.html">Réseau Hopfield</a></li> 
+                <li> <a href="fitzhughnagumo.html">Fitzhugh-Nagumo</a></li>  
+                <li> <a href="oscillateurs.html">Oscillateurs couplés</a></li>
+              </ul>
+            </li>
+            <!--drop-down-->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <!--CONTENT HERE-->
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="applet">
+        <h3>Moran Process</h3>
+
+        <div class="col-xs-12 col-md-4">
+          <p>Time step</p>
+          <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-primary" name="pm" id="minus" data-min-text="min"
+            onclick="dt=-1;update();">-</button>
+            <button type="submit" class="btn btn-primary" name="pm" 
+            id="time_info">0</button>
+            <button type="submit" class="btn btn-primary" name="pm" id="plus" data-max-text="max"
+            onclick="dt=1;update();">+</button>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-md-8">
+          <p>Parameters</p>
+          <div class="input-group">
+            <span class="input-group-addon" id="inputLen">Grid Size</span>
+            <input type="text" class="form-control" id="newlen" placeholder="3" aria-describedby="inputLen">
+          </div>
+          <button type="submit" class="btn btn-primary" id="run" 
+            onclick="resetBoard();runMoran();">Run</button>
+      </div>
+
+      <div class="clearfix visible-md-block"></div>
+
+        <div class="col-xs-6 col-md-4">
+          <h4>Cell population</h4>
+          <div id="resultbox" class="jxgbox"></div> 
+        </div>
+
+        <div class="col-xs-6 col-md-4">
+          <h4>Clonality score</h4>
+          <div id="clonebox" class="jxgbox"></div> 
+        </div>
+        
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <h2>Details</h2>
+
+        </div>
+
+      </div><!--row-->
+    </div><!--container-fluid-->
+
+
+    <script>
+
+      var len = 3;
+      // population size
+      var N = len*len;
+      dt = 0;
+
+      // creating the heat map.
+      var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false});
+      var brdclon = JXG.JSXGraph.initBoard('clonebox', {boundingbox:[-0.5,1.05, 100.5, -0.05], 
+        keepaspectratio:false, showNavigation:false, axis: true,});
+
+      // cumsum
+      function cumsum(x) 
+      {
+        var c = [];
+        c[0] = x[0];
+        for(var i=1;i<x.length;i++)
+        {
+          c[i] = x[i] + c[i-1];
+        }
+        for(i=0;i<x.length;i++)
+        {
+          c[i] /= c[x.length-1];
+        }
+        return c;
+      }
+
+
+      // Initialise the process and solve it
+      function solveMoran() {
+
+        var data = {div:[], fit:[], clon:[], t:[]};
+        // Number of time steps.
+        var T = 100;
+
+
+        var u;
+        var cs = [];
+        var rep;
+        var die;
+   
+        // fitnesses
+        var r = []; 
+        data.fit[0] = [];
+        for(var i=0;i<N;i++)
+        {
+          r[i] = 1.0;
+        }
+        r[N-1] = N;
+        data.fit[0] = r.slice();
+        
+        // diversity
+        var x = [];
+        for(i=0;i<N;i++)
+        {
+          x[i] = Math.floor((Math.random() * 100*N)); 
+        }
+        x[N-1] = 200*N;
+        data.div[0] = x.slice();
+        data.clon[0] = computeDiversity(data.div[0]);
+        data.t[0] = 0;
+        //console.log(data.div);
+        
+
+        // Solve 
+        for(var j=0;j<T;j++)
+        {
+          // pick a cell to replicate
+          u = Math.random(); // uniform [0,1]
+          cs = cumsum(r);
+          //console.log(u);
+          //console.log(cs);
+          rep=0;
+          while(u>cs[rep])
+          {
+            rep++;
+          }
+
+          // pick a cell to being replaced
+          die = Math.floor((Math.random() * N));
+          //update the system
+          x[die] = x[rep];
+          r[die] = r[rep];
+
+          data.div[j+1] = x.slice();
+          data.fit[j+1] = r.slice();
+          data.clon[j+1] = computeDiversity(x);
+          data.t[j+1] = j+1;
+          //console.log(rep.toString() + ' ' + die.toString() + ' with fitness ' + r[rep].toString() + ' and div ' + x[rep].toString()  );
+
+        }
+        
+        // console.log(data);  
+        return data;
+      }
+
+      function computeDiversity( mydiv )
+      {
+        var cdiv = 1, j = 0;
+        var clon = 0;
+        var n = [];
+        var div = mydiv.slice();
+        div.sort();
+        //console.log(div);
+        for (var i=1;i<N;i++)
+        {
+          if (div[i] != div[i-1])
+          {
+            cdiv++;
+          }
+        }
+
+        //console.log(cdiv);
+        for (i=0;i<cdiv;i++)
+        {
+          n[i]=0;
+          do 
+          {
+            n[i]++;
+            j++;
+          }
+          while (div[j-1] == div[j] & j<N);
+        }
+
+        //console.log(n);
+        for (i=0;i<cdiv;i++)
+        {
+          clon += n[i]*n[i]/N/N;
+        }
+        return clon;
+      }
+
+      var data2d = function(datalin,len) {
+        var d = [];
+        var dmin = Infinity;
+        var dmax = -Infinity;
+        // console.log(datalin);
+        for(var i=0; i<len; i++) {
+          d[i] = [];
+          for(var j=0; j<len; j++) {
+            d[i][j] = datalin[i*len + j];
+            dmin = Math.min(d[i][j],dmin);
+            dmax = Math.max(d[i][j],dmax);
+          }
+        }
+        for(var i=0; i<len; i++) {
+          for(var j=0; j<len; j++) {
+            d[i][j] = (d[i][j]-dmin)/(dmax-dmin);
+          }
+        }
+        return d;
+      };
+
+      function resetBoard() {
+        var newlen =  $("#newlen").val();
+        if (newlen > 0) {
+          len = newlen;
+          N = len*len;
+          console.log(len);
+        }
+        JXG.JSXGraph.freeBoard(brd);
+        JXG.JSXGraph.freeBoard(brdclon);
+        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false});
+        brdclon = JXG.JSXGraph.initBoard('clonebox', {boundingbox:[-0.5,1.05, 100.5, -0.05], 
+        keepaspectratio:false, showNavigation:false, axis: true,});
+      }
+
+      function runMoran() {
+        plot_time = 0;
+        $( "#time_info" ).html(plot_time.toString());
+        data = [];
+        data = solveMoran();
+        g1 = brdclon.createElement('curve', [data.t, data.clon], {strokeColor:'red', strokeWidth:'2px'});
+        g2 = brdclon.create('point', [function () { return data.t[plot_time]; }, function (){ return data.clon[plot_time]; }], {strokeColor:'red', 
+        strokeWidth:'2px',fixed:true});
+        var d = data2d(data.div[0],len);
+        console.log(d);
+        createHeatMap(brd, d, len, len, 1.0);
+      }
+
+      var createHeatMap = function(board, arr2D, xlen, ylen, maxVal) {
+        var i, j, heat = [];
+       //console.log(data.fit);
+        //board.suspendUpdate();
+        for (i=0; i<ylen; i++) {  
+          heat[i] = [];
+          for (j=0; j<xlen; j++) {  
+            heat[i][j] = spot(board, len-i, j, arr2D[i][j], maxVal);
+            //heat[i][j] = spot(board, data.fit[plot_time][i]*len, data.div[plot_time][j]/Math.max(data.div[plot_time]), arr2D[i][j], maxVal);
+          }
+        }
+        //board.unsuspendUpdate();
+        return heat;
+      };
+
+       
+      // spot() creates a point at (x,y). 
+      var spot = function(board, y, x, v, maxVal) 
+      {
+        var colFunc = function() {
+                  // return JXG.hsv2rgb(0.0, v/maxVal, 1.0);
+                  var levRG = ( Math.floor((256*(1-v/maxVal))) ).toString();
+                  var levB  = (Math.floor(192 + 0.25*levRG)).toString()
+                  return "rgb(" + levRG + "," + levRG + "," + levB + ")";
+              };
+       
+        var cu = board.create('point', 
+          [x, y],
+            {strokeWidth:0, 
+              fillColor:colFunc, 
+              withLabel:false});
+       
+        // Turn off highlighting to increase efficiency.
+        cu.hasPoint = function() { return false;};
+        return cu;
+      };
+
+
+      function update() {
+        plot_time+=dt; 
+        plot_time=Math.min(plot_time,100);
+        plot_time=Math.max(plot_time,0);
+        if (plot_time >= 100) {
+          $("#plus").button("max");
+          $("#plus").prop('disabled', true);
+        } else {
+          $("#plus").button("reset");
+          $("#plus").prop('disabled', false);
+        }
+        if (plot_time <= 0 ) {
+          $("#minus").button("min");
+          $("#minus").prop('disabled', true);
+        } else {
+          $("#minus").button("reset");
+          $("#minus").prop('disabled', false);
+        }
+
+
+        $( "#time_info" ).html(plot_time.toString());
+        //console.log(data.clon[plot_time]);
+        //console.log(data.div[plot_time]);
+        var d = data2d(data.div[plot_time],len);
+        JXG.JSXGraph.freeBoard(brd);
+        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.5,len+0.5, len+0.5, -0.5], 
+        keepaspectratio:false, showNavigation:false});
+        //createHeatMap(brd, d, len, len, 1.0);
+        createHeatMap(brd, d, len, len, 1.0);
+        brdclon.update();
+      }
+
+      runMoran();
+
+    </script>    
+
+    <hr>
+
+    <footer>
+        <!--<p>&copy; Company 2014</p>-->
+    </footer>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
