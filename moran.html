@@ -94,7 +94,7 @@
             <button type="submit" class="btn btn-primary" name="pm" id="minus" data-min-text="min"
             onclick="dt=-1;update();">-</button>
             <button type="submit" class="btn btn-primary" name="pm" 
-            id="time_info">0</button>
+            id="time_info">0.0</button>
             <button type="submit" class="btn btn-primary" name="pm" id="plus" data-max-text="max"
             onclick="dt=1;update();">+</button>
           </div>
@@ -407,7 +407,7 @@
          
         plot_time=Math.min(plot_time,data.t.length);
         plot_time=Math.max(plot_time,0);
-        if (plot_time >= data.t.length) {
+        if (plot_time > data.t.length) {
           $("#plus").button("max");
           $("#plus").prop('disabled', true);
         } else {
@@ -423,7 +423,7 @@
         }
 
 
-        $( "#time_info" ).html(plot_time.toString());
+        $( "#time_info" ).html(data.tscaled[plot_time].toFixed(1).toString());
         //console.log(data.fit[plot_time]);
         //console.log(data.div[plot_time]);
         var d = normalizedata(data.div[plot_time],N);
