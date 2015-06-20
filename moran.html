@@ -214,7 +214,7 @@
         data.meanfitness[0] = 0.0;
         for(var i=0;i<N;i++)
         {
-          r[i] = 0.2*(1+randn(0,sigma));
+          r[i] = Math.max(0,0.2*(1+randn(0,sigma)));
           data.meanfitness[0] += r[i];
         }
         data.meanfitness[0] /= N;
