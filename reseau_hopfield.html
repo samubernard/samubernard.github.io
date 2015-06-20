@@ -307,14 +307,14 @@
       var createHeatMap = function(board, arr2D, xlen, ylen, maxVal) {
         var i, j, heat = [];
        
-        //board.suspendUpdate();
+        board.suspendUpdate();
         for (i=0; i<ylen; i++) {  
           heat[i] = [];
           for (j=0; j<xlen; j++) {  
             heat[i][j] = spot(board, len-i, j, arr2D[i][j], maxVal);
           }
         }
-        //board.unsuspendUpdate();
+        board.unsuspendUpdate();
         return heat;
       };
 
