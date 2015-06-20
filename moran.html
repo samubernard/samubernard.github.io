@@ -89,7 +89,7 @@
         <h3>Moran Process</h3>
 
         <div class="col-xs-12 col-md-4">
-          <p>Time step</p>
+          <p>Time</p>
           <div class="btn-group" role="group">
             <button type="submit" class="btn btn-primary" name="pm" id="minus" data-min-text="min"
             onclick="dt=-1;update();">-</button>
@@ -142,12 +142,7 @@
       var fitF = 0.9;
       var prbL = 0.0;
       dt = 0;
-
-      // creating the heat map.
-      var brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
-        keepaspectratio:false, showNavigation:false});
-      var brdclon = JXG.JSXGraph.initBoard('clonebox', {boundingbox:[-0.5,1.05, 100.5, -0.05], 
-        keepaspectratio:false, showNavigation:false, axis: true,});
+      var maxSteps = 50000;
 
       // cumsum
       function relcumsum(x) 
@@ -194,6 +189,7 @@
         var cs = [];
         var rep;
         var die;
+        var j = 0;
    
         // fitnesses
         var r = []; 
@@ -231,7 +227,7 @@
         data.tscaled[0] = 0.0;
 
         // Solve 
-        for(var j=0;j<T;j++)
+        while(data.tscaled[j] < T & data.meanfitness[j] > 0 & j < maxSteps)
         {
           // pick a cell to replicate
           u = Math.random(); // uniform [0,1]
@@ -254,6 +250,7 @@
             py[die] = Math.max(Math.min(py[rep]+1/N*(Math.random()-0.5),1.0),0.0);
           }
 
+          // update data
           data.div[j+1] = x.slice();
           data.fit[j+1] = r.slice();
           data.clon[j+1] = computeDiversity(x);
@@ -261,9 +258,8 @@
           data.px[j+1] = px.slice();
           data.py[j+1] = py.slice();
           data.meanfitness[j+1] = sum(r)/N;
-          data.tscaled[j+1] = data.tscaled[j] + exprand(data.meanfitness[j]);
-          //console.log(rep.toString() + ' ' + die.toString() + ' with fitness ' + r[rep].toString() + ' and div ' + x[rep].toString()  );
-
+          data.tscaled[j+1] = data.tscaled[j] + exprand(N*data.meanfitness[j]);
+          j++;
         }
         
         // console.log(data);  
@@ -352,10 +348,15 @@
         $( "#time_info" ).html(plot_time.toString());
         data = [];
         data = solveMoran();
-        g1 = brdclon.createElement('curve', [data.t, data.clon], {strokeColor:'red', strokeWidth:'2px'});
-        g2 = brdclon.create('point', [function () { return data.t[plot_time]; }, function (){ return data.clon[plot_time]; }], 
+        // creating the heat map.
+        brd = JXG.JSXGraph.initBoard('resultbox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
+          keepaspectratio:false, showNavigation:false});
+        brdclon = JXG.JSXGraph.initBoard('clonebox', {boundingbox:[-0.5,1.05, 100.5, -0.05], 
+          keepaspectratio:false, showNavigation:false, axis: true,});
+        g1 = brdclon.createElement('curve', [data.tscaled, data.clon], {strokeColor:'red', strokeWidth:'2px'});
+        g2 = brdclon.create('point', [function () { return data.tscaled[plot_time]; }, function (){ return data.clon[plot_time]; }], 
           {strokeColor:'red', strokeWidth:'2px',fixed:true});
-        g3 = brdclon.createElement('curve', [data.t, data.meanfitness], {strokeColor:'blue', strokeWidth:'2px'});
+        g3 = brdclon.createElement('curve', [data.tscaled, data.meanfitness], {strokeColor:'blue', strokeWidth:'2px'});
         //console.log(data.meanfitness);
         var d = normalizedata(data.div[0],N);
         createHeatMap(brd, d, N, 1.0);
@@ -395,10 +396,18 @@
 
 
       function update() {
-        plot_time+=dt; 
-        plot_time=Math.min(plot_time,100);
+        if(data.t.length <= 100)
+        {
+          plot_time+=dt;  
+        }
+        else
+        {
+          plot_time+=dt*Math.floor(data.t.length/100);
+        }
+         
+        plot_time=Math.min(plot_time,data.t.length);
         plot_time=Math.max(plot_time,0);
-        if (plot_time >= 100) {
+        if (plot_time >= data.t.length) {
           $("#plus").button("max");
           $("#plus").prop('disabled', true);
         } else {
@@ -427,6 +436,7 @@
       }
 
       runMoran();
+
 
     </script>    
 
