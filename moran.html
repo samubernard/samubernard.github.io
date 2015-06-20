@@ -100,11 +100,13 @@
           </div>
         </div>
 
-        <div class="col-xs-12 col-md-3">
+        <div class="col-xs-12 col-md-6">
           <p>Parameters</p>
           <div class="input-group">
             <span class="input-group-addon" id="inputN">Cell number</span>
             <input type="text" class="form-control" id="newN" placeholder="3" aria-describedby="inputN">
+            <span class="input-group-addon" id="inputFit">Fitness drop</span>
+            <input type="text" class="form-control" id="fitFact" placeholder="0.7" aria-describedby="inputFit">
           </div>
           <button type="submit" class="btn btn-primary" id="run" 
             onclick="resetBoard();runMoran();">Run</button>
@@ -112,12 +114,12 @@
 
       <div class="clearfix visible-md-block"></div>
 
-        <div class="col-xs-6 col-md-4">
+        <div class="col-xs-12 col-md-6">
           <h4>Cell population</h4>
           <div id="resultbox" class="jxgbox"></div> 
         </div>
 
-        <div class="col-xs-6 col-md-4">
+        <div class="col-xs-12 col-md-6">
           <h4>Clonality score</h4>
           <div id="clonebox" class="jxgbox"></div> 
         </div>
@@ -135,6 +137,7 @@
 
       // population size
       var N = 10;
+      var fitF = 0.7;
       dt = 0;
 
       // creating the heat map.
@@ -222,6 +225,7 @@
           // pick a cell to being replaced
           die = Math.floor((Math.random() * N));
           //update the system
+          r[rep] *= fitF;
           x[die] = x[rep];
           r[die] = r[rep];
           px[die] = px[rep]+1/N*(Math.random()-0.5);
@@ -298,6 +302,10 @@
         var newN =  $("#newN").val();
         if (newN > 0) {
           N = newN;
+        }
+        var newF =  $("#newF").val();
+        if (newF > 0) {
+          fitF = newF;
         }
         JXG.JSXGraph.freeBoard(brd);
         JXG.JSXGraph.freeBoard(brdclon);
