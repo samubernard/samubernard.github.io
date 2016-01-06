@@ -87,7 +87,8 @@
 
         <div class="col-xs-12 col-sm-12 col-md-12" id="applet">
           <h3>Applet Fitzhugh-Nagumo</h3>
-          <div id="fitzbox" class="jxgbox" ></div> 
+          <div id="fitzboxtime" class="jxgbox" ></div> 
+          <div id="fitzboxphase" class="jxgbox" ></div>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -105,28 +106,37 @@
 
     <script>
 
-      // Initialise board
-      board = JXG.JSXGraph.initBoard('fitzbox', {boundingbox: [-1.0, 3.0, 250.0, -3.0], axis: true, grid: false});
+      // Initialise boardtime
+      boardtime = JXG.JSXGraph.initBoard('fitzboxtime', {boundingbox: [-1.0, 3.0, 250.0, -3.0], axis: true, grid: false});
    
       // Define sliders to dynamically change parameters of the equations and create text elements to describe them
-      intensite = board.createElement('slider', [[180.0,2.6],[230.0,2.6],[0.0,0.4,1.0]],{name:'I',strokeColor:'black',fillColor:'black'});
-      intensitet = board.createElement('text', [180,2.45, "Intensité du courant"], {fixed:true});
-      epsilon = board.createElement('slider', [[180.0,2.3],[230.0,2.3],[0.0,0.08,0.2]],{name:'&epsilon;',strokeColor:'black',fillColor:'black'});
-      epsilont = board.createElement('text', [180,2.15, "échelle de temps"], {fixed:true});
-      c = board.createElement('slider', [[100.0,2.6],[150.0,2.6],[0.0,0.8,1.0]],{name:'c',strokeColor:'black',fillColor:'black'});
-      ct = board.createElement('text', [100,2.45, "constante c"], {fixed:true});
-      b = board.createElement('slider', [[100.0,2.3],[150.0,2.3],[0.0,0.7,1.0]],{name:'b',strokeColor:'black',fillColor:'black'});
-      bt = board.createElement('text', [100,2.15, "constante b"], {fixed:true});
+      intensite = boardtime.createElement('slider', [[180.0,2.6],[230.0,2.6],[0.0,0.4,1.0]],{name:'I',strokeColor:'black',fillColor:'black'});
+      intensitet = boardtime.createElement('text', [180,2.45, "Intensité du courant"], {fixed:true});
+      epsilon = boardtime.createElement('slider', [[180.0,2.3],[230.0,2.3],[0.0,0.08,0.2]],{name:'&epsilon;',strokeColor:'black',fillColor:'black'});
+      epsilont = boardtime.createElement('text', [180,2.15, "échelle de temps"], {fixed:true});
+      c = boardtime.createElement('slider', [[100.0,2.6],[150.0,2.6],[0.0,0.8,1.0]],{name:'c',strokeColor:'black',fillColor:'black'});
+      ct = boardtime.createElement('text', [100,2.45, "constante c"], {fixed:true});
+      b = boardtime.createElement('slider', [[100.0,2.3],[150.0,2.3],[0.0,0.7,1.0]],{name:'b',strokeColor:'black',fillColor:'black'});
+      bt = boardtime.createElement('text', [100,2.15, "constante b"], {fixed:true});
       
       // Dynamic initial value as gliders on the y-axis
-      startv = board.createElement('glider', [0, -1.1993, board.defaultAxes.y], {name:'u',strokeColor:'red',fillColor:'red'});
-      startw = board.createElement('glider', [0, -0.6243, board.defaultAxes.y], {name:'w',strokeColor:'blue',fillColor:'blue'});
+      startv = boardtime.createElement('glider', [0, -1.1993, boardtime.defaultAxes.y], {name:'u',strokeColor:'red',fillColor:'red'});
+      startw = boardtime.createElement('glider', [0, -0.6243, boardtime.defaultAxes.y], {name:'w',strokeColor:'blue',fillColor:'blue'});
+
+      // initialise boardphase
+      boardphase = JXG.JSXGraph.initBoard('fitzboxphase', {boundingbox: [-3.0, 2.0, 3.0, -1.0], axis: true, grid: false});
+
+      // add a child to board boardtime
+      boardtime.addChild(boardphase);
    
    
       // Variables for the JXG.Curves
+      var g1 = null;
+      var g2 = null;
       var g3 = null;
-      var g4 = null;
-   
+      var curveNullclineV = null;
+      var curveNullclineW = null;
+
       // Initialise ODE and solve it with JXG.Math.Numerics.rungeKutta()
       function ode() {
           // evaluation interval
@@ -179,9 +189,9 @@
           dataw[i] = data[i][1];
       }
    
-      // Plot Predator
-      g3 = board.createElement('curve', [t, datav], {strokeColor:'red', strokeWidth:'2px'});
-      g3.updateDataArray = function() {
+      // Plot V
+      g1 = boardtime.createElement('curve', [t, datav], {strokeColor:'red', strokeWidth:'2px'});
+      g1.updateDataArray = function() {
           var data = ode();
           this.dataX = [];
           this.dataY = [];
@@ -191,14 +201,69 @@
           }
       }
    
-      // Plot Prey
-      g4 = board.createElement('curve', [t, dataw], {strokeColor:'blue', strokeWidth:'2px'});
-      g4.updateDataArray = function() {
+      // Plot W
+      g2 = boardtime.createElement('curve', [t, dataw], {strokeColor:'blue', strokeWidth:'2px'});
+      g2.updateDataArray = function() {
           var data = ode();
           this.dataX = [];
           this.dataY = [];
           for(var i=0; i<data.length; i++) {
               this.dataX[i] = t[i];
+              this.dataY[i] = data[i][1];
+          }
+      }
+
+      // Plot nullclines
+      function nullV(v) {
+        var u_intensite = intensite.Value();//0.1;
+        return v - v*v*v/3 + u_intensite;
+      }
+
+      function nullW(v) {
+        var w_c = c.Value();//0.8;
+        var w_b = b.Value();//0.7;
+        return (v + w_b)/w_c;
+      }
+
+      var nv = [];
+      var nullclineV = [];
+      var nullclineW = [];
+      for(i=0;i<100;i++) {
+        nv[i]=-3.0+6.0*i/99;
+        nullclineV[i] = nullV(nv[i]);
+        nullclineW[i] = nullW(nv[i]);
+      }
+
+      curveNullclineV = boardphase.createElement('curve', [nv,nullclineV], {strokeColor:'red',strokeWidth:'2px'});
+      curveNullclineV.updateDataArray = function() {
+          this.dataX = [];
+          this.dataY = [];
+        for(i=0;i<100;i++) {
+          this.dataX[i]=-3.0+6.0*i/99;
+          this.dataY[i] = nullV(this.dataX[i]);
+        }
+
+      }
+
+      curveNullclineW = boardphase.createElement('curve', [nv,nullclineW], {strokeColor:'blue',strokeWidth:'2px'});
+      curveNullclineW.updateDataArray = function() {
+          this.dataX = [];
+          this.dataY = [];
+        for(i=0;i<100;i++) {
+          this.dataX[i]=-3.0+6.0*i/99;
+          this.dataY[i] = nullW(this.dataX[i]);
+        }
+
+      }
+
+      // Plot phase
+      g3 = boardphase.createElement('curve', [datav, dataw], {strokeColor:'green', strokeWidth:'2px'});
+      g3.updateDataArray = function() {
+          var data = ode();
+          this.dataX = [];
+          this.dataY = [];
+          for(var i=0; i<data.length; i++) {
+              this.dataX[i] = data[i][0];
               this.dataY[i] = data[i][1];
           }
       }
