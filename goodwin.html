@@ -94,7 +94,14 @@
 
         <div class="col-xs-12 col-sm-12 col-md-12">
           <h2>Modèle de Goodwin</h2>
-          
+          <p>Le modèle d'oscillateur de Goodwin s'écrit</p>
+
+          $$\dot x = \frac{P \theta^h}{\theta^h+z^h} - kx,$$
+          $$\dot y = k(x-y),$$
+          $$\dot z = k(y-z).$$
+
+          <p>Le paramètre $P$ est la production maximale de $x$; $\theta$ est un coefficient de saturation; $k$ est le taux de dégradation de $x$, $y$, et $z$; et $h$ est le coefficient de Hill de la function de production de $x$. Les taux de production de $y$ et $z$ ont été normalisés. Pour certaines valeurs de $P$, $\theta$, $k$ et $h$, le système montre des oscillations entretenues.</p>
+
         </div>
 
       </div><!--row-->
@@ -110,8 +117,10 @@
       hillText = boardtime.createElement('text', [130,3.3, "coefficient de Hill"], {fixed:true});
       degradation = boardtime.createElement('slider', [[130.0,3.1],[170.0,3.1],[0.0,0.4,1.0]],{name:'k',strokeColor:'black',fillColor:'black'});
       degradationText = boardtime.createElement('text', [130,2.9, "taux de degradation"], {fixed:true});
-      prodmax = boardtime.createElement('slider', [[130.0,2.7],[170.0,2.7],[0.0,1.0,5.0]],{name:'P',strokeColor:'black',fillColor:'black'});
-      prodmaxText = boardtime.createElement('text', [130,2.5, "production maximale"], {fixed:true});
+      theta = boardtime.createElement('slider', [[130.0,2.7],[170.0,2.7],[0.0,1.0,4.0]],{name:'&theta;',strokeColor:'black',fillColor:'black'});
+      thetaText = boardtime.createElement('text', [130,2.5, "coefficient de saturation"], {fixed:true});
+      prodmax = boardtime.createElement('slider', [[130.0,2.3],[170.0,2.3],[0.0,1.0,5.0]],{name:'P',strokeColor:'black',fillColor:'black'});
+      prodmaxText = boardtime.createElement('text', [130,2.1, "production maximale"], {fixed:true});
       
       
       // Dynamic initial value as gliders on the y-axis
@@ -146,10 +155,11 @@
               var k = degradation.Value();
               var p = prodmax.Value();
               var h = hillcoeff.Value();
+              var th = theta.Value();
               
    
               var dxdt = [];
-              dxdt[0] = p/(1 + Math.pow(xx[2],h)) - k*xx[0];
+              dxdt[0] = p*Math.pow(th,h)/(Math.pow(th,h) + Math.pow(xx[2],h)) - k*xx[0];
               dxdt[1] = k*(xx[0] - xx[1]);
               dxdt[2] = k*(xx[1] - xx[2]);
    
@@ -230,7 +240,8 @@
         var p = prodmax.Value();
         var h = hillcoeff.Value();
         var k = degradation.Value();
-        return p/(1 + Math.pow(z,h))/k;
+        var th = theta.Value();
+        return p*Math.pow(th,h)/(Math.pow(th,h) + Math.pow(z,h))/k;
       }
 
       function nullclineFuncZ(z) {
