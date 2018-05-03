@@ -110,7 +110,7 @@
             <input type="text" class="form-control" id="newF0" placeholder="10" value="10" aria-describedby="inputF0">
             <span class="input-group-addon" id="inputA0"><var>$A_0$</var></span>
             <input type="text" class="form-control" id="newA0" placeholder="0.0" value="0.0" aria-describedby="inputA0">
-            <span class="input-group-addon" id="inputKin"><var>$K_{in}$</var></span>
+            <span class="input-group-addon" id="inputKin"><var>Relative $K_{in}$</var></span>
             <input type="text" class="form-control" id="newKin" placeholder="7.0" value="7.0" aria-describedby="inputKin">
             <span class="input-group-addon" id="inputKout">$K_{out}$</span>
             <input type="text" class="form-control" id="newKout" placeholder="0.70" value="0.70" aria-describedby="inputKout">
@@ -125,7 +125,7 @@
         </div>
 
         <div class="col-xs-12 col-md-6">
-          <h4>Average lipid age (red) / Total fat mass (blue)</h4>
+          <h4>Average lipid age</h4>
           <div id="lipidAgeBox" class="jxgbox"></div> 
         </div>
 
@@ -150,7 +150,7 @@
 
       var F0 = parseInt($("#newF0").val());
       var A0 = parseFloat($("#newA0").val());
-      var Kin = parseFloat($("#newKin").val());
+      var Kin = F0*parseFloat($("#newKin").val());
       var Kout = parseFloat($("#newKout").val());
 
       // cumsum
@@ -331,7 +331,7 @@
         var newKin =  parseFloat($("#newKin").val());
         //console.log(newKin);
         if (newKin >= 0.0) {
-          Kin = newKin;
+          Kin = F0*newKin;
         }
         var newKout =  parseFloat($("#newKout").val());
         //console.log(newKin);
