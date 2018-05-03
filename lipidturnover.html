@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lipid turnover</title>
+
+    <!--MATHJAX typing maths like in latex-->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+		<script type="text/javascript" async
+			src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+    <!-- MATHJAX-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- JSXgraph -->
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.3/jsxgraphcore.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <!-- style for JSXgraph -->
+  <style>
+    .jxgbox {
+      width:200px; 
+      height:200px;
+    }
+  
+
+    @media screen and (min-width: 600px) {
+      .jxgbox {
+        width:300px; 
+        height:300px;
+      }
+    }
+
+    .pre-x-scrollable {
+      overflow-x: auto;
+      word-wrap: normal;
+      white-space: pre;
+    }
+
+  </style>
+
+
+   <!--<body style="padding-top: 50px;">-->
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0px;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html" class="active">Home</a></li>
+          </ul>
+          <p class="navbar-text">Lipid Turnover</p>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <!--CONTENT HERE-->
+
+        <div class="col-xs-12 col-sm-12 col-md-12" id="applet">
+        <h4></h4>
+
+
+        <div class="col-xs-12 col-md-3">
+          <p>Time</p>
+          <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-primary" name="pm" id="minus" data-min-text="min"
+            onclick="dt=-1;update();">-</button>
+            <button type="submit" class="btn btn-primary" name="pm" 
+            id="time_info">0.0</button>
+
+            <button type="submit" class="btn btn-primary" name="pm" id="plus" data-max-text="max"
+            onclick="dt=1;update();">+</button>
+          </div>
+          <button type="submit" class="btn btn-primary" id="run" 
+            onclick="resetBoard();runLipidTurnover();">Run</button>
+          <p class="text-info"><small>Use the +/– buttons to change time. Press run to run a new simulation.</small></p>
+        </div>
+
+        <div class="col-xs-12 col-md-7">
+          <p>Parameters</p>
+          <div class="input-group">
+            <span class="input-group-addon" id="inputF0"><var>$F_0$</var></span>
+            <input type="text" class="form-control" id="newF0" placeholder="10" value="10" aria-describedby="inputF0">
+            <span class="input-group-addon" id="inputA0"><var>$A_0$</var></span>
+            <input type="text" class="form-control" id="newA0" placeholder="0.0" value="0.0" aria-describedby="inputA0">
+            <span class="input-group-addon" id="inputKin"><var>$K_{in}$</var></span>
+            <input type="text" class="form-control" id="newKin" placeholder="7.0" value="7.0" aria-describedby="inputKin">
+            <span class="input-group-addon" id="inputKout">$K_{out}$</span>
+            <input type="text" class="form-control" id="newKout" placeholder="0.70" value="0.70" aria-describedby="inputKout">
+          </div>
+      </div>
+
+      <div class="clearfix visible-md-block"></div>
+
+        <div class="col-xs-12 col-md-6">
+          <h4>Lipid distribution</h4>
+          <div id="lipidDistributionBox" class="jxgbox"></div> 
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+          <h4>Average lipid age (red) / Total fat mass (blue)</h4>
+          <div id="lipidAgeBox" class="jxgbox"></div> 
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <h4>Lipid Turnover</h4>
+
+          <p>Description goes here</p>
+
+        </div>
+
+      </div><!--row-->
+    </div><!--container-fluid-->
+
+
+    <script>
+
+
+      // global simulation parameters
+      var maxSteps = 50000;
+			// Time interval 
+			var Tfinal = 10.0;
+
+      var F0 = parseInt($("#newF0").val());
+      var A0 = parseFloat($("#newA0").val());
+      var Kin = parseFloat($("#newKin").val());
+      var Kout = parseFloat($("#newKout").val());
+
+      // cumsum
+      function relcumsum(x) 
+      {
+        var c = [];
+        var n = x.length;
+        c[0] = x[0];
+        for(var i=1; i<n;i++)
+        {
+          c[i] = x[i] + c[i-1];
+        }  
+        for(i=0;i<n;i++)
+        {
+          c[i] /= c[n-1];
+        }
+        return c;
+      }
+
+      function sum(array)
+      {
+        var total = 0.0;
+        for (var i = 0, n = array.length; i < n; i++)
+        {
+          total += array[i];
+        }
+        return total;
+      }
+
+      function mean(array)
+      {
+        if ( array.length > 0 )
+        {
+          return ( sum(array)/array.length ) 
+        }
+        else
+        {
+          return 0.0;
+        }
+      }
+
+      function exprand(mu)
+      {
+        return Math.log(1/(1-Math.random()))/mu;
+      }
+
+      function randn(mu, sigma)
+      {
+        var u, v, x, y, q;
+        do {
+            u = Math.random();
+            v = 1.7156*( Math.random()-0.5 );
+            x = u - 0.449871;
+            y = Math.abs(v) + 0.386595;
+            q = x*x + y*(0.19600*y-0.25472*x);
+        } while ( q > 0.27597 && (q > 0.27846 || v*v > -4.0*Math.log(u)*u*u) );
+        return (mu + sigma*v/u);
+      }
+
+
+      // Initialise the process and solve it
+      function solveBD() {
+
+        var data = {age:[], avgAge:[], F:[], tj:[], t:[], px:[], py:[]};
+
+
+        var u; // unif random
+        var r; // exp random
+        var dt; // time step
+        var remove; // index to remove
+        var j = 0;
+   
+				// droplet number
+				data.F[0] = F0;
+				var N = F0;
+
+        // average Age
+        var age = [];
+        for(var i=0;i<N;i++)
+        {
+          age[i] = A0;
+        }
+        data.avgAge[0] = A0;
+        data.age[0] = age.slice();
+        
+        // time 
+        data.t[0] = 0.0;
+				data.tj[0] = j;
+
+
+        // position
+        var px = [];
+        var py = [];
+        for(i=0;i<N;i++)
+        {
+          px[i] = Math.random(); 
+          py[i] = Math.random();
+        }
+        data.px[0] = px.slice();
+        data.py[0] = py.slice();
+
+        // Solve 
+        while(data.t[j] < Tfinal & j < maxSteps)
+        {
+          // get dt
+          r  = N * Kout + Kin;
+          dt = exprand( r );
+					//console.log("r = " + r.toString() + ", dt = " + dt.toString());
+
+          
+          // choose event
+          var u = Math.random();
+          if ( u < Kin/r) 
+          { 
+            // new lipid droplet
+            px.splice(0,0, Math.random());
+            py.splice(0,0, Math.random());
+            age.splice(0,0,0.0);
+						//console.log("age after new droplet");
+						//console.log(age);
+            N++;
+          }
+          else
+          {
+            // remove a random lipid droplet
+            remove = Math.floor((Math.random() * N));
+            //update the system
+            age.splice(remove,1);
+						//console.log("age after removal");
+						//console.log(age);
+            px.splice(remove,1);
+            py.splice(remove,1);
+            N--;
+          }
+					for (var i = 0, n = age.length; i < n; i++)
+				  {
+						age[i] += dt;
+					}					
+
+          // update data
+          data.tj[j+1] = j+1;
+          data.px[j+1] = px.slice();
+          data.py[j+1] = py.slice();
+          data.age[j+1] = age.slice();
+          data.avgAge[j+1] = mean(data.age[j+1]) 
+          data.F[j+1] = N;
+          data.t[j+1] = data.t[j] + dt;
+          j++;
+					//console.log(["N", N]);
+					//console.log(data.t);
+        }
+        
+        //console.log(data.avgAge);  
+        return data;
+      }
+
+
+      var normalizedata = function(datan,nbr) {
+        var d = [];
+        var maxAge = 5.0;
+        for(var i=0; i<nbr; i++) {
+            d[i] = Math.min( datan[i], maxAge )/maxAge; 
+        }
+        return d; // d normalized to 0 <= d <= 1
+      };
+
+      function resetBoard() {
+        var newF0 =  parseInt($("#newF0").val());
+        //console.log(newF0);
+        if (newF0 > 0) {
+          F0 = newF0;
+        }
+        var newA0 =  parseFloat($("#newA0").val());
+        //console.log(newA0);
+        if (newA0 >= 0.0) {
+          A0 = newA0;
+        }        
+        var newKin =  parseFloat($("#newKin").val());
+        //console.log(newKin);
+        if (newKin >= 0.0) {
+          Kin = newKin;
+        }
+        var newKout =  parseFloat($("#newKout").val());
+        //console.log(newKin);
+        if (newKout >= 0.0) {
+          Kout = newKout;
+        }
+        JXG.JSXGraph.freeBoard(brdDroplets);
+        JXG.JSXGraph.freeBoard(brdLipidAge);
+        brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
+        keepaspectratio:false, showNavigation:false});
+        brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5, 5.0, Tfinal, -0.05], 
+        keepaspectratio:false, showNavigation:false, axis: true,});
+      }
+
+      function runLipidTurnover() {
+        plot_time = 0;
+        $( "#time_info" ).html(plot_time.toString());
+        data = [];
+        data = solveBD();
+        // creating the heat map.
+        brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
+          keepaspectratio:false, showNavigation:false});
+        brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5,5.0, Tfinal, -0.05], 
+          keepaspectratio:false, showNavigation:false, axis: true,});
+        g1 = brdLipidAge.createElement('curve', [data.t, data.avgAge], {strokeColor:'red', strokeWidth:'2px'});
+        g2 = brdLipidAge.create('point', [function () { return data.t[plot_time]; }, function (){ return data.avgAge[plot_time]; }], 
+          {strokeColor:'red', strokeWidth:'2px',fixed:true});
+        var d = normalizedata(data.age[plot_time],data.F[plot_time]);
+        createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
+      }
+
+      var createHeatMap = function(board, nd, nbr, maxVal) {
+        var i, heat = [];
+        board.suspendUpdate();
+        for (i=0; i<nbr; i++) {  
+            heat[i] = spot(board, data.px[plot_time][i], data.py[plot_time][i] , nd[i], maxVal);
+        }
+        board.unsuspendUpdate();
+        return heat;
+      };
+
+       
+      // spot() creates a point at (x,y). 
+      var spot = function(board, y, x, v, maxVal) 
+      {
+        var colFunc = function() {
+                  // return JXG.hsv2rgb(0.0, v/maxVal, 1.0);
+                  var levRG = ( Math.floor((192*(1-v/maxVal))) ).toString();
+                  var levB  = (Math.floor(192 + 0.25*levRG)).toString()
+                  return "rgb(" + levRG + "," + levRG + "," + levB + ")";
+              };
+       
+        var cu = board.create('point', 
+          [x, y],
+            {strokeWidth:0, 
+              fillColor:colFunc, 
+              withLabel:false,
+							size:10});
+       
+        // Turn off highlighting to increase efficiency.
+        cu.hasPoint = function() { return false;};
+        return cu;
+      };
+
+
+      function update() {
+        if(data.t.length <= 100)
+        {
+          plot_time+=dt;  
+        }
+        else
+        {
+          plot_time+=dt*Math.floor(data.t.length/100);
+        }
+         
+        plot_time=Math.min(plot_time,data.t.length);
+        plot_time=Math.max(plot_time,0);
+        if (plot_time > data.t.length) {
+          $("#plus").button("max");
+          $("#plus").prop('disabled', true);
+        } else {
+          $("#plus").button("reset");
+          $("#plus").prop('disabled', false);
+        }
+        if (plot_time <= 0 ) {
+          $("#minus").button("min");
+          $("#minus").prop('disabled', true);
+        } else {
+          $("#minus").button("reset");
+          $("#minus").prop('disabled', false);
+        }
+
+
+        $( "#time_info" ).html(data.t[plot_time].toFixed(1).toString());
+        var d = normalizedata(data.age[plot_time],data.F[plot_time]);
+        JXG.JSXGraph.freeBoard(brdDroplets);
+        brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
+        keepaspectratio:false, showNavigation:false});
+				//console.log(d);
+        createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
+        brdLipidAge.update();
+      }
+
+      runLipidTurnover();
+
+
+    </script>    
+
+    <hr>
+
+    <footer>
+        <!--<p>&copy; Company 2014</p>-->
+    </footer>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
