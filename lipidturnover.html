@@ -106,23 +106,23 @@
         <div class="col-xs-12 col-md-7">
           <p>Parameters</p>
           <div class="input-group">
-            <span class="input-group-addon" id="inputF0">$F_0$</span>
+            <span class="input-group-addon" id="inputF0" data-toggle="tooltip" title="initial number of droplets" data-container="body">$F_0$</span>
             <input type="text" class="form-control" id="newF0" placeholder="25" value="25" aria-describedby="inputF0">
-            <span class="input-group-addon" id="inputA0">$A_0$</span>
+            <span class="input-group-addon" id="inputA0" data-toggle="tooltip" title="initial lipid age" data-container="body">$A_0$</span>
             <input type="text" class="form-control" id="newA0" placeholder="0.0" value="0.0" aria-describedby="inputA0">
-            <span class="input-group-addon" id="inputKin">Rel $K_{in}$</span>
+            <span class="input-group-addon" id="inputKin" data-toggle="tooltip" title="Lipid uptake rate. If Kin > 1.0 droplet number will increase, if Kin < 1.0, droplet number will decrease" data-container="body">Rel $K_{in}$</span>
             <input type="text" class="form-control" id="newKin" placeholder="1.0" value="1.0" aria-describedby="inputKin">
-            <span class="input-group-addon" id="inputKout">$K_{out}$</span>
+            <span class="input-group-addon" id="inputKout" data-toggle="tooltip" title="Removal rate" data-container="body">$K_{out}$</span>
             <input type="text" class="form-control" id="newKout" placeholder="0.70" value="0.70" aria-describedby="inputKout">
           </div>
           <div class="input-group">
-            <span class="input-group-addon" id="inputKinMod">Rel $K_{in}$ mod</span>
+            <span class="input-group-addon" id="inputKinMod" data-toggle="tooltip" title="value of Kin between t1 and t2" data-container="body">Rel $K_{in}$ mod</span>
             <input type="text" class="form-control" id="newKinMod" placeholder="1.0" value="1.0" aria-describedby="inputKinMod">
-            <span class="input-group-addon" id="inputKoutMod">$K_{out}$ mod</span>
+            <span class="input-group-addon" id="inputKoutMod" data-toggle="tooltip" title="value of Kout between t1 and t2" data-container="body">$K_{out}$ mod</span>
             <input type="text" class="form-control" id="newKoutMod" placeholder="0.70" value="0.70" aria-describedby="inputKoutMod">
-            <span class="input-group-addon" id="inputt1">$t_1$</span>
+            <span class="input-group-addon" id="inputt1" data-toggle="tooltip" title="beginning of modified Kin and Kout" data-container="body">$t_1$</span>
             <input type="text" class="form-control" id="newt1" placeholder="5.0" value="5.0" aria-describedby="inputt1">
-            <span class="input-group-addon" id="inputt2">$t_2$</span>
+            <span class="input-group-addon" id="inputt2" data-toggle="tooltip" title="end of modified Kin and Kout" data-container="body">$t_2$</span>
             <input type="text" class="form-control" id="newt2" placeholder="10.0" value="10.0" aria-describedby="inputt2">
           </div>
       </div>
@@ -156,7 +156,10 @@
 
 
     <script>
-
+      // initialize tooltips 
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
 
       // global simulation parameters
       var maxSteps = 50000;
