@@ -42,8 +42,8 @@
 
     @media screen and (min-width: 600px) {
       .jxgbox {
-        width:300px; 
-        height:300px;
+        width:250px; 
+        height:250px;
       }
     }
 
@@ -129,17 +129,22 @@
 
       <div class="clearfix visible-md-block"></div>
 
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
           <h4>Lipid distribution</h4>
           <div id="lipidDistributionBox" class="jxgbox"></div> 
         </div>
 
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
+          <h4>Histogram lipid age</h4>
+          <div id="lipidHistBox" class="jxgbox"></div> 
+        </div>
+
+        <div class="col-xs-12 col-md-3">
           <h4>Average lipid age</h4>
           <div id="lipidAgeBox" class="jxgbox"></div> 
         </div>
 
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
           <h4>Number of lipid droplets</h4>
           <div id="numberBox" class="jxgbox"></div> 
         </div>
@@ -215,6 +220,32 @@
         return (mu + sigma*v/u);
       }
 
+      function hist(array,x0,x1,nbrBins)
+      {
+        var bar = [];
+        bar.length = nbrBins;
+        bar.fill(0); // fill bar with zeroes
+        var bins = [];
+        bins.length = nbrBins;
+        var h = (x1-x0)/(nbrBins+1.0); 
+        for (var i = 0; i < nbrBins; i++)
+        {
+          bins[i] = i*h;
+        }
+        for (var i = 0; i < array.length; i++)
+        {
+          var ind = bins.findIndex( function(el) { return el > array[i] } ) 
+          if (ind < 0)
+          {
+            ind = bins.length;
+          }
+          bar[ind-1]++;
+        }
+
+        var myhist = { bins: bins, bar: bar};
+
+        return myhist;
+      }
 
       // Initialise ODE and solve it with JXG.Math.Numerics.rungeKutta()
       function ode() {
@@ -411,6 +442,8 @@
         // creating the heat map.
         brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
           keepaspectratio:false, showNavigation:false, showCopyright: false});
+        brdHistAge = JXG.JSXGraph.initBoard('lipidHistBox', {boundingbox:[-1,F0, 12, -0.05*F0], 
+          keepaspectratio:false, showNavigation:false, axis: true, showCopyright: false});
         var maxAge =  1.2*Math.max(...data.avgAge);
         brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5,maxAge, Tfinal, -0.05*maxAge], 
           keepaspectratio:false, showNavigation:false, axis: true, showCopyright: false});
@@ -428,6 +461,7 @@
         brdLipidNumber.create('point', [function () { return data.t[plot_time]; }, function (){ return data.F[plot_time]; }], 
           {withLabel: false, strokeColor:'blue', fillColor:'blue', strokeWidth:'2px',fixed:true});
         createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
+        createHistogram(brdHistAge, data.age[plot_time]);
       }
 
       var createHeatMap = function(board, nd, nbr, maxVal) {
@@ -463,6 +497,21 @@
         return cu;
       };
 
+      var createHistogram = function(board, dat)
+      {
+             
+        console.log(dat);
+        hist_age = hist(dat, 0, 10, 9);
+        console.log(hist_age);
+        board.suspendUpdate;
+        var dh = (hist_age.bins[1] - hist_age.bins[0]);
+        //for (var i=0; i<hist_age.bins.length; i++) {  
+        //     hist_age.bins += dh;
+        //}
+        var h = board.create('chart', [hist_age.bins, hist_age.bar], {chartStyle: 'bar', width: 0.8*dh}); 
+        board.unsuspendUpdate;
+        return h;
+      }
 
       function update() {
         if(data.t.length <= 100)
@@ -496,9 +545,12 @@
         var d = normalizedata(data.age[plot_time],data.F[plot_time]);
         JXG.JSXGraph.freeBoard(brdDroplets);
         brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
-        keepaspectratio:false, showNavigation:false});
-				//console.log(d);
+        keepaspectratio:false, showNavigation:false, showCopyright: false});
         createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
+        JXG.JSXGraph.freeBoard(brdHistAge);
+        brdHistAge = JXG.JSXGraph.initBoard('lipidHistBox', {boundingbox:[-1,F0, 12, -0.05*F0], 
+          keepaspectratio:false, axis: true, showNavigation:false, showCopyright: false});
+        createHistogram(brdHistAge, data.age[plot_time]);
         brdLipidAge.update();
         brdLipidNumber.update();
       }
