@@ -112,6 +112,8 @@
             <input type="text" class="form-control" id="newA0" placeholder="0.0" value="0.0" aria-describedby="inputA0">
             <span class="input-group-addon" id="inputKin"><var>Relative $K_{in}$</var></span>
             <input type="text" class="form-control" id="newKin" placeholder="7.0" value="7.0" aria-describedby="inputKin">
+            <span class="input-group-addon" id="inputKin"><var>Relative $K_{in}$</var></span>
+            <input type="text" class="form-control" id="newKin" placeholder="7.0" value="7.0" aria-describedby="inputKin">
             <span class="input-group-addon" id="inputKout">$K_{out}$</span>
             <input type="text" class="form-control" id="newKout" placeholder="0.70" value="0.70" aria-describedby="inputKout">
           </div>
@@ -152,23 +154,6 @@
       var A0 = parseFloat($("#newA0").val());
       var Kin = F0*parseFloat($("#newKin").val());
       var Kout = parseFloat($("#newKout").val());
-
-      // cumsum
-      function relcumsum(x) 
-      {
-        var c = [];
-        var n = x.length;
-        c[0] = x[0];
-        for(var i=1; i<n;i++)
-        {
-          c[i] = x[i] + c[i-1];
-        }  
-        for(i=0;i<n;i++)
-        {
-          c[i] /= c[n-1];
-        }
-        return c;
-      }
 
       function sum(array)
       {
@@ -269,18 +254,15 @@
             px.splice(0,0, Math.random());
             py.splice(0,0, Math.random());
             age.splice(0,0,0.0);
-						//console.log("age after new droplet");
-						//console.log(age);
             N++;
           }
           else
           {
             // remove a random lipid droplet
             remove = Math.floor((Math.random() * N));
+
             //update the system
             age.splice(remove,1);
-						//console.log("age after removal");
-						//console.log(age);
             px.splice(remove,1);
             py.splice(remove,1);
             N--;
@@ -299,11 +281,8 @@
           data.F[j+1] = N;
           data.t[j+1] = data.t[j] + dt;
           j++;
-					//console.log(["N", N]);
-					//console.log(data.t);
         }
         
-        //console.log(data.avgAge);  
         return data;
       }
 
@@ -319,22 +298,18 @@
 
       function resetBoard() {
         var newF0 =  parseInt($("#newF0").val());
-        //console.log(newF0);
         if (newF0 > 0) {
           F0 = newF0;
         }
         var newA0 =  parseFloat($("#newA0").val());
-        //console.log(newA0);
         if (newA0 >= 0.0) {
           A0 = newA0;
         }        
         var newKin =  parseFloat($("#newKin").val());
-        //console.log(newKin);
         if (newKin >= 0.0) {
           Kin = F0*newKin;
         }
         var newKout =  parseFloat($("#newKout").val());
-        //console.log(newKin);
         if (newKout >= 0.0) {
           Kout = newKout;
         }
