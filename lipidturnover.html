@@ -417,11 +417,13 @@
           keepaspectratio:false, showNavigation:false, axis: true, showCopyright: false});
         brdLipidAge.createElement('curve', [data.t, data.avgAge], {strokeColor:'red', strokeWidth:'2px'});
         brdLipidAge.create('point', [function () { return data.t[plot_time]; }, function (){ return data.avgAge[plot_time]; }], 
-          {strokeColor:'red', strokeWidth:'2px',fixed:true});
+          {withLabel: false, strokeColor:'red', strokeWidth:'2px',fixed:true});
         brdLipidAge.createElement('curve', [ode_sol.map(function(val,ind) {return val[2];}), ode_sol.map(function(val,ind) {return val[1];})], {strokeColor:'red', strokeWidth:'2px'});
         brdLipidNumber.createElement('curve', [ode_sol.map(function(val,ind) {return val[2];}), ode_sol.map(function(val,ind) {return val[0];})], {strokeColor:'blue', strokeWidth:'2px'});
         brdLipidNumber.createElement('curve', [data.t, data.F], {strokeColor:'blue', strokeWidth:'2px'});
         var d = normalizedata(data.age[plot_time],data.F[plot_time]);
+        brdLipidNumber.create('point', [function () { return data.t[plot_time]; }, function (){ return data.F[plot_time]; }], 
+          {withLabel: false, strokeColor:'blue', fillColor:'blue', strokeWidth:'2px',fixed:true});
         createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
       }
 
@@ -495,6 +497,7 @@
 				//console.log(d);
         createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
         brdLipidAge.update();
+        brdLipidNumber.update();
       }
 
       runLipidTurnover();
