@@ -129,14 +129,19 @@
 
       <div class="clearfix visible-md-block"></div>
 
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-4">
           <h4>Lipid distribution</h4>
           <div id="lipidDistributionBox" class="jxgbox"></div> 
         </div>
 
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-4">
           <h4>Average lipid age</h4>
           <div id="lipidAgeBox" class="jxgbox"></div> 
+        </div>
+
+        <div class="col-xs-12 col-md-4">
+          <h4>Number of lipid droplets</h4>
+          <div id="numberBox" class="jxgbox"></div> 
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -207,6 +212,45 @@
         return (mu + sigma*v/u);
       }
 
+
+      // Initialise ODE and solve it with JXG.Math.Numerics.rungeKutta()
+      function ode() {
+          // evaluation interval
+          var tspan = [0, Tfinal];
+          // Number of steps. 1000 should be enough
+          var Nsteps = 1000;
+   
+          // Right hand side of the ODE dx/dt = f(t, x)
+          var f = function(t, xx) {
+              
+              var removal_rate = xx[0] * ( Kout*(t<t1 | t>=t2) + KoutMod*(t>=t1 & t<t2) ); 
+              var uptake_rate = Kin*(t<t1 | t>=t2) + KinMod*(t>=t1 & t<t2);
+   
+              var dxdt = [];
+              // expected number of lipid droplets
+              dxdt[0] = uptake_rate - removal_rate; 
+              dxdt[1] = 1 - ( Kout*(t<t1 | t>=t2) + KoutMod*(t>=t1 & t<t2) ) * xx[1] - dxdt[0]/xx[0] * xx[1];
+   
+              return dxdt;
+          }
+   
+          // Initial value
+          var x0 = [F0, A0];
+   
+          // Solve ode
+          var ode_sol = JXG.Math.Numerics.rungeKutta('rk4', x0, tspan, Nsteps, f);
+   
+          // to plot the data against time we need the times where the equations were solved
+          var t = [];
+          var q = tspan[0];
+          var h = (tspan[1]-tspan[0])/Nsteps;
+          for(var i=0; i<ode_sol.length; i++) {
+              ode_sol[i].push(q);
+              q += h;
+          }
+   
+          return ode_sol;
+      }
 
       // Initialise the process and solve it
       function solveBD() {
@@ -347,10 +391,12 @@
         }
         JXG.JSXGraph.freeBoard(brdDroplets);
         JXG.JSXGraph.freeBoard(brdLipidAge);
-        brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
-        keepaspectratio:false, showNavigation:false});
-        brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5, 5.0, Tfinal, -0.05], 
-        keepaspectratio:false, showNavigation:false, axis: true,});
+        //brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
+        //keepaspectratio:false, showNavigation:false});
+        //brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5, 5.0, Tfinal, -0.5], 
+        //keepaspectratio:false, showNavigation:false, axis: true,});
+        //brdLipidNumber = JXG.JSXGraph.initBoard('numberBox', {boundingbox:[-0.5, 2*F0, Tfinal, -1], 
+        //keepaspectratio:false, showNavigation:false, axis: true,});
       }
 
       function runLipidTurnover() {
@@ -358,14 +404,23 @@
         $( "#time_info" ).html(plot_time.toString());
         data = [];
         data = solveBD();
+        ode_sol = ode();
         // creating the heat map.
         brdDroplets = JXG.JSXGraph.initBoard('lipidDistributionBox', {boundingbox:[-0.1,1.1, 1.1, -0.1], 
-          keepaspectratio:false, showNavigation:false});
-        brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5,5.0, Tfinal, -0.05], 
-          keepaspectratio:false, showNavigation:false, axis: true,});
-        g1 = brdLipidAge.createElement('curve', [data.t, data.avgAge], {strokeColor:'red', strokeWidth:'2px'});
-        g2 = brdLipidAge.create('point', [function () { return data.t[plot_time]; }, function (){ return data.avgAge[plot_time]; }], 
+          keepaspectratio:false, showNavigation:false, showCopyright: false});
+        var maxAge =  1.2*Math.max(...data.avgAge);
+        brdLipidAge = JXG.JSXGraph.initBoard('lipidAgeBox', {boundingbox:[-0.5,maxAge, Tfinal, -0.05*maxAge], 
+          keepaspectratio:false, showNavigation:false, axis: true, showCopyright: false});
+        var maxNbr =  1/Math.min(Kout,KoutMod)*Math.max(Kin,KinMod);
+        maxNbr = 1.1*maxNbr+3*Math.sqrt(maxNbr);
+        brdLipidNumber = JXG.JSXGraph.initBoard('numberBox', {boundingbox:[-0.5, maxNbr, Tfinal, -0.05*maxNbr], 
+          keepaspectratio:false, showNavigation:false, axis: true, showCopyright: false});
+        brdLipidAge.createElement('curve', [data.t, data.avgAge], {strokeColor:'red', strokeWidth:'2px'});
+        brdLipidAge.create('point', [function () { return data.t[plot_time]; }, function (){ return data.avgAge[plot_time]; }], 
           {strokeColor:'red', strokeWidth:'2px',fixed:true});
+        brdLipidAge.createElement('curve', [ode_sol.map(function(val,ind) {return val[2];}), ode_sol.map(function(val,ind) {return val[1];})], {strokeColor:'red', strokeWidth:'2px'});
+        brdLipidNumber.createElement('curve', [ode_sol.map(function(val,ind) {return val[2];}), ode_sol.map(function(val,ind) {return val[0];})], {strokeColor:'blue', strokeWidth:'2px'});
+        brdLipidNumber.createElement('curve', [data.t, data.F], {strokeColor:'blue', strokeWidth:'2px'});
         var d = normalizedata(data.age[plot_time],data.F[plot_time]);
         createHeatMap(brdDroplets, d, data.F[plot_time], 1.0);
       }
