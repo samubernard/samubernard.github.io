@@ -102,11 +102,15 @@
       boardtime = JXG.JSXGraph.initBoard('epidemicsboxtime', {boundingbox: [-0.5, 1.5, 365.0, -0.5], axis: true, grid: false, showCopyright: false});
    
       // Define sliders to dynamically change parameters of the equations and create text elements to describe them
-      betaslider = boardtime.createElement('slider', [[20.0,1.4],[150.0,1.4],[0.00,0.08,0.5]],{name:'beta',strokeColor:'black',fillColor:'black'});
+      betaslider = boardtime.createElement('slider', [[20.0,1.4],[120.0,1.4],[0.00,0.08,0.5]],{name:'beta',strokeColor:'black',fillColor:'black'});
       betatext = boardtime.createElement('text', [20,1.32, "infection rate"], {fixed:true});
-      recoveryslider = boardtime.createElement('slider', [[20.0,1.2],[150.0,1.2],[0.0,0.03,0.2]],{name:'gamma',strokeColor:'black',fillColor:'black'});
+      recoveryslider = boardtime.createElement('slider', [[20.0,1.2],[120.0,1.2],[0.0,0.03,0.2]],{name:'gamma',strokeColor:'black',fillColor:'black'});
       recoverytext = boardtime.createElement('text', [20,1.12, "recovery rate"], {fixed:true});
       
+      onsetslider = boardtime.createElement('slider', [[200.0,1.4],[300.0,1.4],[0.00,14,100]],{name:'start',strokeColor:'black',fillColor:'black'});
+      onsettext = boardtime.createElement('text', [200,1.32, "start of measures"], {fixed:true});
+      durationslider = boardtime.createElement('slider', [[200.0,1.2],[300.0,1.2],[0.0,14,90]],{name:'duration',strokeColor:'black',fillColor:'black'});
+      durationtext = boardtime.createElement('text', [200,1.12, "duration of measures"], {fixed:true});
       
       // Dynamic initial value as gliders on the y-axis
       startI = boardtime.createElement('glider', [0, 0.01, boardtime.defaultAxes.y], {name:'I',strokeColor:'green',fillColor:'green'});
@@ -128,7 +132,8 @@
    
           // Right hand side of the ODE dx/dt = f(t, x)
           var f = function(t, xx) {
-              var beta = betaslider.Value();
+              var measures_on =  (t >= onsetslider.Value()) * (t < (onsetslider.Value() + durationslider.Value() ));
+              var beta = betaslider.Value() * ( 1 - 0.5 * measures_on);
               var gamma = recoveryslider.Value();
               var POP = 1;
               
