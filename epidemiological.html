@@ -102,14 +102,13 @@
       boardtime = JXG.JSXGraph.initBoard('epidemicsboxtime', {boundingbox: [-0.5, 1.5, 365.0, -0.5], axis: true, grid: false, showCopyright: false});
    
       // Define sliders to dynamically change parameters of the equations and create text elements to describe them
-      betaslider = boardtime.createElement('slider', [[20.0,1.4],[170.0,1.4],[0.00,0.08,0.5]],{name:'beta',strokeColor:'black',fillColor:'black'});
+      betaslider = boardtime.createElement('slider', [[20.0,1.4],[150.0,1.4],[0.00,0.08,0.5]],{name:'beta',strokeColor:'black',fillColor:'black'});
       betatext = boardtime.createElement('text', [20,1.32, "infection rate"], {fixed:true});
-      recoveryslider = boardtime.createElement('slider', [[20.0,1.2],[170.0,1.2],[0.0,0.03,0.2]],{name:'gamma',strokeColor:'black',fillColor:'black'});
+      recoveryslider = boardtime.createElement('slider', [[20.0,1.2],[150.0,1.2],[0.0,0.03,0.2]],{name:'gamma',strokeColor:'black',fillColor:'black'});
       recoverytext = boardtime.createElement('text', [20,1.12, "recovery rate"], {fixed:true});
       
       
       // Dynamic initial value as gliders on the y-axis
-      startS = boardtime.createElement('glider', [0, 0.99, boardtime.defaultAxes.y], {name:'S',strokeColor:'blue',fillColor:'blue'});
       startI = boardtime.createElement('glider', [0, 0.01, boardtime.defaultAxes.y], {name:'I',strokeColor:'green',fillColor:'green'});
       startR = boardtime.createElement('glider', [0, 0.00, boardtime.defaultAxes.y], {name:'R',strokeColor:'red',fillColor:'red'});
 
@@ -117,7 +116,8 @@
       // Variables for the JXG.Curves
       var g1 = null;
       var g2 = null;
-      var g3 = null;
+
+      var gt1 = null;
       
       // Initialise ODE and solve it with JXG.Math.Numerics.rungeKutta()
       function ode() {
@@ -142,7 +142,7 @@
           }
    
           // Initial value
-          var x0 = [startS.Y(), startI.Y(), startR.Y()];
+          var x0 = [1.0 - startI.Y() - startR.Y(), startI.Y(), startR.Y()];
    
           // Solve ode
           var data = JXG.Math.Numerics.rungeKutta('rk4', x0, tspan, N, f);
@@ -164,31 +164,17 @@
    
       // copy data to arrays so we can plot it using JXG.Curve
       var t = [];
-      var dataS = [];
       var dataI = [];
       var dataR = [];
       for(var i=0; i<data.length; i++) {
           t[i] = data[i][3];
-          dataS[i] = data[i][0];
           dataI[i] = data[i][1];
           dataR[i] = data[i][2];
       }
    
-      // Plot S
-      g1 = boardtime.createElement('curve', [t, dataS], {strokeColor:'blue', strokeWidth:'2px'});
+      // Plot I 
+      g1 = boardtime.createElement('curve', [t, dataI], {strokeColor:'blue', strokeWidth:4});
       g1.updateDataArray = function() {
-          var data = ode();
-          this.dataX = [];
-          this.dataY = [];
-          for(var i=0; i<data.length; i++) {
-              this.dataX[i] = t[i];
-              this.dataY[i] = data[i][0];
-          }
-      }
-   
-      // Plot I
-      g2 = boardtime.createElement('curve', [t, dataI], {strokeColor:'green', strokeWidth:'2px'});
-      g2.updateDataArray = function() {
           var data = ode();
           this.dataX = [];
           this.dataY = [];
@@ -197,10 +183,17 @@
               this.dataY[i] = data[i][1];
           }
       }
-
+      gt1 = boardtime.createElement('text', [
+          300,
+          function() {
+            var data = ode();
+            return data[700][1];
+          },
+          "Infected"]);
+   
       // Plot R
-      g3 = boardtime.createElement('curve', [t, dataR], {strokeColor:'red', strokeWidth:'2px'});
-      g3.updateDataArray = function() {
+      g2 = boardtime.createElement('curve', [t, dataR], {strokeColor:'green', strokeWidth:4});
+      g2.updateDataArray = function() {
           var data = ode();
           this.dataX = [];
           this.dataY = [];
@@ -209,6 +202,14 @@
               this.dataY[i] = data[i][2];
           }
       }
+      gt1 = boardtime.createElement('text', [
+          300,
+          function() {
+            var data = ode();
+            return data[700][2];
+          },
+          "Removed"]);
+
 
     </script>
 
