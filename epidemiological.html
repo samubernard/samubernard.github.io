@@ -40,10 +40,10 @@
     }
   
 
-    @media screen and (min-width: 600px) {
+    @media screen and (min-width: 800px) {
       .jxgbox {
-        width:600px; 
-        height:400px;
+        width:800px; 
+        height:600px;
       }
     }
   </style>
@@ -127,8 +127,7 @@
       function ode() {
           // evaluation interval
           var tspan = [0, 365];
-          // Number of steps. 1000 should be enough
-          var N = 1000;
+          var N = 365; // number of steps
    
           // Right hand side of the ODE dx/dt = f(t, x)
           var f = function(t, xx) {
@@ -168,53 +167,41 @@
       var data = ode();
    
       // copy data to arrays so we can plot it using JXG.Curve
-      var t = [];
-      var dataI = [];
-      var dataR = [];
-      for(var i=0; i<data.length; i++) {
-          t[i] = data[i][3];
-          dataI[i] = data[i][1];
-          dataR[i] = data[i][2];
-      }
-   
+      var t = data.map( function(d) { return d[3]; } );
+      var dataI = data.map( function(d) { return d[1]; } );
+      var dataR = data.map( function(d) { return d[2]; } );
+
       // Plot I 
-      g1 = boardtime.createElement('curve', [t, dataI], {strokeColor:'blue', strokeWidth:4});
+      g1 = boardtime.createElement('curve', [t,dataI], {strokeColor:'blue', strokeWidth:4, highlight:false});
       g1.updateDataArray = function() {
           var data = ode();
-          this.dataX = [];
-          this.dataY = [];
-          for(var i=0; i<data.length; i++) {
-              this.dataX[i] = t[i];
-              this.dataY[i] = data[i][1];
-          }
+          this.dataX = data.map( function(d) { return d[3]; } );
+          this.dataY = data.map( function(d) { return d[1];} );
       }
+      
       gt1 = boardtime.createElement('text', [
           300,
           function() {
             var data = ode();
-            return data[700][1];
+            return data[300][1];
           },
           "Infected"]);
    
       // Plot R
-      g2 = boardtime.createElement('curve', [t, dataR], {strokeColor:'green', strokeWidth:4});
+      g2 = boardtime.createElement('curve', [t,dataR], { strokeColor:'green', strokeWidth:4, highlight:false});
+
       g2.updateDataArray = function() {
           var data = ode();
-          this.dataX = [];
-          this.dataY = [];
-          for(var i=0; i<data.length; i++) {
-              this.dataX[i] = t[i];
-              this.dataY[i] = data[i][2];
-          }
+          this.dataX = data.map( function(d) { return d[3]; } );
+          this.dataY = data.map( function(d) { return d[2]; } );
       }
       gt1 = boardtime.createElement('text', [
           300,
           function() {
             var data = ode();
-            return data[700][2];
+            return data[300][2];
           },
           "Removed"]);
-
 
     </script>
 
