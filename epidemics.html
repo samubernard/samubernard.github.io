@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="d3.min.js"></script>
+</head>
+<body>
+<script>
+
+var width = 600,
+    height = 350,
+    swidth = width * 0.3,
+    sheight = height/5,
+    nbrBubbles = 200,
+    i0 = 1,
+    R0 = 0,
+    infection_radius = 10,
+    prob_infect = .35,
+    recovery_time = 14 * 24,
+    dx = height * 0.02,
+    dy = height * 0.02,
+    tMax = 24*60;
+    nbrCat = 3;
+
+var bubbles = d3.range(nbrBubbles).map( function (d,i) { return {"r":5,
+                                                       "cat": 0,
+                                                        "x":Math.random()*width,
+                                                        "y":Math.random()*height,
+                                                        "infections":0}; });
+
+var colors  = ["#339944","#994433","#443399"]; 
+
+var t = 0,
+    Susceptible = nbrBubbles - i0,
+    Infected = i0,
+    Recovered = 0;
+
+var index_infected = [];
+for ( var i = 0; i<i0; ++i) { // seed infected
+  bubbles[i].cat = 1;
+  index_infected.push(i);
+}
+
+var svgGroup = d3.select("body")
+                    .append("g")
+
+var svgSusceptible = svgGroup
+                    .append("svg")
+                    .attr("width", swidth)
+                    .attr("height", sheight)  
+                    .style("border", "1 pt solid black")
+                    .style("background", "white")
+
+var svgInfected = svgGroup
+                    .append("svg")
+                    .attr("width", swidth)
+                    .attr("height", sheight)  
+                    .style("position", "relative")
+                    .style("left", "10px")
+                    .style("border", "1 pt solid black")
+                    .style("background", "white")
+
+var svgRecovered = svgGroup
+                    .append("svg")
+                    .attr("width", swidth)
+                    .attr("height", sheight)  
+                    .style("position", "relative")
+                    .style("left", "20px")
+                    .style("border", "1 pt solid black")
+                    .style("background", "white")
+
+var susceptibleText = svgSusceptible.append("text").attr("x",5).attr("y",20)
+                                    .style("font","12px sans-serif")
+                                    .style("fill",colors[0]);
+var infectedText = svgInfected.append("text").attr("x",5).attr("y",20)
+                                    .style("font","12px sans-serif")
+                                    .style("fill",colors[1]);
+var recoveredText = svgRecovered.append("text").attr("x",5).attr("y",20)
+                                    .style("font","12px sans-serif")
+                                    .style("fill",colors[2]);
+
+var susceptibleData = [{"t":0, "n":Susceptible}];
+var infectedData = [{"t":0, "n":Infected}];
+var recoveredData = [{"t":0, "n":Recovered}];
+
+var susceptibleChart = svgSusceptible.append("path")
+                                     .attr("fill",colors[0])
+                                     .attr("stroke",colors[0])
+
+var infectedChart = svgInfected.append("path")
+                                     .attr("fill",colors[1])
+                                     .attr("stroke",colors[1])
+
+var recoveredChart = svgRecovered.append("path")
+                                     .attr("fill",colors[2])
+                                     .attr("stroke",colors[2])
+
+var xScale = d3.scaleLinear()
+          .domain([0,t])
+          .range([0,swidth]);
+var yScale = d3.scaleLinear()
+          .domain([0,nbrBubbles])
+          .range([sheight,0]);
+
+var svgDomain = svgGroup
+                     .append("svg")
+                     .attr("width", width)
+                     .attr("height", height)
+                     .attr("dy",sheight) 
+                     .style("position", "absolute")
+                     .style("top", height/4)
+                     .style("left", 0)
+                     .style("background", "white")
+                     .style("border","5pt solid black");
+
+var timeText = svgDomain.append("text").attr("x",width * 0.8).attr("y",20)
+                                    .style("font","12px sans-serif")
+                                    .style("z",1)
+                                    .style("fill","#333333");
+
+
+// var xCenter = d3.range(nbrCat).map ( function (i) { return width / 11 * (i+1); });
+var xCenter = d3.range(nbrCat).map ( function () { return width / 2; });
+
+
+
+forceX = function (d) { 
+  var targetX = d.x + (Math.random()-0.5) * dx; 
+  targetX = Math.max(0,targetX);
+  targetX = Math.min(width,targetX);
+  return targetX;  
+}
+
+forceY = function (d) { 
+  var targetY = d.y + (Math.random()-0.5) * dy; 
+  targetY = Math.max(0,targetY);
+  targetY = Math.min(height,targetY);
+  return targetY;  
+}
+
+dist = function(node1,node2) {
+    return Math.hypot(node1.x - node2.x, node1.y - node2.y);
+
+}
+
+closest = function (ind,radius,cat) {
+  // return true if a node of category cat is in radius
+  var dis = bubbles.map( function (d) { 
+      return dist(bubbles[ind],d); })
+  var close = [];
+  for (var i = 0; i<nbrBubbles; ++i) {
+    if ( i != ind && dis[i] < radius && bubbles[i].cat == cat ) {
+      close.push(i);
+    }
+  }
+  return close;
+}
+
+findNeighbour = function (ind,radius,cat) {
+  // return true if a node of category cat is in radius
+  for ( var i = 0; i<nbrBubbles; ++i) {
+     if ( dist(bubbles[ind],bubbles[i]) < radius && bubbles[i].cat == cat ) {
+        return true;
+     }
+  }
+  return false;
+}
+
+var forceSimulation = d3.forceSimulation(bubbles)
+                        //.force("charge", d3.forceManyBody().strength(-1))
+                        .force("x", d3.forceX().x( forceX ).strength(1))
+                        .force("y", d3.forceY().y( forceY ).strength(1))
+                        .force("collision", d3.forceCollide().radius(function(d) {
+                              return d.r }).strength(0.9))
+                        .alphaDecay(0.0)
+                        .on("tick.up", updateSim)
+                        .on("tick.down",updateBubbles);
+
+function updateSim() {
+
+    var u = svgDomain 
+              .selectAll("circle")
+              .data(bubbles);
+    u.enter()
+     .append("circle")
+     .merge(u)
+     .attr("r", function (d) { return (d.r + (d.cat == 1) * (infection_radius - d.r)); })
+     .attr("cx", function (d) { return d.x; })
+     .attr("cy", function (d) { return d.y; })
+     .style("fill", function (d,i) { return colors[d.cat]; } )
+     .style("fill-opacity", function (d) { return 1.0 - 0.7*(d.cat == 1); } );
+
+    u.exit().remove();
+   
+}
+
+function updateBubbles() {
+
+    if ( t > tMax ) {
+      forceSimulation.stop();
+    }
+
+    forceSimulation.force("x", d3.forceX().x( forceX ).strength(1))
+                   .force("y", d3.forceY().y( forceY ).strength(1));
+
+
+    // loop on infected
+    index_infected.forEach( function (idx) {
+      // new infections
+      bubbles.forEach ( function (bb,ii) {
+        if ( bb.cat == 0 ) {
+          if ( dist(bb,bubbles[idx]) < infection_radius ) {
+            if ( Math.random() < prob_infect ) {
+              bb.cat = 1;
+              bubbles[idx].infections++;
+            }
+          }
+        }
+      });
+      // recovery 
+      bubbles[idx].cat = 1 + (Math.random() < 1 / recovery_time  ); 
+    });
+    index_infected = [];
+    bubbles.forEach( function (d,i) {
+      if ( d.cat == 1 ) {
+        index_infected.push(i);
+      }
+    });
+
+    Susceptible = bubbles.reduce( function(sum,d) { return sum + (d.cat == 0);},0);
+    Infected = bubbles.reduce( function(sum,d) { return sum + (d.cat == 1);},0);
+    Recovered = bubbles.reduce( function(sum,d) { return sum + (d.cat == 2);},0);
+    var nbrInfection = bubbles.reduce( function(r,d) { 
+      return r + (d.cat == 2)*(d.infections); },0);
+    if (Recovered) {
+      R0 = Math.max(R0,nbrInfection/(Recovered));
+    }
+    else {
+      R0 = 0;
+    }
+    
+
+    susceptibleText.text("Susceptible: " + Susceptible); 
+    infectedText.text("Infected: " + Infected); 
+    recoveredText.text("Recovered: " + Recovered); 
+    timeText.text("t: " + t + ", R0: " + R0);
+
+    susceptibleData.push({"t":++t,"n":Susceptible });
+    infectedData.push({"t":++t,"n":Infected });
+    recoveredData.push({"t":++t,"n":Recovered });
+    
+    xScale.domain([0,t]);
+
+    susceptibleChart.datum(susceptibleData)
+       .attr("d", d3.area()
+       .x(function(d) { return xScale(d.t)})
+       .y1(function(d) { return yScale(d.n) })
+       .y0(yScale(0))  
+       );
+
+    infectedChart.datum(infectedData)
+       .attr("d", d3.area()
+       .x(function(d) { return xScale(d.t)})
+       .y1(function(d) { return yScale(d.n) })
+       .y0(yScale(0))  
+       );
+
+    recoveredChart.datum(recoveredData)
+       .attr("d", d3.area()
+       .x(function(d) { return xScale(d.t)})
+       .y1(function(d) { return yScale(d.n) })
+       .y0(yScale(0))  
+       );
+}
+
+// var axisScale = d3.scaleLinear()
+//                         .domain([0, 100])
+//                         .range([15, height-15]);
+// 
+// var axis = d3.axisLeft(axisScale);
+// 
+// var axisGroup = svgDomain.append("g")
+//                              .attr("transform","translate(30,0)")
+//                              .call(axis);
+// 
+
+</script>
+</body>
+</html>
+
