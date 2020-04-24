@@ -1,47 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="d3.min.js"></script>
 </head>
 <body>
 <script>
 
+
+// auxiliary functions
+
+infect = function(d) {
+  d.cat = 1;
+  d.contacts = 0;
+  d.time_at_infection = t;
+}
+
+forceX = function (d) { 
+  var targetX = d.x + (Math.random()-0.5) * dx; 
+  targetX = Math.max(0,targetX);
+  targetX = Math.min(width,targetX);
+  return targetX;  
+}
+
+forceY = function (d) { 
+  var targetY = d.y + (Math.random()-0.5) * dy; 
+  targetY = Math.max(0,targetY);
+  targetY = Math.min(height,targetY);
+  return targetY;  
+}
+
+dist = function(node1,node2) {
+    return Math.hypot(node1.x - node2.x, node1.y - node2.y);
+
+}
+
+// simulation parameters
 var width = 600,
-    height = 350,
+    height = 400,
     swidth = width * 0.3,
     sheight = height/5,
-    nbrBubbles = 200,
+    nbrBubbles = 300,
     i0 = 1,
     R0 = 0,
-    infection_radius = 10,
-    prob_infect = .35,
+    infection_radius = 20,
+    prob_infect = .02,
     recovery_time = 14 * 24,
-    dx = height * 0.02,
-    dy = height * 0.02,
-    tMax = 24*60;
+    dx = height * 0.03,
+    dy = height * 0.03,
+    t = 0,
+    tMax = 24*90;
     nbrCat = 3;
 
 var bubbles = d3.range(nbrBubbles).map( function (d,i) { return {"r":5,
                                                        "cat": 0,
                                                         "x":Math.random()*width,
                                                         "y":Math.random()*height,
-                                                        "infections":0}; });
+                                                        "infections":0,
+                                                        "contacts":0,
+                                                        "time_at_infection":0}; });
 
 var colors  = ["#339944","#994433","#443399"]; 
 
-var t = 0,
-    Susceptible = nbrBubbles - i0,
+var Susceptible = nbrBubbles - i0,
     Infected = i0,
     Recovered = 0;
 
 var index_infected = [];
 for ( var i = 0; i<i0; ++i) { // seed infected
-  bubbles[i].cat = 1;
+  infect(bubbles[i]);
   index_infected.push(i);
 }
 
+var quad = d3.quadtree()
+              .extent([[0,0],[width,height]])
+              .x( function (d) { return d.x; })
+              .y( function (d) { return d.y; })
+              .addAll(bubbles);
+
 var svgGroup = d3.select("body")
-                    .append("g")
+                    .append("g");
 
 var svgSusceptible = svgGroup
                     .append("svg")
@@ -106,64 +143,18 @@ var svgDomain = svgGroup
                      .attr("width", width)
                      .attr("height", height)
                      .attr("dy",sheight) 
+                     .attr("dx",10) 
                      .style("position", "absolute")
                      .style("top", height/4)
                      .style("left", 0)
                      .style("background", "white")
-                     .style("border","5pt solid black");
+                     .style("border","1pt solid black");
 
-var timeText = svgDomain.append("text").attr("x",width * 0.8).attr("y",20)
+var timeText = svgDomain.append("text").attr("x",width * 0.7).attr("y",20)
                                     .style("font","12px sans-serif")
-                                    .style("z",1)
+                                    .style("position","relative")
+                                    .style("z-index",10)
                                     .style("fill","#333333");
-
-
-// var xCenter = d3.range(nbrCat).map ( function (i) { return width / 11 * (i+1); });
-var xCenter = d3.range(nbrCat).map ( function () { return width / 2; });
-
-
-
-forceX = function (d) { 
-  var targetX = d.x + (Math.random()-0.5) * dx; 
-  targetX = Math.max(0,targetX);
-  targetX = Math.min(width,targetX);
-  return targetX;  
-}
-
-forceY = function (d) { 
-  var targetY = d.y + (Math.random()-0.5) * dy; 
-  targetY = Math.max(0,targetY);
-  targetY = Math.min(height,targetY);
-  return targetY;  
-}
-
-dist = function(node1,node2) {
-    return Math.hypot(node1.x - node2.x, node1.y - node2.y);
-
-}
-
-closest = function (ind,radius,cat) {
-  // return true if a node of category cat is in radius
-  var dis = bubbles.map( function (d) { 
-      return dist(bubbles[ind],d); })
-  var close = [];
-  for (var i = 0; i<nbrBubbles; ++i) {
-    if ( i != ind && dis[i] < radius && bubbles[i].cat == cat ) {
-      close.push(i);
-    }
-  }
-  return close;
-}
-
-findNeighbour = function (ind,radius,cat) {
-  // return true if a node of category cat is in radius
-  for ( var i = 0; i<nbrBubbles; ++i) {
-     if ( dist(bubbles[ind],bubbles[i]) < radius && bubbles[i].cat == cat ) {
-        return true;
-     }
-  }
-  return false;
-}
 
 var forceSimulation = d3.forceSimulation(bubbles)
                         //.force("charge", d3.forceManyBody().strength(-1))
@@ -202,19 +193,38 @@ function updateBubbles() {
     forceSimulation.force("x", d3.forceX().x( forceX ).strength(1))
                    .force("y", d3.forceY().y( forceY ).strength(1));
 
+    // repopulate the quad 
+    quad.removeAll(bubbles);
+    quad = d3.quadtree()
+              .extent([[0,0],[width,height]])
+              .x( function (d) { return d.x; })
+              .y( function (d) { return d.y; })
+              .addAll(bubbles);
+
 
     // loop on infected
     index_infected.forEach( function (idx) {
-      // new infections
-      bubbles.forEach ( function (bb,ii) {
-        if ( bb.cat == 0 ) {
-          if ( dist(bb,bubbles[idx]) < infection_radius ) {
-            if ( Math.random() < prob_infect ) {
-              bb.cat = 1;
-              bubbles[idx].infections++;
-            }
+    // new infections
+    var xi = bubbles[idx].x, yi = bubbles[idx].y;
+    quad.visit( function(node,x0,y0,x1,y1) {
+      if (    xi < (x0-infection_radius) 
+           || xi > (x1+infection_radius)
+           || yi < (y0-infection_radius)
+           || yi > (y1+infection_radius)
+         ) return true;
+      
+      if (!node.length) do { 
+        if ( dist(node.data,bubbles[idx]) < infection_radius
+             && node.data.index != idx  ) {
+          bubbles[idx].contacts++;
+          if ( Math.random() < prob_infect && node.data.cat == 0 ) {
+            infect(node.data);
+            bubbles[idx].infections++;
+            console.log("infected " + node.data.index);
           }
         }
+      } while (node = node.next);
+      return false;
       });
       // recovery 
       bubbles[idx].cat = 1 + (Math.random() < 1 / recovery_time  ); 
@@ -229,20 +239,23 @@ function updateBubbles() {
     Susceptible = bubbles.reduce( function(sum,d) { return sum + (d.cat == 0);},0);
     Infected = bubbles.reduce( function(sum,d) { return sum + (d.cat == 1);},0);
     Recovered = bubbles.reduce( function(sum,d) { return sum + (d.cat == 2);},0);
-    var nbrInfection = bubbles.reduce( function(r,d) { 
-      return r + (d.cat == 2)*(d.infections); },0);
-    if (Recovered) {
-      R0 = Math.max(R0,nbrInfection/(Recovered));
-    }
-    else {
-      R0 = 0;
-    }
+    var contactStats = bubbles.reduce( function(m,d) { 
+      var n = m.n;
+      var c = m.c;
+      if ( d.cat == 1 && t > d.time_at_infection ) {
+        c += d.contacts/(t - d.time_at_infection)*24; 
+        n++;
+      }
+      return {"c":c, "n":n  }; },{"c":0, "n":0});
+    var meanContactsRate = contactStats.c/contactStats.n;
+    R0 = meanContactsRate * prob_infect * recovery_time/24; 
     
 
     susceptibleText.text("Susceptible: " + Susceptible); 
     infectedText.text("Infected: " + Infected); 
     recoveredText.text("Recovered: " + Recovered); 
-    timeText.text("t: " + t + ", R0: " + R0);
+    timeText.text("t: " + t + "h" + ", R0: " + Math.round(10*R0)/10 
+      + " cont: " + Math.round(10*meanContactsRate)/10 + "per d");
 
     susceptibleData.push({"t":++t,"n":Susceptible });
     infectedData.push({"t":++t,"n":Infected });
@@ -272,16 +285,7 @@ function updateBubbles() {
        );
 }
 
-// var axisScale = d3.scaleLinear()
-//                         .domain([0, 100])
-//                         .range([15, height-15]);
-// 
-// var axis = d3.axisLeft(axisScale);
-// 
-// var axisGroup = svgDomain.append("g")
-//                              .attr("transform","translate(30,0)")
-//                              .call(axis);
-// 
+
 
 </script>
 </body>
