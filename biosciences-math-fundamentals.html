@@ -203,7 +203,7 @@
 </ul>
 </nav>
 <h1 id="readme">README</h1>
-<p>This document is intended to serve bith for training and for future reference. As a reference document, you may find it useful for the first biomaths class (3BS, Fall semester) and for linear algebra (3BIM, Winter Semester).</p>
+<p>This document is intended to serve both for training and for future reference. As a reference document, you may find it useful for the first biomaths class (3BS, Fall semester) and for linear algebra (3BIM, Winter Semester).</p>
 <p>When important concepts are encoutered for the first time, they highlighted in <strong>bold</strong> next to their definition. Exercises are important, they can introduce theory or techniques that will be prove useful. We tried to make the examples as complete as possible. This means that they are long, you could probably solve them faster.</p>
 <h1 id="fonctions-maps">Fonctions, maps</h1>
 <p>A <strong>function</strong> is a relation, denoted in general <span class="math inline">\(f\)</span>, that associate an element <span class="math inline">\(x\)</span> belonging to a <strong>domain</strong> <span class="math inline">\(I\)</span>, and at most an element <span class="math inline">\(y\)</span> of the <strong>image</strong> <span class="math inline">\(J\)</span>. The domain <span class="math inline">\(I\)</span> and <span class="math inline">\(J\)</span> are sets, usually <span class="math inline">\(I, J \in \mathbb{R}\)</span>.</p>
@@ -234,7 +234,7 @@
 <div class="center">
 <p><img src="htmltmp/tikzblocks_3.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to x^2\)</span>, parabola; <span class="math inline">\(x \to x^3\)</span>, cubic function.</p>
+<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to x^2\)</span>, parabola; <span class="math inline">\(x \to x^3\)</span>, cubic map.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_4.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_5.pdf.png" alt="image" /></p>
 </div></li>
@@ -405,33 +405,20 @@
 </figure>
 <h2 id="exercises-on-complex-numbers">Exercises on complex numbers</h2>
 <p><strong>Exercice </strong> Let the complex number <span class="math inline">\(z = 2 + 3 i\)</span>. Compute <span class="math inline">\(\bar z\)</span>, <span class="math inline">\(|z|\)</span>, <span class="math inline">\(|\bar z|\)</span> (compare with <span class="math inline">\(|z|\)</span>), <span class="math inline">\(z^2\)</span>, <span class="math inline">\(\Re(\bar z)\)</span> , <span class="math inline">\(\Im(\bar z)\)</span>, <span class="math inline">\(\frac{z + \bar z}{2}\)</span> , <span class="math inline">\(\frac{z - \bar z}{2}\)</span> , <span class="math inline">\(-z\)</span>, <span class="math inline">\(iz\)</span>.</p>
-<p><strong>Correction</strong> <span class="math inline">\(\bar z = 2 - 3i\)</span>, <span class="math inline">\(|z| = \sqrt{2^2 + 3^2} = \sqrt{13}\)</span>, <span class="math inline">\(|\bar z| = \sqrt{2^2 + (-3)^2} = \sqrt{13}\)</span>, we see that <span class="math inline">\(|z| = |\bar z|\)</span>, <span class="math inline">\(\Re(\bar z) = 2\)</span>, <span class="math inline">\(\Im(\bar z) = -3\)</span>, <span class="math inline">\(\frac{z + \bar z}{2} = (2 + 3i + (2 - 3i))/2 = 2\)</span>, <span class="math inline">\(\frac{z - \bar z}{2} = ((2 + 3i - (2 - 3i))/2 = 3i\)</span>, <span class="math inline">\(-z = -2 - 3i\)</span>, <span class="math inline">\(iz = 2i + 3i^2 = -3 + 2i\)</span>.</p>
 <p><strong>Exercice </strong> Any complex number can be represented in <strong>polar form</strong>: <span class="math inline">\(z = r ( \cos(\theta) + i \sin(\theta) )\)</span>.</p>
 <ul>
 <li><p>Show that <span class="math inline">\(|z| = r\)</span></p></li>
 <li><p>Show that <span class="math inline">\(z = r e^{i \theta}\)</span></p></li>
 <li><p>Conclude that for any complex number <span class="math inline">\(z\)</span>, <span class="math inline">\(|z| = 1\)</span> if and only if <span class="math inline">\(z\)</span> can be expressed as <span class="math inline">\(z = e^{i \theta}\)</span> for a real <span class="math inline">\(\theta\)</span>.</p></li>
 </ul>
-<p><strong>Correction</strong> The modulus of <span class="math inline">\(z\)</span> is <span class="math inline">\(|z| = \sqrt{r^2 \cos^2 (\theta) + r^2 \sin^2 (\theta)} = \sqrt{r^2} = r.\)</span> From Euler’s formula, we have <span class="math inline">\(\cos(\theta) + i\sin(\theta) = e^{i\theta}\)</span>, so <span class="math inline">\(z = re^{i\theta}.\)</span> Therefore, for any complex number <span class="math inline">\(z = r e^{i\theta}\)</span>, <span class="math inline">\(|z| = 1\)</span> if and only if <span class="math inline">\(r = 1\)</span>.</p>
 <p><strong>Exercice </strong> Using Euler’s formula, show that <span class="math inline">\(\cos(a)\cos(b) - \sin(a)\sin(b) = \cos(a+b)\)</span>. <em>(Use the property that <span class="math inline">\(e^{ia + ib} = e^{ia} e^{ib}\)</span> and apply Euler’s Formula)</em>.</p>
-<p><strong>Correction</strong> All trigonometric identities can be obtained by applying Euler’s formula. Here we start from <span class="math inline">\(e^{ia + ib} = \cos(a+b) + i \sin(a+b)\)</span>. We only want the real part, <span class="math display">\[\begin{aligned}
-  \cos(a + b)  &amp; = &amp;&amp; \frac{e^{ia + ib} + e^{-ia - ib}}{2} \\
-               &amp; = &amp;&amp; \frac{e^{ia} e^{ib} + e^{-ia} e^{-ib}}{2} \\
-               &amp; = &amp;&amp; \frac{(\cos(a) + i \sin(a))(\cos(b)+ i \sin(b)) + (\cos(a) - i \sin(a))(\cos(b) - i \sin(b))}{2} \\
-               &amp; = &amp;&amp; \frac{\cos(a)\cos(b) + i^2 \sin(a)\sin(b) + i \cos(a)\sin(b) + i \cos(b)\sin(a)}{2} \\ 
-               &amp;   &amp;&amp;  + \frac{\cos(a)\cos(b) + i^2 \sin(a)\sin(b) - i \cos(a)\sin(b) - i \cos(b)\sin(a)}{2} \end{aligned}\]</span> The mixed cosine-sine terms cancel each other while the other ones add up, resuling in <span class="math display">\[\begin{aligned}
- \cos(a + b) = \cos(a)\cos(b) - \sin(a)\sin(b).\end{aligned}\]</span></p>
 <p><strong>Exercice </strong> Show Euler’s identity: <span class="math inline">\(e^{i \pi} = -1\)</span>.</p>
-<p><strong>Correction</strong> This is a direct application of Euler’s formula: <span class="math inline">\(e^{i \pi} = \cos(\pi) + i \sin(\pi) = -1.\)</span></p>
 <p><strong>Exercice </strong> What are the roots of the equation <span class="math inline">\(z^6 = 1\)</span>?</p>
-<p><strong>Correction</strong> The roots must satisfy <span class="math inline">\(e^{i 6 \theta} = 1\)</span>. This means that <span class="math inline">\(\theta = \frac{2}{6} k \pi\)</span>, for <span class="math inline">\(k = 0, 1, ..., 5\)</span>. There are six distinct roots.</p>
 <p><strong>Exercice </strong> For a complex <span class="math inline">\(z\)</span>, find necessary and sufficient conditions for <span class="math inline">\(e^{z t}\)</span>, <span class="math inline">\(t &gt; 0\)</span>, to converge to 0.</p>
-<p><strong>Correction</strong> The exponential converges to zero if and only if <span class="math inline">\(\Re(z) &lt; 0\)</span>. A complex number is close to zero if and only if its modulus is close to zero. Therefore, to show that a quantity converges to zero, it is necessary and sufficient to show that its modulus converges to zero. If <span class="math inline">\(z = a + ib\)</span>, the exponential <span class="math inline">\(e^{z t} = e^{(a + ib)t} = e^{at} e^{ibt}.\)</span> The modulus <span class="math inline">\(|e^{ibt}| = 1\)</span>, so <span class="math inline">\(|e^{zt}| = e^{at}\)</span> (no need for absolute values, the exponential of a real number is always positive). The condition for convergence to zero is therefore a condition on the real part of <span class="math inline">\(z\)</span>: <span class="math inline">\(e^{at} \to 0\)</span> when <span class="math inline">\(t \to \infty\)</span> if and only if <span class="math inline">\(a &lt; 0\)</span>.</p>
 <p><strong>Exercice </strong> Let the complex number <span class="math inline">\(z = a + ib\)</span> with real <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. Compute <span class="math inline">\(\sqrt{z}\)</span> (that is, express <span class="math inline">\(s = \sqrt{z}\)</span> as <span class="math inline">\(s = \alpha + i \beta\)</span>, with real <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>)</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_22.pdf.png" alt="image" /></p>
 </div>
-<p><strong>Correction</strong> The square root of a complex number always exists. Express <span class="math inline">\(z\)</span> in polar form <span class="math inline">\(z = re^{i\theta}\)</span>, <span class="math inline">\(r \geq 0, \theta \in [0, 2\pi]\)</span>. The square root <span class="math inline">\(\sqrt{z} = \sqrt{r}\sqrt{e^{i\theta}} = \sqrt{r} e^{\frac 12 i \theta}\)</span>. Using Euler’s formula, <span class="math inline">\(\sqrt{z} = \sqrt{r} \cos(\theta/2) + i \sqrt{r} \sqrt{\theta/2}\)</span>. That is, the square root is obtained by taking the square root of the modulus <span class="math inline">\(r\)</span>, and dividing the angle (the <strong>argument</strong>) by 2. There is a problem with this solution, because <span class="math inline">\(z\)</span> can also be represented by <span class="math inline">\(re^{i\theta + 2\pi}\)</span>, giving <span class="math inline">\(\sqrt{z} = \sqrt{r} e^{\frac 12 i\theta + \pi}\)</span>, which is equivalent to dividing the angle by two in the other direction. We define the <strong>principal square root</strong> as the solution that makes the smallest change in angle: <span class="math inline">\(\sqrt{z} = \sqrt{r} e^{\frac 12 i\theta}\)</span> if <span class="math inline">\(\theta \in [0,\pi]\)</span>, and <span class="math inline">\(\sqrt{z} = \sqrt{r} e^{\frac 12 i\theta + \pi}\)</span> if <span class="math inline">\(\theta \in (\pi,2\pi]\)</span> To express the solution in terms of the original form of <span class="math inline">\(z = a + i b\)</span>, we express the square root <span class="math inline">\(s = \alpha + i \beta\)</span>. Then <span class="math inline">\(s^2 = \alpha^2 - \beta^2 + 2i \alpha \beta = z = a + ib.\)</span> By identifying the real and imaginary parts, we get two equations: <span class="math inline">\(\alpha^2 - \beta^2 = a\)</span> and <span class="math inline">\(2 i \alpha \beta = b.\)</span> Denoting the modulus of <span class="math inline">\(z\)</span> by <span class="math inline">\(r = \sqrt{a^2 + b^2}\)</span>, we can obtain the solutions <span class="math display">\[\alpha = \frac{1}{\sqrt{2}}\sqrt{a + r}, \quad \beta = \mathrm{sign}(b) \frac{1}{\sqrt{2}} \sqrt{-a + r}.\]</span></p>
 <h1 id="matrices-in-dimension-2">Matrices in dimension 2</h1>
 <h2 id="eigenvalues-of-a-2-times-2-matrix">Eigenvalues of a <span class="math inline">\(2 \times 2\)</span> matrix</h2>
 <p>A <span class="math inline">\(2 \times 2\)</span> matrix <span class="math inline">\(A\)</span> is an array with 2 rows and 2 columns: <span class="math display">\[A = \begin{pmatrix}
@@ -532,17 +519,6 @@ A(BC)  &amp; = (AB)C. \end{aligned}\]</span> Matrices and vectors can be multipl
 \begin{pmatrix}
 x_1 \\ x_2
 \end{pmatrix}.\]</span> What is the transformation given by this matrix.</p>
-<p><strong>Correction</strong> <span class="math display">\[\begin{pmatrix}
-0 &amp; -1 \\
-1 &amp;  0 
-\end{pmatrix}
-\begin{pmatrix}
-x_1 \\ x_2
-\end{pmatrix}
-= 
-\begin{pmatrix}
--x_2 \\ x_1
-\end{pmatrix}.\]</span> The transformation is a 90 degree counterclockwise rotation.</p>
 <p><strong>Exercice </strong> Compute the matrix-matrix product <span class="math display">\[\begin{pmatrix}
 0 &amp; -1 \\
 1 &amp;  0 
@@ -551,18 +527,6 @@ x_1 \\ x_2
 1 &amp;  0 \\
 0 &amp; -1 
 \end{pmatrix}.\]</span> Can you tell what transformation this is?</p>
-<p><strong>Correction</strong> <span class="math display">\[\begin{pmatrix}
-0 &amp; -1 \\
-1 &amp;  0 
-\end{pmatrix}
-\begin{pmatrix}
-1 &amp;  0 \\
-0 &amp; -1 
-\end{pmatrix} = 
-\begin{pmatrix}
-0 &amp;  1 \\
-1 &amp;  0 
-\end{pmatrix}.\]</span> This matrix exchanges the coordinates of a vector, this is a reflection through the axis <span class="math inline">\(x = y\)</span>.</p>
 <p><strong>Exercice </strong> Now compute the product of the same matrices, but in the inverse order <span class="math display">\[\begin{pmatrix}
 1 &amp;  0 \\
 0 &amp; -1 
@@ -571,57 +535,16 @@ x_1 \\ x_2
 0 &amp; -1 \\
 1 &amp;  0 
 \end{pmatrix}.\]</span> Compare with the solution found in the previous exercise. What is this transformation?</p>
-<p><strong>Correction</strong> <span class="math display">\[\begin{pmatrix}
-1 &amp;  0 \\
-0 &amp; -1 
-\end{pmatrix}
-\begin{pmatrix}
-0 &amp; -1 \\
-1 &amp;  0 
-\end{pmatrix} =
-\begin{pmatrix}
-0 &amp; -1 \\
--1 &amp; 0 
-\end{pmatrix}.\]</span> The pruduct is not the same, the matrices do not commute. The transformation is now a reflection through <span class="math inline">\(y = -x\)</span>.</p>
 <p><strong>Exercice </strong> Find the matrix that takes a vector <span class="math inline">\(x = (x_1,x_2)^t\)</span> and returns <span class="math inline">\((a x_1, b x_2)^t\)</span>.</p>
-<p><strong>Correction</strong> The matrix is <span class="math display">\[\begin{pmatrix}
-a &amp;  0 \\
-0  &amp; b 
-\end{pmatrix}.\]</span></p>
 <p><strong>Exercice </strong> Find the matrix that takes a vector <span class="math inline">\(x = (x_1,x_2)^t\)</span> and returns <span class="math inline">\((x_2, x_1)^t\)</span>.</p>
-<p><strong>Correction</strong> The matrix is <span class="math display">\[\begin{pmatrix}
-  0  &amp; 1 \\
-  1  &amp; 0
-\end{pmatrix}.\]</span></p>
 <p><strong>Exercice </strong> Find the matrix that takes a vector <span class="math inline">\(x = (x_1,x_2)^t\)</span> and returns <span class="math inline">\((x_2, 0)^t\)</span>.</p>
-<p><strong>Correction</strong> The matrix is <span class="math display">\[\begin{pmatrix}
-  0  &amp; 1 \\
-  0  &amp; 0
-\end{pmatrix}.\]</span></p>
 <p><strong>Exercice </strong> Compute the successive powers <span class="math inline">\(A, A^2, A^3, ...\)</span>, for a diagonal matrix <span class="math inline">\(A\)</span>: <span class="math display">\[A =\begin{pmatrix}
 a &amp;  0 \\
 0 &amp;  b 
 \end{pmatrix}\]</span></p>
-<p><strong>Correction</strong> The power of a diagonal matrix is a diagonal matrix <span class="math display">\[A^k = 
-\begin{pmatrix}
-  a^k  &amp; 0 \\
-  0  &amp; b^k
-\end{pmatrix}.\]</span></p>
 <p><strong>Exercice </strong> Compute the scalar product <span class="math inline">\(x^*y\)</span> between <span class="math inline">\(x = (1 + 2i, 1 - i)^t\)</span> and <span class="math inline">\(y = (0.5 - i, -0.5)^t\)</span>.</p>
-<p><strong>Correction</strong> The scalar product is <span class="math display">\[\begin{aligned}
-  x^*y &amp; = (1 - 2i, 1 + i) (0.5 - i, -0.5)^t \\ 
-       &amp; = (1 - 2i)(0.5 - i) + (1 + i)(-0.5) \\
-       &amp; = 0.5 + 2i^2 - 2(0.5)i - i -0.5 - 0.5i \\
-       &amp; = (0.5 - 0.5 + 2i^2) + (-2(0.5) - 1 - 0.5)i \\
-       &amp; = -2 - 2.5i.\end{aligned}\]</span></p>
 <p><strong>Exercice </strong> Now compute the scalar product <span class="math inline">\(y^*x\)</span> and compare with the result with the previous exercise.</p>
-<p><strong>Correction</strong> The scalar product is <span class="math display">\[\begin{aligned}
-  y^*x &amp; = (0.5 + i, -0.5) (1 + 2i, 1 - i)^t \\ 
-       &amp; = (0.5 + i)(1 + 2i) + (-0.5)(1 - i) \\
-       &amp; = 0.5 + 2i^2 + i + 2(0.5)i - 0.5 + 0.5i \\
-       &amp; = -2 + 2.5i\end{aligned}\]</span> This is the conjugate: <span class="math inline">\(x^*y = (y^*x)^*.\)</span></p>
 <p><strong>Exercice </strong> Compute the scalar product between <span class="math inline">\(z = (z_1, z_2)^t\)</span> and itself, if <span class="math inline">\(z\)</span> is a complex-valued vector. What can you say about the result?</p>
-<p><strong>Correction</strong> The scalar product <span class="math inline">\(z^*z = (\bar z_1, \bar z_2) (z_1, z_2)^t = \bar z_1 z_1 + \bar z_2 z_2 = |z_1|^2 + |z_2|^2.\)</span> The scalar product is the square of the norm of the vector <span class="math inline">\(z\)</span>.</p>
 <hr />
 <p><strong>Tips on eigenvalues</strong> Some matrices have special shapes that make it easier to compute the determinant, and the eigenvalues. These are called eigenvalue-revealing shapes.</p>
 <ul>
@@ -847,49 +770,6 @@ x_2  \\
 -1  &amp;   2 \\
  2  &amp;  -1 
 \end{pmatrix}\]</span> To compute <span class="math inline">\(X^{-1}\)</span>, you can use the fact that because <span class="math inline">\(A\)</span> is real and symmetrical, the eigenvectors are orthogonal, meaning that <span class="math inline">\(X^{-1} = X^t\)</span>, if the eignevectors are normalized.</p>
-<p><strong>Correction</strong> We have <span class="math inline">\(\det A = (-1)(-1) - (2)(2) = 1 - 4 = -3 &lt; 0,\)</span> <span class="math inline">\(\mathrm{tr}\,A = -1 -1 = -2,\)</span> and <span class="math inline">\(\Delta = (-2)^2 - 4 (-3) = 4 + 12 = 16.\)</span> The eigenvalues are <span class="math display">\[\lambda_{1,2} = \frac 12 \bigl( -2 \pm \sqrt{16} \bigr) = -1 \pm 2 = 1, -3.\]</span> The two eigenvalues are distinct, so the matrix <span class="math inline">\(A\)</span> is diagonalisable. The eigenvector associated with the eigenvalue <span class="math inline">\(\lambda_1 = 1\)</span> is solution to the eigenproblem <span class="math inline">\(\bigl( A - \lambda_1 I ) x = 0.\)</span> We look for a solution <span class="math display">\[\begin{aligned}
-\begin{pmatrix}
-  -1 - (1) &amp;  2 \\
-  2  &amp;  -1 - (1)
-\end{pmatrix}
-\begin{pmatrix}
- x_1 \\
- x_2
-\end{pmatrix}
- &amp; = 0, \\
-\begin{pmatrix}
-  -2 &amp;  2 \\
-  2  &amp; -2
-\end{pmatrix}
-\begin{pmatrix}
- x_1 \\
- x_2
-\end{pmatrix}
- &amp; = 0.\end{aligned}\]</span> (We check that the two rows are colinear.) The first row gives <span class="math inline">\(-2x_1 + 2x_2 = 0\)</span>, or <span class="math inline">\(x_1 = x_2\)</span>. The norm of the eigenvector <span class="math inline">\(x = (x_1, x_2)^t = \sqrt{x_1^2 + x_2^2} = \sqrt{2}|x_1|.\)</span> We choose<span class="math inline">\(x_1 = 1/\sqrt{2}\)</span> to have a normalized eigenvector. We know that the second eigenvector is orthogonal to <span class="math inline">\(x\)</span>, so we can take <span class="math inline">\(y = (1/\sqrt{2},-1/\sqrt{2})^t\)</span> for the eigenvector associated to <span class="math inline">\(\lambda_2 = -3\)</span>. To check that this is indeed an eigenvector, we solve to eigenproblem <span class="math display">\[\begin{aligned}
-\begin{pmatrix}
-  -1 - (-3) &amp;  2 \\
-  2  &amp;  -1 - (-3)
-\end{pmatrix}
-\begin{pmatrix}
- y_1 \\
- y_2
-\end{pmatrix}
- &amp; = 0, \\
-\begin{pmatrix}
-  2 &amp;  2 \\
-  2  &amp; 2
-\end{pmatrix}
-\begin{pmatrix}
- y_1 \\
- y_2
-\end{pmatrix}
- &amp; = 0.\end{aligned}\]</span> The solutions are vectors that satisfy <span class="math inline">\(y_1 = - y_2\)</span>; this is the case for <span class="math inline">\(y\)</span>. The matrix <span class="math inline">\(X\)</span> is composed of the column vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>: <span class="math inline">\(X = \bigl( x | y \bigr)\)</span> and its inverse is <span class="math display">\[X^{-1} = X^t = \begin{pmatrix} x_1^t \\ \hline x_2^t \end{pmatrix}
-  = 
-  \frac{1}{\sqrt{2}}
-  \begin{pmatrix} 
-    1 &amp;  1 \\ 
-    1 &amp; -1    
-  \end{pmatrix}.\]</span></p>
 <h1 id="linearisation-of-functions-mathbbr2-to-mathbbr2">Linearisation of functions <span class="math inline">\(\mathbb{R}^2 \to \mathbb{R}^2\)</span></h1>
 <p>Nonlinear systems of ordinary differential equations are used to describe the <strong>dynamics</strong> (evolution in time) of concentration of biochemical species, population densities in ecological systems, of the electrophyiology of neurons.</p>
 <p>Two dimensional systems are described by two ordinary differential equations (ODEs) <span class="math display">\[\begin{aligned}
@@ -929,63 +809,6 @@ x_2  \\
 \end{pmatrix}.\end{aligned}\]</span></p>
 <h2 id="exercises-on-linearisation">Exercises on linearisation </h2>
 <p><strong>Exercice </strong> Let the function <span class="math inline">\(\boldsymbol{f} = (f_1, f_2)^t\)</span>, with <span class="math display">\[f_1(x,y) = -d x + x \exp(-a xy), \quad f_2(x,y) = x - y,\]</span> <span class="math inline">\(d &lt; 1\)</span>, <span class="math inline">\(a, d\)</span> positive. Find the steady states (by solving the equations <span class="math inline">\(f_1 = 0, f_2 = 0\)</span>). Compute the Jacobian matrix, and evaluate the Jacobian matrix at each steady state.</p>
-<p><strong>Correction</strong> The steady states are found by solving <span class="math display">\[\begin{aligned}
-  f_1(x,y) = -d x + x \exp(-a xy) &amp; = 0, \\
-  f_2(x,y) = x - y &amp; = 0.\end{aligned}\]</span> From the second equation, we have <span class="math inline">\(x = y\)</span>. The first equation is equivalent to <span class="math inline">\(d x = x \exp( - a xy).\)</span> We need to distinguish two cases: (i) <span class="math inline">\(x = 0\)</span>, and (ii) <span class="math inline">\(x \neq 0\)</span>. Case (i) leads to the solution <span class="math inline">\(\boldsymbol{x}^* = (0, 0)^t\)</span>, our first steady state. Case (ii) means that we can simplify <span class="math inline">\(x\)</span> in the first equation: <span class="math inline">\(d = \exp(- a xy).\)</span> Replacing <span class="math inline">\(y = x\)</span>, and solving for <span class="math inline">\(x\)</span>: <span class="math display">\[\begin{aligned}
-  d &amp; = \exp(-a x y), \\
-  d &amp; = \exp(-a x^2), \\
-  \ln d &amp; = - a x^2, \\
-  - \frac{\ln d}{a} &amp; = x^2, \quad (a &gt; 0) \end{aligned}\]</span> The hypothesis <span class="math inline">\(d&lt;1\)</span> ensures that <span class="math inline">\(\ln d &lt; 0\)</span> and <span class="math inline">\(- \ln d &gt; 0\)</span>. There are therefore two real solutions for <span class="math inline">\(x\)</span>: <span class="math display">\[x = \pm \sqrt{- \frac{\ln d}{a}}.\]</span> The two additional steady states are <span class="math display">\[\bar{\boldsymbol{x}}_{1,2} =  
-\begin{pmatrix}
-  \pm \sqrt{- \frac{\ln d}{a}} \\  \pm \sqrt{- \frac{\ln d}{a}}
-\end{pmatrix}.\]</span></p>
-<p>The Jacobian matrix of <span class="math inline">\(\boldsymbol{f}\)</span> is computed from the partial derivatives <span class="math display">\[\begin{aligned}
-  \frac{\partial f_1}{\partial x} (x,y) &amp; = -d + (-a y) \exp ( - axy ), \\
-  \frac{\partial f_1}{\partial y} (x,y) &amp; = (-ax) \exp ( -axy ), \\
-  \frac{\partial f_2}{\partial x} (x,y) &amp; = 1,     \\
-  \frac{\partial f_2}{\partial y} (x,y) &amp; = -1.    \\
-  \boldsymbol{J} &amp; = 
-  \begin{pmatrix}
-    -d - a y \exp ( - axy ) &amp; -ax \exp ( -axy ) \\
-     1  &amp; -1
-  \end{pmatrix}.\end{aligned}\]</span> The function <span class="math inline">\(f_2\)</span> is linear. This is reflected in the Jacobian matrix, which as constant coefficients on the second row. The evaluation of the Jacobian matrix at steady state <span class="math inline">\(\boldsymbol{x}^* = (0,0)^t\)</span> is <span class="math display">\[\boldsymbol{J}(\boldsymbol{x}^*) = 
-  \begin{pmatrix}
-    -d  &amp;  0 \\
-     1  &amp; -1
-  \end{pmatrix}.\]</span> The evaluation of Jacobian matrix at steady state <span class="math inline">\(\bar{\boldsymbol{x}}_1 = \bigl( \sqrt{- \frac{\ln d}{a}}, \sqrt{- \frac{\ln d}{a}} \bigr)^t\)</span> is <span class="math display">\[\boldsymbol{J}(\bar{\boldsymbol{x}}_1) = 
-  \begin{pmatrix}
-    -d - a \bar y_1 \exp( -a \bar x_1 \bar y_1 ) &amp;  - a \bar x_1 \exp ( - a \bar x_1 \bar y_1 ) \\
-     1  &amp; -1
-  \end{pmatrix}.\]</span> Here, we use the fact that steady states satisfy the equation <span class="math inline">\(\exp( -a xy ) = d\)</span> to simplify the exponential terms <span class="math display">\[\boldsymbol{J}(\bar{\boldsymbol{x}}_1) = 
-  \begin{pmatrix}
-    -d - a \bar y_1 d &amp;  - a \bar x_1 d \\
-     1  &amp; -1
-  \end{pmatrix}.\]</span> Replacing <span class="math inline">\(y_1\)</span> and <span class="math inline">\(x_1\)</span> by <span class="math inline">\(\sqrt{- \frac{\ln d}{a}}\)</span>, we obtain <span class="math display">\[\begin{aligned}
-  \boldsymbol{J}(\bar{\boldsymbol{x}}_1) &amp; = 
-  \begin{pmatrix}
-    -d - a  y_1 d &amp;  - a \bar x_1 d \\
-     1  &amp; -1
-  \end{pmatrix}, \\
-  &amp; = 
-  \begin{pmatrix}
-    -d - a \sqrt{- \frac{\ln d}{a}} d &amp;  - a \sqrt{- \frac{\ln d}{a}} d \\
-     1  &amp; -1
-  \end{pmatrix}, \\
-  &amp; = 
-  \begin{pmatrix}
-    -d \Bigl( 1 + a \sqrt{- \frac{\ln d}{a}} \Bigr) &amp;  - d \sqrt{- a^2 \frac{\ln d}{a}}  \\
-     1  &amp; -1
-  \end{pmatrix}, \\
-  &amp; = 
-  \begin{pmatrix}
-    -d \Bigl( 1 + \sqrt{- a \ln d} \Bigr) &amp;  - d \sqrt{- a \ln d}  \\
-     1  &amp; -1
-  \end{pmatrix}.\end{aligned}\]</span> The same lines of calculations for the steady state <span class="math inline">\(\bar{\boldsymbol{x}}_2\)</span> leads to <span class="math display">\[\begin{aligned}
-  \boldsymbol{J}(\bar{\boldsymbol{x}}_2) &amp; = 
-  \begin{pmatrix}
-    -d \Bigl( 1 - \sqrt{- a \ln d} \Bigr) &amp;   d \sqrt{- a \ln d}  \\
-     1  &amp; -1
-  \end{pmatrix}.\end{aligned}\]</span></p>
 <p><strong>Exercice </strong> Compute the Jacobian matrices of each of the following functions of <span class="math inline">\((x,y)\)</span>. All parameters are constants. You do not need to compute the steady states just the matrices.</p>
 <ul>
 <li><p>van der Pol oscillator <span class="math display">\[f_1(x,y) = \mu\bigl( (1-x^2)y - x \bigr), \; f_2(x,y) = y.\]</span></p></li>
