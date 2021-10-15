@@ -156,7 +156,7 @@
 <h1 class="title">Elements of Maths for Biology</h1>
 <p class="author">Samuel Bernard<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p class="author">Laurent Pujo-Menjouet<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p class="date">V2021.10.05</p>
+<p class="date">V2021.10.15</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -171,7 +171,11 @@
 <li><a href="#list-of-common-derivatives">List of common derivatives</a></li>
 <li><a href="#exercises-on-derivatives">Exercises on derivatives</a></li>
 </ul></li>
-<li><a href="#integrals-and-primitives">Integrals and primitives</a></li>
+<li><a href="#integrals-and-primitives">Integrals and primitives</a>
+<ul>
+<li><a href="#primitives">Primitives</a></li>
+<li><a href="#integrals">Integrals</a></li>
+</ul></li>
 <li><a href="#complex-numbers">Complex numbers</a>
 <ul>
 <li><a href="#roots-of-a-complex-number">Roots of a complex number</a></li>
@@ -295,6 +299,12 @@
   \bigl( f(f^{-1}) \bigr)&#39;(x) &amp; = f&#39;(f^{-1}(x))(f^{-1})&#39;(x), \\
                               &amp; = 1, \\
             (f^{-1})&#39;(x)      &amp; = \frac{1}{f&#39;(f^{-1}(x))}.\end{aligned}\]</span> Take for instance <span class="math inline">\(f(x) = x^2\)</span> on <span class="math inline">\(x \in (0,1]\)</span>. The inverse is <span class="math inline">\(f^{-1}(x) = \sqrt{x}\)</span>. The derivative of <span class="math inline">\(f\)</span> is <span class="math inline">\(f(x) = 2x\)</span> and the derivative <span class="math display">\[f^{-1}(x) = \frac{1}{f&#39;(f^{-1}(x))} = \frac{1}{2(\sqrt{x})}.\]</span></p>
+<p><strong>Example </strong> Derivative when the independant variable is in the exponent. To compute the derivative of <span class="math inline">\(f: x \to 2^x\)</span>, we need to re-express the function in terms fo the natural base <span class="math inline">\(e\)</span>. To do that, we use to properties of the natural logarithm</p>
+<ul>
+<li><p>For any nonzero expression <span class="math inline">\(y\)</span>, <span class="math inline">\(y = e^{ \ln y }\)</span> (<span class="math inline">\(\ln\)</span> is the inverse of the exponential function).</p></li>
+<li><p><span class="math inline">\(\ln (a^b) = b \ln a.\)</span></p></li>
+</ul>
+<p>Then <span class="math inline">\(2^x = e^{ \ln (2^x) } = e^{ x \ln 2 }\)</span>. The derivative is <span class="math inline">\(\ln 2 e^{ x \ln 2 }\)</span>. Re-writing in term of base 2: <span class="math inline">\(\ln 2 2^x\)</span>.</p>
 <table>
 <thead>
 <tr class="header">
@@ -350,11 +360,16 @@
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\tan(x)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(1 + \tan^2(x) = \frac{1}{\cos^2(x)}\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(\dfrac{u(x)}{v(x)}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\dfrac{v(x)u&#39;(x) - u(x)v&#39;(x)}{v^2(x)}\)</span></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><span class="math inline">\(u(x) v(x)\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(u&#39;(x)v(x) + u(x)v&#39;(x)\)</span></td>
 <td style="text-align: left;"></td>
@@ -362,7 +377,77 @@
 </tbody>
 </table>
 <h2 id="exercises-on-derivatives">Exercises on derivatives</h2>
+<p><strong>Exercice </strong> Compute the derivatives of the following functions</p>
+<ul>
+<li><p><span class="math inline">\(f_1 : x \to \sqrt{\cos x}.\)</span></p></li>
+<li><p><span class="math inline">\(f_2 : x \to \sin(3x + 2).\)</span></p></li>
+<li><p><span class="math inline">\(f_3 : x \to e^{\cos x}.\)</span></p></li>
+<li><p><span class="math inline">\(f_4 : x \to \ln\bigl(\sqrt{x} \bigr).\)</span></p></li>
+<li><p><span class="math inline">\(f_5 : x \to 2^{\ln x}.\)</span></p></li>
+</ul>
+<p><strong>Correction</strong> <span class="math inline">\(f_1&#39;(x) = -\frac{\sin x}{2\sqrt{\cos x}}.\)</span> <span class="math inline">\(f_2&#39;(x) = 3 \cos(3x + 2).\)</span> <span class="math inline">\(f_3&#39;(x) = -\sin(x) e^{\cos x}.\)</span> <span class="math inline">\(f_4&#39;(x) = \frac{1}{2x}.\)</span> <span class="math inline">\(f_5&#39;(x) = \frac{\ln 2}{x} 2^{\ln x}.\)</span></p>
 <h1 id="integrals-and-primitives">Integrals and primitives</h1>
+<h2 id="primitives">Primitives</h2>
+<p>Let <span class="math inline">\(f:I \to \mathbb{R}\)</span>, (<span class="math inline">\(I \subset \mathbb{R}\)</span>). A <strong>primitive</strong> <span class="math inline">\(F\)</span> of <span class="math inline">\(f\)</span> on <span class="math inline">\(I\)</span> is a differentiable map such that <span class="math inline">\(F&#39;(x) = f(x)\)</span>, <span class="math inline">\(x \in I\)</span>.</p>
+<p><strong>Example </strong> If <span class="math inline">\(f(x) = x^2\)</span>, we look for <span class="math inline">\(F(x)\)</span> such that <span class="math inline">\(F&#39;(x) = x^2\)</span>. Take <span class="math inline">\(F(x) = x^3/3\)</span>, then <span class="math inline">\(F&#39;(x) = 3x^2/3 = x^2.\)</span> It also work for <span class="math inline">\(F(x) = x^3/3 + C\)</span>, for any constant <span class="math inline">\(C \in \mathbb{R}\)</span>.</p>
+<p>We denote the primitive as <span class="math inline">\(F(x) = \int f(x) dx\)</span>. Primitives are unique up to a constant: if <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> are primitives of <span class="math inline">\(f\)</span>, then <span class="math inline">\(F_1&#39;(x) = f(x)\)</span> and <span class="math inline">\(F_2&#39;(x) = f(x)\)</span>, which implies that <span class="math inline">\(F_1&#39;(x) - F_2&#39;(x) = 0\)</span>. Therefore the difference between <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span>, <span class="math inline">\(G : x \to F_1(x) - F_2(x)\)</span> has a zero derivative: <span class="math inline">\(G&#39;(x) = F_1&#39;(x) - F_2&#39;(x) = 0\)</span>. This means that <span class="math inline">\(G\)</span> is a constant.</p>
+<p>If <span class="math inline">\(F\)</span> is a primitive of <span class="math inline">\(f\)</span> and <span class="math inline">\(G\)</span> a primitive of <span class="math inline">\(g\)</span>, then <span class="math inline">\(F+G\)</span> is a primitive of <span class="math inline">\(f+g\)</span>.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Primitive</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(C\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(C \in \mathbb{R}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(a\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(ax + C\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(a \in \mathbb{R}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x^a\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\frac{x^{a+1}}{a+1}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(a \neq -1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x^{-1} = \frac{1}{x}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\ln |x| + C\)</span></td>
+<td style="text-align: left;">(<span class="math inline">\(a = -1\)</span>), <span class="math inline">\(x \neq 0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(e^x\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(e^x + C\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\cos(x)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\sin(x) + C\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\sin(x)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(-\cos(x) + C\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f&#39;(g(x))g&#39;(x)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(f(g(x)) + C\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exercice </strong> Compute <span class="math display">\[\begin{aligned}
+  \int { \frac{1}{\sqrt{3x + 5}} } dx\end{aligned}\]</span></p>
+<h2 id="integrals">Integrals</h2>
+<p>Let <span class="math inline">\(f:[a,b] \to \mathbb{R}\)</span>, and <span class="math inline">\(F\)</span> a primitive of <span class="math inline">\(f\)</span> on <span class="math inline">\([a,b]\)</span>. Then the <strong>definite integral</strong> is the value <span class="math inline">\(F(b) - F(a)\)</span>, and is denoted <span class="math display">\[\begin{aligned}
+  \int_a^b { f(x) dx } = \bigl[ F(x) \bigr]_a^b . \end{aligned}\]</span></p>
 <h1 id="complex-numbers">Complex numbers</h1>
 <p>A complex number is a number that can be expressed in the form <span class="math inline">\(a + i b\)</span>, where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are real numbers, and the symbol <span class="math inline">\(i\)</span> is called <strong>imaginary unit</strong>. The imaginary unit satisfies the equation <span class="math inline">\(i^2 = -1\)</span>. Because no real number satisfies this equation, this number is called <em>imaginary</em>.</p>
 <p>For the complex number <span class="math inline">\(z = a + i b\)</span>, <span class="math inline">\(a\)</span> is called the <strong>real part</strong> and <span class="math inline">\(b\)</span> is called the <strong>imaginary part</strong>. The real part of <span class="math inline">\(z\)</span> is denoted <span class="math inline">\(\Re(z)\)</span> (<code>\Re</code> in LaTeX) or just <span class="math inline">\(\mathrm{Re}(z).\)</span> The imaginary part of <span class="math inline">\(z\)</span> denoted <span class="math inline">\(\Im(z)\)</span> (<code>\Im</code> in LaTex) or just <span class="math inline">\(\mathrm{Im}(z)\)</span>. The set of all complex numbers is denoted <span class="math inline">\(\mathbb{C}\)</span> (<code>\mathbb{C}</code> in LaTeX).</p>
