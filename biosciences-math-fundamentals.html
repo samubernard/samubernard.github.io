@@ -156,14 +156,14 @@
 <h1 class="title">Elements of Maths for Biology</h1>
 <p class="author">Samuel Bernard<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p class="author">Laurent Pujo-Menjouet<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p class="date">V2021.11.15</p>
+<p class="date">V2022.05.24</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#readme">README</a></li>
 <li><a href="#fonctions-maps">Fonctions, maps</a>
 <ul>
-<li><a href="#usual-maps">Usual maps</a></li>
+<li><a href="#some-usual-maps">Some usual maps</a></li>
 <li><a href="#exercises-on-functions">Exercises on functions</a></li>
 </ul></li>
 <li><a href="#derivatives">Derivatives</a>
@@ -173,7 +173,7 @@
 </ul></li>
 <li><a href="#taylor-series-and-truncated-expansions">Taylor series and truncated expansions</a>
 <ul>
-<li><a href="#expansion-in-two-variables">Expansion in two variables</a></li>
+<li><a href="#expansion-of-a-function-of-two-variables">Expansion of a function of two variables</a></li>
 <li><a href="#expansion-of-a-function-from-mathbbr2-to-mathbbr2">Expansion of a function from <span class="math inline">\(\mathbb{R}^2 \to \mathbb{R}^2\)</span></a></li>
 </ul></li>
 <li><a href="#integrals-and-primitives">Integrals and primitives</a>
@@ -215,42 +215,42 @@
 </ul>
 </nav>
 <h1 id="readme">README</h1>
-<p>This document is intended to serve both for training and for future reference. As a reference document, you may find it useful for the first biomaths class (3BS, Fall semester) and for linear algebra (3BIM, Winter Semester).</p>
-<p>When important concepts are encoutered for the first time, they highlighted in <strong>bold</strong> next to their definition. Exercises are important, they can introduce theory or techniques that will be prove useful. We tried to make the examples as complete as possible. This means that they are long, you could probably solve them faster.</p>
+<p>This document is intended for training and future reference. As a reference document, you may find it useful for Biomaths 1 (3BS, Fall semester), for linear algebra (3BIM Biomaths 2, Winter Semester) and for Advanced ODEs (3BIM Biomaths 3, Winter Semester).</p>
+<p>When important concepts are encoutered for the first time, they are highlighted in <strong>bold</strong> next to their definition. We tried to provides examples that are as complete as possible. This means that they are long, you could probably solve them faster. Exercises are important, they can introduce theory or techniques that will be prove useful. Solutions to the exercises can be found at the end of the documents. Examples and exercises (and their solutions!) will be added regularly, so feel free download the most recent version (<a href="https://moodle.insa-lyon.fr/pluginfile.php/306298/mod_resource/content/3/insa-biosciences-remise-a-niveau-math.pdf">here</a>). This is version V2022.05.24.</p>
 <h1 id="fonctions-maps">Fonctions, maps</h1>
-<p>A <strong>function</strong> is a relation, denoted in general <span class="math inline">\(f\)</span>, that associate an element <span class="math inline">\(x\)</span> belonging to a <strong>domain</strong> <span class="math inline">\(I\)</span>, and at most an element <span class="math inline">\(y\)</span> of the <strong>image</strong> <span class="math inline">\(J\)</span>. The domain <span class="math inline">\(I\)</span> and <span class="math inline">\(J\)</span> are sets, usually <span class="math inline">\(I, J \in \mathbb{R}\)</span>.</p>
+<p>A <strong>function</strong> is a relation, often denoted <span class="math inline">\(f\)</span>, that associates an element <span class="math inline">\(x\)</span> of a <strong>domain</strong> <span class="math inline">\(I\)</span>, and at most one element <span class="math inline">\(y\)</span> of the <strong>image</strong> <span class="math inline">\(J\)</span>. The domain <span class="math inline">\(I\)</span> and image <span class="math inline">\(J\)</span> are sets. Usually <span class="math inline">\(I, J \in \mathbb{R}\)</span>.</p>
 <figure>
 <img src="htmltmp/tikzblocks_0.pdf.png" id="f_functions" alt="Functions. (A) Function f. (B) Not a function. " /><figcaption aria-hidden="true">Functions. (A) Function <span class="math inline">\(f\)</span>. (B) Not a function. </figcaption>
 </figure>
-<p>A <strong>map</strong> is a relation that associate <em>each</em> element of its domain to exactly one element of its image. Maps and functions are related but slightly different concepts. A function <span class="math inline">\(f\)</span> is a map if it is defined for all elements of of its domain <span class="math inline">\(I\)</span>. A map is always a function, but the term can also be used when the domain or the image are not numbers (Figure <a href="#f_functions" data-reference-type="ref" data-reference="f_functions">1</a>).</p>
-<p>The <strong>graph</strong> of a function <span class="math inline">\(f\)</span>, denoted <span class="math inline">\(\mathcal{G}(f)\)</span> is the set of all pairs <span class="math inline">\((x, f(x))\)</span> in the <span class="math inline">\(I \times J\)</span> plane. For real-valued functions, the graph is represented in the Cartesian plane.</p>
+<p>A <strong>map</strong> is a relation that associate <em>each</em> element of its domain to exactly one element of its image. Maps and functions are related but slightly different concepts. A function <span class="math inline">\(f\)</span> is a map if it is defined for all elements of its domain <span class="math inline">\(I\)</span>. A map is always a function. The term <em>map</em> can also be used when the domain or the image are not numbers (Figure <a href="#f_functions" data-reference-type="ref" data-reference="f_functions">1</a>).</p>
+<p>The <strong>graph</strong> of a function <span class="math inline">\(f\)</span>, denoted <span class="math inline">\(\mathcal{G}(f)\)</span> is the set of all pairs <span class="math inline">\((x, f(x))\)</span> in the <span class="math inline">\(I \times J\)</span> plane. For real-valued functions, the graph is represented as a curve in the Cartesian plane.</p>
 <p>Functions are not numbers. Do not confuse</p>
 <ul>
 <li><p><span class="math inline">\(f\)</span> the function</p></li>
 <li><p><span class="math inline">\(f(x)\)</span> the evaluation of <span class="math inline">\(f\)</span> at element <span class="math inline">\(x\)</span>; <span class="math inline">\(f(x)\)</span> is an element of the image (usually a number)</p></li>
-<li><p><span class="math inline">\(\mathcal{G}(f)\)</span> the graph of <span class="math inline">\(f\)</span>.</p></li>
+<li><p><span class="math inline">\(\mathcal{G}(f)\)</span> the graph of <span class="math inline">\(f\)</span></p></li>
 </ul>
-<p>Consequently, never write</p>
+<p>Consequently, do not write</p>
 <ul>
-<li><p><span class="math inline">\(f(x)\)</span> is increasing... but write <span class="math inline">\(f\)</span> is increasing...</p></li>
-<li><p><span class="math inline">\(f(x)\)</span> is decreasing... but write <span class="math inline">\(f\)</span> is decreasing...</p></li>
-<li><p><span class="math inline">\(f(x)\)</span> is continuous... but write <span class="math inline">\(f\)</span> continuous...</p></li>
+<li><p><span class="math inline">\(f(x)\)</span> is increasing... Instead write <span class="math inline">\(f\)</span> is increasing...</p></li>
+<li><p><span class="math inline">\(f(x)\)</span> is decreasing... Instead write <span class="math inline">\(f\)</span> is decreasing...</p></li>
+<li><p><span class="math inline">\(f(x)\)</span> is continuous... Instead write <span class="math inline">\(f\)</span> continuous...</p></li>
 </ul>
-<h2 id="usual-maps">Usual maps</h2>
+<h2 id="some-usual-maps">Some usual maps</h2>
 <ul>
-<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to k\)</span>, <span class="math inline">\(k \in \mathbb{R}\)</span> constant; <span class="math inline">\(x \to x\)</span>, identity map.</p>
+<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to k\)</span>, <span class="math inline">\(k \in \mathbb{R}\)</span> constant; <span class="math inline">\(x \to x\)</span>, <strong>identity map</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_1.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_2.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R}\backslash\{0\} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \frac 1x\)</span>, inverse.</p>
+<li><p><span class="math inline">\(f:\mathbb{R}\backslash\{0\} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \frac 1x\)</span>, <strong>inverse</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_3.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to x^2\)</span>, parabola; <span class="math inline">\(x \to x^3\)</span>, cubic map.</p>
+<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to x^2\)</span>, parabola; <span class="math inline">\(x \to x^3\)</span>, <strong>cubic map</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_4.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_5.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R}^+ \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \sqrt{x} = x^{\frac 12}\)</span>, square root; more generally with <span class="math inline">\(x \to x^{\frac pq} = {}^q\sqrt{x^p}\)</span>, fractional power.</p>
+<li><p><span class="math inline">\(f:\mathbb{R}^+ \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \sqrt{x} = x^{\frac 12}\)</span>, <strong>square root</strong>; more generally with <span class="math inline">\(x \to x^{\frac pq} = {}^q\sqrt{x^p}\)</span>, <strong>fractional power</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_6.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_7.pdf.png" alt="image" /></p>
 </div></li>
@@ -258,29 +258,30 @@
 <div class="center">
 <p><img src="htmltmp/tikzblocks_8.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \exp(x)\)</span>, exponential.</p>
+<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \exp(x)\)</span>, <strong>exponential</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_9.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R}^+\backslash\{0\} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \ln(x)\)</span>, natural logarithm.</p>
+<li><p><span class="math inline">\(f:\mathbb{R}^+\backslash\{0\} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \ln(x)\)</span>, <strong>natural logarithm</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_10.pdf.png" alt="image" /></p>
 </div>
 <p>On logarithms: For <span class="math inline">\(a, b &gt;0\)</span>, <span class="math inline">\(n\)</span> positive integer, <span class="math inline">\(\ln(ab) = \ln(a) + \ln(b)\)</span>, <span class="math inline">\(\ln(a^n) = n \ln(a)\)</span>, <span class="math inline">\(\ln(a/b) = \ln(a) - \ln(b)\)</span>.</p></li>
-<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \cos(x)\)</span>, cosine; <span class="math inline">\(x \to \sin(x)\)</span>, sine; <span class="math inline">\(x \to \tan(x)\)</span>, tangent.</p>
+<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \cos(x)\)</span>, <strong>cosine</strong>; <span class="math inline">\(x \to \sin(x)\)</span>, <strong>sine</strong> <span class="math inline">\(x \to \tan(x)\)</span>, <strong>tangent</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_11.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_12.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_13.pdf.png" alt="image" /></p>
 </div>
-<p>On trigonometric functions. In the diagram below is shown the relationship between sine, cosine and tangent, of a angle <span class="math inline">\(\theta\)</span>.</p>
+<p>A bit more on trigonometric functions. The diagram below showis the relationship between the sine, cosine and tangent, of an angle <span class="math inline">\(\theta \in [0,2\pi]\)</span>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_14.pdf.png" alt="image" /></p>
 </div></li>
-<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \cosh(x) = \frac 12 \bigl( e^{x} + e^{-x} \bigr)\)</span>, hyperbolic cosine; <span class="math inline">\(x \to \sinh(x) = \frac 12 \bigl( e^{x} - e^{-x} \bigr)\)</span>, hyperbolic sine; <span class="math inline">\(x \to \tanh(x) = \frac{\sinh(x)}{\cosh(x)}\)</span>, hyperbolic tangent.</p>
+<li><p><span class="math inline">\(f:\mathbb{R} \to \mathbb{R}\)</span>, with <span class="math inline">\(x \to \cosh(x) = \frac 12 \bigl( e^{x} + e^{-x} \bigr)\)</span>, <strong>hyperbolic cosine</strong>; <span class="math inline">\(x \to \sinh(x) = \frac 12 \bigl( e^{x} - e^{-x} \bigr)\)</span>, <strong>hyperbolic sine</strong>; <span class="math inline">\(x \to \tanh(x) = \frac{\sinh(x)}{\cosh(x)}\)</span>, <strong>hyperbolic tangent</strong>.</p>
 <div class="center">
 <p><img src="htmltmp/tikzblocks_15.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_16.pdf.png" alt="image" /> <img src="htmltmp/tikzblocks_17.pdf.png" alt="image" /></p>
 </div></li>
 </ul>
 <h2 id="exercises-on-functions">Exercises on functions</h2>
+<p>More to come...</p>
 <h1 id="derivatives">Derivatives</h1>
 <p>We call the <strong>derivative</strong> of the function <span class="math inline">\(f:I \to J\)</span> (<span class="math inline">\(I,J \subset \mathbb{R}),\)</span>, at point <span class="math inline">\(a \in I\)</span> the limit, if it exists, <span class="math display">\[\lim_{x \to a} \frac{f(x) - f(a)}{x - a}.\]</span> The derivative is denoted <span class="math inline">\(f&#39;(a)\)</span>. An alternative representation of the limit is obtained by setting <span class="math inline">\(h = x - a\)</span>, <span class="math display">\[f&#39;(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.\]</span> If the derivative exists for all elements <span class="math inline">\(a \in I\)</span>, we say that <strong>differentiable</strong> on <span class="math inline">\(I\)</span>.</p>
 <ul>
@@ -293,27 +294,29 @@
 <img src="htmltmp/tikzblocks_18.pdf.png" id="f_extrema" alt="Extrema, inflection points of the polynomial f(x) = (x+0.8)(x-0.5)(x-0.8). " /><figcaption aria-hidden="true">Extrema, inflection points of the polynomial <span class="math inline">\(f(x) = (x+0.8)(x-0.5)(x-0.8).\)</span> </figcaption>
 </figure>
 <h2 id="list-of-common-derivatives">List of common derivatives</h2>
-<p>The derivative is linear. If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are differentiable on <span class="math inline">\(I\)</span>, and <span class="math inline">\(a \in \mathbb{R}\)</span>,</p>
+<p>The derivative has linear properties. If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are differentiable on <span class="math inline">\(I\)</span>, and <span class="math inline">\(a \in \mathbb{R}\)</span>,</p>
 <ul>
 <li><p><span class="math inline">\((f + g)&#39; = f&#39; + g&#39;\)</span>.</p></li>
 <li><p><span class="math inline">\((af)&#39; = a (f&#39;)\)</span>.</p></li>
 <li><p><span class="math inline">\((af + g)&#39;  = a (f&#39;) + g&#39;\)</span>.</p></li>
 </ul>
-<p>The derivative follow the <strong>rule of composed functions</strong>. If <span class="math inline">\(g:I \to J\)</span> and <span class="math inline">\(f:J \to K\)</span>, then <span class="math inline">\(f \circ g\)</span> is function <span class="math inline">\(x \to f(g(x))\)</span>. If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are differentiable, the derivative <span class="math display">\[\bigl( f \circ g \bigr)&#39;(x) = f&#39;(g(x))g&#39;(x).\]</span></p>
-<p><strong>Example </strong> Let <span class="math inline">\(f:x \to x^2\)</span> and <span class="math inline">\(g:x \to 3x + 1\)</span>, two differentiable functions, with <span class="math inline">\(f&#39;(x) = 2x\)</span> and <span class="math inline">\(g&#39;(x) = 3\)</span>. The derivative of the composed function <span class="math inline">\(f \circ g\)</span> at <span class="math inline">\(x\)</span> is <span class="math display">\[f&#39;(g(x))g&#39;(x) = f&#39;(3x+1)g&#39;(x) = 2(3x+1) \cdot 3 = 6(3x+1) = 18x + 6.\]</span> The derivative could have been obtained by computing the composed function <span class="math inline">\(f(g(x)) = (3x+1)^2 =
-9 x^2 + 6x + 1\)</span>.</p>
-<p><strong>Example </strong> Compute the derivative of <span class="math inline">\(f: x \to \sin(1/x)\)</span>. The function <span class="math inline">\(f\)</span> is composed of a sine and an inverse function. To compute the derivative, we decomposed the function <span class="math inline">\(f\)</span> as <span class="math inline">\(f(x) = g(h(x))\)</span> with <span class="math inline">\(g(x) = \sin(x)\)</span> and <span class="math inline">\(h(x) = 1/x\)</span>. The derivatives <span class="math inline">\(g&#39;(x) = \cos(x)\)</span> and <span class="math inline">\(h&#39;(x) = -1/x^2\)</span>. <span class="math display">\[f&#39;(x) = g&#39;(h(x))h&#39;(x) = \cos(1/x) \Bigl( \frac{-1}{x^2} \Bigr) = - \frac{\cos(1/x)}{x^2}.\]</span></p>
-<p><strong>Example </strong> A function <span class="math inline">\(f\)</span> is bijective (invertible) if there exists a function, denoted <span class="math inline">\(f^{-1}\)</span>, such that <span class="math inline">\(f \circ f^{-1} = f^{-1} \circ f\)</span> is the identity map. If <span class="math inline">\(f\)</span> is differentiable and invertible, what is the derivative of <span class="math inline">\(f^{-1}\)</span>?</p>
+<p>Let <span class="math inline">\(g:I \to J\)</span> and <span class="math inline">\(f:J \to K\)</span> be two functions. The <strong>composition</strong> of <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, denoted <span class="math inline">\(f \circ g\)</span>, is the function <span class="math inline">\(x \to f(g(x))\)</span>, i.e. <span class="math inline">\(f \circ g (x) = f(g(x))\)</span>. If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are differentiable, the composition <span class="math inline">\(f \circ g\)</span> is also differentiable, and its derivative follows the <strong>rule of composed functions</strong>:</p>
+<p><span class="math display">\[\bigl( f \circ g \bigr)&#39;(x) = f&#39;(g(x))g&#39;(x).\]</span></p>
+<p><strong>Example </strong> Let <span class="math inline">\(f:x \to x^2\)</span> and <span class="math inline">\(g:x \to 3x + 1\)</span> be two differentiable functions, with <span class="math inline">\(f&#39;(x) = 2x\)</span> and <span class="math inline">\(g&#39;(x) = 3\)</span>. The derivative of the composed function <span class="math inline">\(f \circ g\)</span> at <span class="math inline">\(x\)</span> is <span class="math display">\[f&#39;(g(x))g&#39;(x) = f&#39;(3x+1)g&#39;(x) = 2(3x+1) \cdot 3 = 6(3x+1) = 18x + 6.\]</span> The derivative could have been obtained by first computing the composed function <span class="math inline">\(f(g(x)) = (3x+1)^2 =
+9 x^2 + 6x + 1\)</span>, and then taking teh derivative.</p>
+<p><strong>Example </strong> Compute the derivative of <span class="math inline">\(f: x \to \sin(1/x)\)</span>. The function <span class="math inline">\(f\)</span> is composed of a sine and an inverse function. To compute the derivative, we decomposed the function <span class="math inline">\(f\)</span> as <span class="math inline">\(f(x) = g(h(x))\)</span> with <span class="math inline">\(g(x) = \sin(x)\)</span> and <span class="math inline">\(h(x) = 1/x\)</span>. The derivatives are <span class="math inline">\(g&#39;(x) = \cos(x)\)</span> and <span class="math inline">\(h&#39;(x) = -1/x^2\)</span>. Finally the derivative of <span class="math inline">\(f\)</span> is</p>
+<p><span class="math display">\[f&#39;(x) = g&#39;(h(x))h&#39;(x) = \cos(1/x) \Bigl( \frac{-1}{x^2} \Bigr) = - \frac{\cos(1/x)}{x^2}.\]</span></p>
+<p><strong>Example </strong> A function <span class="math inline">\(f:I \to I\)</span> is bijective (<strong>invertible</strong>) on <span class="math inline">\(I\)</span> if there exists a function, denoted <span class="math inline">\(f^{-1}\)</span> and called <strong>inverse</strong> of <span class="math inline">\(f\)</span>, such that the compositions are equal <span class="math inline">\(f \circ f^{-1} = f^{-1} \circ f\)</span>, and are equal to the identity map. That is, <span class="math inline">\(f^{-1} \circ f (x) = f \circ f^{-1}(x) = x\)</span> for all <span class="math inline">\(x \in I\)</span>. If <span class="math inline">\(f\)</span> is differentiable and invertible, what is the derivative of <span class="math inline">\(f^{-1}\)</span>?</p>
 <p>We apply the derivative to <span class="math inline">\(f(f^{-1})\)</span>. Given that <span class="math inline">\(f(f^{-1}(x)) = x\)</span> by definition, we have <span class="math inline">\(\bigl( f(f^{-1}) \bigr)&#39; =  1,\)</span> and <span class="math display">\[\begin{aligned}
   \bigl( f(f^{-1}) \bigr)&#39;(x) &amp; = f&#39;(f^{-1}(x))(f^{-1})&#39;(x), \\
                               &amp; = 1, \\
-            (f^{-1})&#39;(x)      &amp; = \frac{1}{f&#39;(f^{-1}(x))}.\end{aligned}\]</span> Take for instance <span class="math inline">\(f(x) = x^2\)</span> on <span class="math inline">\(x \in (0,1]\)</span>. The inverse is <span class="math inline">\(f^{-1}(x) = \sqrt{x}\)</span>. The derivative of <span class="math inline">\(f\)</span> is <span class="math inline">\(f(x) = 2x\)</span> and the derivative <span class="math display">\[f^{-1}(x) = \frac{1}{f&#39;(f^{-1}(x))} = \frac{1}{2(\sqrt{x})}.\]</span></p>
-<p><strong>Example </strong> Derivative when the independant variable is in the exponent. To compute the derivative of <span class="math inline">\(f: x \to 2^x\)</span>, we need to re-express the function in terms fo the natural base <span class="math inline">\(e\)</span>. To do that, we use to properties of the natural logarithm</p>
+            (f^{-1})&#39;(x)      &amp; = \frac{1}{f&#39;(f^{-1}(x))}.\end{aligned}\]</span> Take for instance <span class="math inline">\(f(x) = x^2\)</span> on <span class="math inline">\(x \in (0,1]\)</span>. The inverse of <span class="math inline">\(f\)</span> is <span class="math inline">\(f^{-1}(x) = \sqrt{x}\)</span>. The derivative of <span class="math inline">\(f\)</span> is <span class="math inline">\(f&#39;(x) = 2x\)</span> and the derivative <span class="math display">\[\bigl(f^{-1}\bigr)&#39;(x) = \frac{1}{f&#39;(f^{-1}(x))} = \frac{1}{2(\sqrt{x})}.\]</span></p>
+<p><strong>Example </strong> Compute a derivative when the independent variable is in the exponent. To compute the derivative of <span class="math inline">\(f: x \to 2^x\)</span>, we need to re-express the function in terms fo the natural base <span class="math inline">\(e\)</span>. To do that, we use to properties of the natural logarithm</p>
 <ul>
-<li><p>For any nonzero expression <span class="math inline">\(y\)</span>, <span class="math inline">\(y = e^{ \ln y }\)</span> (<span class="math inline">\(\ln\)</span> is the inverse of the exponential function).</p></li>
-<li><p><span class="math inline">\(\ln (a^b) = b \ln a.\)</span></p></li>
+<li><p>For any positive expression <span class="math inline">\(y\)</span>, <span class="math inline">\(y = e^{ \ln (y) }\)</span> (<span class="math inline">\(\ln\)</span> is the inverse of the exponential function).</p></li>
+<li><p><span class="math inline">\(\ln (a^b) = b \ln (a).\)</span></p></li>
 </ul>
-<p>Then <span class="math inline">\(2^x = e^{ \ln (2^x) } = e^{ x \ln 2 }\)</span>. The derivative is <span class="math inline">\(\ln 2 e^{ x \ln 2 }\)</span>. Re-writing in term of base 2: <span class="math inline">\(\ln 2 2^x\)</span>.</p>
+<p>Then <span class="math inline">\(2^x = e^{ \ln (2^x) } = e^{ x \ln (2) }\)</span>. The derivative is <span class="math inline">\(\ln (2) e^{ x \ln (2) }\)</span>. Re-writing in term of base 2, we obtain <span class="math inline">\(f&#39;(x) = \ln (2) 2^x\)</span>.</p>
 <table>
 <thead>
 <tr class="header">
@@ -396,12 +399,12 @@
 </ul>
 <p><strong>Correction</strong> <span class="math inline">\(f_1&#39;(x) = -\frac{\sin x}{2\sqrt{\cos x}}.\)</span> <span class="math inline">\(f_2&#39;(x) = 3 \cos(3x + 2).\)</span> <span class="math inline">\(f_3&#39;(x) = -\sin(x) e^{\cos x}.\)</span> <span class="math inline">\(f_4&#39;(x) = \frac{1}{2x}.\)</span> <span class="math inline">\(f_5&#39;(x) = \frac{\ln 2}{x} 2^{\ln x}.\)</span></p>
 <h1 id="taylor-series-and-truncated-expansions">Taylor series and truncated expansions</h1>
-<p>If a function <span class="math inline">\(f\)</span> is infinitely differentiable (i.e. <span class="math inline">\(f^{(k)}\)</span> is continuous for any integer <span class="math inline">\(k\geq 0\)</span>), the Taylor series of <span class="math inline">\(f\)</span> at point <span class="math inline">\(a\)</span> is the series <span class="math display">\[\begin{aligned}
+<p>If a function <span class="math inline">\(f\)</span> is infinitely differentiable (i.e. the <span class="math inline">\(k\)</span>-th derivative function <span class="math inline">\(f^{(k)}\)</span> is continuous for any integer <span class="math inline">\(k\geq 0\)</span>), the Taylor series of <span class="math inline">\(f\)</span> at point <span class="math inline">\(a\)</span> is the series <span class="math display">\[\begin{aligned}
  \label{eq_taylor}
   f(a) + \frac{f&#39;(a)}{1!}(x - a) + \frac{f&#39;&#39;(a)}{2!} (x-a)^2 + \frac{f&#39;&#39;&#39;(a)}{3!} (x - a)^3 + ...\end{aligned}\]</span></p>
-<p>A function is <strong>analytic</strong> on an open interval <span class="math inline">\(I\)</span> if and only if its Taylor series converges pointwise to the value of the function. Polynomials, exponential and trigonometric function are analytic over all real points. The square root function is not.</p>
+<p>A function is <strong>analytic</strong> on an open interval <span class="math inline">\(I\)</span> if and only if its Taylor series converges pointwise to the value of the function. Polynomials, exponential and trigonometric function are analytic over all real points. The square root function is not analytic.</p>
 <p>The partial sums of the series (or truncated expansion) can be used to approximate a function, and to evaluate it numerically. The <span class="math inline">\(k\)</span>th-order expansion of a function <span class="math inline">\(f\)</span> is the polynomial <span class="math display">\[\begin{aligned}
-  f(a) + \frac{f&#39;(a)}{1!}(x - a) + \frac{f&#39;&#39;(a)}{2!} (x-a)^2 +  ... + \frac{f^{(k)}(a)}{k!} (x - a)^k.\end{aligned}\]</span></p>
+  f(a) + \frac{f&#39;(a)}{1!}(x - a) + \frac{f&#39;&#39;(a)}{2!} (x-a)^2 +  ... + \frac{f^{(k)}(a)}{k!} (x - a)^k.\end{aligned}\]</span> Truncated expansions are used in implementations of common mathematical functions in computer programs.</p>
 <p><strong>Example </strong> The Taylor series of the sine function at point <span class="math inline">\(a = 0\)</span> is <span class="math display">\[\sum_{n=0}^\infty \frac{1}{n!}\frac{d^n\sin(x)}{dx^n} x^n = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + ...\]</span> The 3rd-order expansion is the cubic polynomial <span class="math display">\[x - \frac{x^3}{3!}.\]</span> How good this cubic polynomial approximation to the original sine function? The error is the remainder of the terms of the Taylor series <span class="math display">\[\begin{aligned}
   \Bigl| - \frac{x^7}{7!} + \frac{x^9}{9!} - ... \Bigr|. \end{aligned}\]</span> For <span class="math inline">\(|x| &lt; 1\)</span>, the error is bounded by <span class="math inline">\(|x|^7/7!\)</span>. Given that <span class="math inline">\(7! = 5040\)</span>, the error is less than <span class="math inline">\(1/5040 \approx 0.0002\)</span>. Truncated expansions are never good approximations when <span class="math inline">\(|x|\)</span> becomes large, because polynomials are not bounded, but the approximation can be quite good over small intervals around the point at which the Taylor series is computed.</p>
 <figure>
@@ -411,15 +414,15 @@
 <p><strong>Example </strong> Let the function <span class="math display">\[f(x) = \begin{cases} 
               0  &amp; x \leq 0 \\
               e^{-\frac 1x} &amp; x &gt; 0.
-          \end{cases}\]</span> Around 0, all the derivatives exist and are equal to 0. The Taylor series of <span class="math inline">\(f\)</span> at point <span class="math inline">\(x = 0\)</span> is 0, but the function is different from zero.</p>
-<h2 id="expansion-in-two-variables">Expansion in two variables</h2>
-<p>For functions of two variables, the Taylor expansion at point <span class="math inline">\((x_0,y_0)^t \in \mathbb{R}^2\)</span> is <span class="math display">\[\begin{aligned}
+          \end{cases}.\]</span> Around 0, all the derivatives exist and are equal to 0. The Taylor series of <span class="math inline">\(f\)</span> at point <span class="math inline">\(x = 0\)</span> is 0, but the function itself is different from the identically zero function.</p>
+<h2 id="expansion-of-a-function-of-two-variables">Expansion of a function of two variables</h2>
+<p>For functions of two variables <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span>, the Taylor expansion at point <span class="math inline">\((x_0,y_0)^t \in \mathbb{R}^2\)</span> is <span class="math display">\[\begin{aligned}
   f(x_0,y_0) = f(x_0,y_0) &amp; + \frac{\partial f(x_0,y_0)}{\partial x} (x - x_0) + \frac{\partial f(x_0,y_0)}{\partial y} (y - y_0) \\
  &amp;  + \frac{1}{2!} \frac{\partial^2 f(x_0,y_0)}{\partial x^2} (x - x_0)^2 \\
  &amp;  + \frac{1}{2!} \frac{\partial^2 f(x_0,y_0)}{\partial y^2} (y - y_0)^2 \\
  &amp;  + \frac{2}{2!} \frac{\partial^2 f(x_0,y_0)}{\partial x \partial y} (x - x_0) (y - y_0)
    + ...\end{aligned}\]</span></p>
-<p><strong>Example </strong> The second-order truncated expansion of the function <span class="math inline">\(f(x,y) = y e^{-x}\)</span> at <span class="math inline">\((0,0)^t\)</span> is <span class="math display">\[y - xy\]</span></p>
+<p><strong>Example </strong> The second-order truncated expansion of the function <span class="math inline">\(f(x,y) = y e^{-x}\)</span> at <span class="math inline">\((0,0)^t\)</span> is <span class="math display">\[y - xy.\]</span></p>
 <h2 id="expansion-of-a-function-from-mathbbr2-to-mathbbr2">Expansion of a function from <span class="math inline">\(\mathbb{R}^2 \to \mathbb{R}^2\)</span></h2>
 <p>Functions <span class="math inline">\(f: \mathbb{R}^2 \to \mathbb{R}^2\)</span> have the form <span class="math display">\[f(x,y) = \begin{pmatrix} f_1(x,y) \\ f_2(x,y) \end{pmatrix}.\]</span> To compute the Taylor series, we need to compute the Taylor series of each function <span class="math inline">\(f_1\)</span> and <span class="math inline">\(f_2\)</span>. For a first-order expansion at <span class="math inline">\((x_0,y_0)^t\)</span>, we obtain the expansion <span class="math display">\[\begin{aligned}
   \begin{pmatrix} f_1(x_0,y_0) \\ f_2(x_0,y_0) \end{pmatrix} + 
@@ -432,13 +435,17 @@
     \begin{pmatrix}
       \frac{\partial f_1}{\partial x}  &amp; \frac{\partial f_1}{\partial y}  \\
       \frac{\partial f_2}{\partial x} &amp; \frac{\partial f_2}{\partial y} 
-    \end{pmatrix},\end{aligned}\]</span> we can write a first-order (or linear) approximation of a function <span class="math inline">\(\boldsymbol{f}\)</span> compactly <span class="math display">\[\boldsymbol{f}(\boldsymbol{x}) \approx \boldsymbol{f}(\boldsymbol{a}) + D\boldsymbol{f}(\boldsymbol{a}) (\boldsymbol{x} - \boldsymbol{a}).\]</span> The approximation is valid only in a neighbourhood of the point <span class="math inline">\(\boldsymbol{a}\)</span>.</p>
+    \end{pmatrix},\end{aligned}\]</span> we can write a first-order (or linear) approximation of a function <span class="math inline">\(\boldsymbol{f}\)</span> more compactly with <span class="math display">\[\boldsymbol{f}(\boldsymbol{x}) \approx \boldsymbol{f}(\boldsymbol{a}) + D\boldsymbol{f}(\boldsymbol{a}) (\boldsymbol{x} - \boldsymbol{a}).\]</span> The approximation is valid only in a neighbourhood of the point <span class="math inline">\(\boldsymbol{a}\)</span>.</p>
 <h1 id="integrals-and-primitives">Integrals and primitives</h1>
 <h2 id="primitives">Primitives</h2>
 <p>Let <span class="math inline">\(f:I \to \mathbb{R}\)</span>, (<span class="math inline">\(I \subset \mathbb{R}\)</span>). A <strong>primitive</strong> <span class="math inline">\(F\)</span> of <span class="math inline">\(f\)</span> on <span class="math inline">\(I\)</span> is a differentiable map such that <span class="math inline">\(F&#39;(x) = f(x)\)</span>, <span class="math inline">\(x \in I\)</span>.</p>
 <p><strong>Example </strong> If <span class="math inline">\(f(x) = x^2\)</span>, we look for <span class="math inline">\(F(x)\)</span> such that <span class="math inline">\(F&#39;(x) = x^2\)</span>. Take <span class="math inline">\(F(x) = x^3/3\)</span>, then <span class="math inline">\(F&#39;(x) = 3x^2/3 = x^2.\)</span> It also work for <span class="math inline">\(F(x) = x^3/3 + C\)</span>, for any constant <span class="math inline">\(C \in \mathbb{R}\)</span>.</p>
 <p>We denote the primitive as <span class="math inline">\(F(x) = \int f(x) dx\)</span>. Primitives are unique up to a constant: if <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> are primitives of <span class="math inline">\(f\)</span>, then <span class="math inline">\(F_1&#39;(x) = f(x)\)</span> and <span class="math inline">\(F_2&#39;(x) = f(x)\)</span>, which implies that <span class="math inline">\(F_1&#39;(x) - F_2&#39;(x) = 0\)</span>. Therefore the difference between <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span>, <span class="math inline">\(G : x \to F_1(x) - F_2(x)\)</span> has a zero derivative: <span class="math inline">\(G&#39;(x) = F_1&#39;(x) - F_2&#39;(x) = 0\)</span>. This means that <span class="math inline">\(G\)</span> is a constant.</p>
-<p>If <span class="math inline">\(F\)</span> is a primitive of <span class="math inline">\(f\)</span> and <span class="math inline">\(G\)</span> a primitive of <span class="math inline">\(g\)</span>, then <span class="math inline">\(F+G\)</span> is a primitive of <span class="math inline">\(f+g\)</span>.</p>
+<p>Primitives have linear properties. Let <span class="math inline">\(F\)</span> be a primitive of <span class="math inline">\(f\)</span>, <span class="math inline">\(G\)</span> be a primitive of <span class="math inline">\(g\)</span> and <span class="math inline">\(a,b \in \mathbb{R}\)</span>. Then</p>
+<ul>
+<li><p><span class="math inline">\(F+G\)</span> is a primitive of <span class="math inline">\(f+g\)</span>, or <span class="math display">\[\int \bigl( f(x) + g(x) \bigr) dx = \int f(x)dx + \int g(x)dx.\]</span></p></li>
+<li><p><span class="math inline">\(aF\)</span> is a primitive of <span class="math inline">\(af\)</span>, or <span class="math display">\[\int af(x) dx = a \int f(x) dx.\]</span></p></li>
+</ul>
 <table>
 <thead>
 <tr class="header">
@@ -502,31 +509,31 @@
 <p>If <span class="math inline">\(f\)</span> is a rate (unit in <span><code>something per time</code></span>), and <span class="math inline">\(x\)</span> is <span><code>time</code></span>, then the integral of <span class="math inline">\(f\)</span> has unit <span><code>something</code></span>. This applies to speed (integral: displacement), production or degradation (integral: concentration), etc.</p>
 <p>The integral has the following properties</p>
 <ul>
-<li><p><strong>linearity</strong>. The integral of a sum is the sum of the integrals. <span class="math display">\[\int_a^b { (f(x) + g(x))dx } = \int_a^b f(x) dx + \int_a^b g(x) dx.\]</span></p></li>
-<li><p>Negative intervals <span class="math display">\[\int_a^b { f(x) dx } = - \int_b^a { f(x) dx }.\]</span></p></li>
-<li><p>Midpoint rule <span class="math display">\[\int_a^b { f(x)dx } = \int_a^c f(x)dx + \int_c^b f(x) dx.\]</span> Notice that this works even if <span class="math inline">\(c\)</span> is not between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p></li>
-<li><p>The expression <span class="math display">\[\int_a^x { f(t) dt } = F(x) - F(a) = F_a(x)\]</span> is a function of <span class="math inline">\(x\)</span>, and is the primitive of <span class="math inline">\(f\)</span> that takes the value 0 at <span class="math inline">\(x=a\)</span> (remember that a primitive <span class="math inline">\(F\)</span> has an arbitrary constant, so <span class="math inline">\(F(a)\)</span> can be set to any value). Therefore, for any integrable function <span class="math inline">\(f\)</span> <span class="math display">\[\Bigl( \int_a^x f(x) dx \Bigl)&#39; = f(x).\]</span> This is the <strong>fundamental theorem of calculus</strong>.</p></li>
-<li><p><strong>integration by parts</strong> <span class="math display">\[\int_a^b f&#39;(x)g(x)dx = f(x)g(x)|_a^b - \int_a^b f(x)g&#39;(x)dx\]</span></p></li>
+<li><p>Linearity. The integral of a sum is the sum of the integrals. <span class="math display">\[\int_a^b { (f(x) + g(x))dx } = \int_a^b f(x) dx + \int_a^b g(x) dx.\]</span></p></li>
+<li><p>Negative intervals. <span class="math display">\[\int_a^b { f(x) dx } = - \int_b^a { f(x) dx }.\]</span></p></li>
+<li><p>Midpoint rule. <span class="math display">\[\int_a^b { f(x)dx } = \int_a^c f(x)dx + \int_c^b f(x) dx.\]</span> Notice that this works even if <span class="math inline">\(c\)</span> is not between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p></li>
+<li><p>The expression <span class="math display">\[\int_a^x { f(t) dt } = F(x) - F(a) = F_a(x)\]</span> is a function of <span class="math inline">\(x\)</span>. Therefore, for any integrable function <span class="math inline">\(f\)</span>, we have <span class="math display">\[\Bigl( \int_a^x f(x) dx \Bigl)&#39; = f(x).\]</span> This is the <strong>fundamental theorem of calculus</strong>.</p></li>
+<li><p><strong>Integration by parts</strong> <span class="math display">\[\int_a^b f&#39;(x)g(x)dx = f(x)g(x)|_a^b - \int_a^b f(x)g&#39;(x)dx.\]</span> Integration by part is excessively useful for computing integral behond simple functions.</p></li>
 </ul>
-<p><strong>Exercice </strong> Compute the integral <span class="math display">\[\int_0^1 x e^x dx\]</span></p>
-<p><strong>Correction</strong> The integrand is the product of two functions, we try integration by parts. Let <span class="math inline">\(g(x) = x\)</span> and <span class="math inline">\(f&#39;(x) = e^x\)</span>. Then <span class="math inline">\(g&#39;(x) = 1\)</span> and <span class="math inline">\(f(x) = e^x\)</span>. The integral becomes <span class="math display">\[\begin{aligned}
+<p><strong>Exercice </strong> Compute the integral <span class="math display">\[\int_0^1 x e^x dx.\]</span></p>
+<p><strong>Correction</strong> The integrand is the product of two functions, so let us try integration by parts. Let <span class="math inline">\(g(x) = x\)</span> and <span class="math inline">\(f&#39;(x) = e^x\)</span>. Then <span class="math inline">\(g&#39;(x) = 1\)</span> and <span class="math inline">\(f(x) = e^x\)</span>. The integral becomes <span class="math display">\[\begin{aligned}
   \int_0^1 x e^x dx &amp; = \Bigl. e^x x \Bigr|_0^1 - \int_0^1 e^x dx, \\
   &amp; = e^1 - 0 - \Bigl. e^x \Bigr|_0^1, \\
   &amp; = e - (e^1 - e^0), \\
   &amp; = 0 + 1, \\
   &amp; = 1.\end{aligned}\]</span></p>
-<p><strong>Exercice </strong> Compute the integral <span class="math display">\[\int_0^\pi \cos x  e^x dx\]</span></p>
+<p><strong>Exercice </strong> Compute the integral <span class="math display">\[\int_0^\pi \cos x  e^x dx.\]</span></p>
 <p><strong>Correction</strong> The integrand is the product of two functions, we try integration by parts. Let <span class="math inline">\(g(x) = \cos x\)</span> and <span class="math inline">\(f&#39;(x) = e^x\)</span>. Then <span class="math inline">\(g&#39;(x) = -\sin x\)</span> and <span class="math inline">\(f(x) = e^x\)</span>. The integral becomes <span class="math display">\[\begin{aligned}
   \int_0^\pi \cos x e^x dx &amp; = \Bigl. e^x (\cos x)  \Bigr|_0^\pi - \int_0^\pi e^x (-\sin x)dx, \\
   &amp; = - e^\pi - e^0  - \int_0^\pi e^x (-\sin x)dx, \\
   &amp; = - e^\pi - 1  - \int_0^\pi e^x (-\sin x)dx, \\\end{aligned}\]</span> We still have a integral of a product to compute. We apply the integral by part once more, <span class="math display">\[\begin{aligned}
   &amp; = - e^\pi - 1  - \bigl( \Bigl. e^x ( - \sin x )  \Bigr|_0^\pi + \int_0^\pi e^x (\cos x)dx \bigr). \\
-  &amp; = - e^\pi - 1  - \int_0^\pi e^x (\cos x)dx. \\\end{aligned}\]</span> With this new integration, we just cam back to our initial integral. We are looping, and further integrations by part will not help us. To break the loop, we use the fact that the initial integral term is present on both side of the equation and solve for it. If <span class="math display">\[\begin{aligned}
+  &amp; = - e^\pi - 1  - \int_0^\pi e^x (\cos x)dx. \\\end{aligned}\]</span> With this new integration, we just came back to our initial integral. We are looping, and further integrations by part will not help us. To break the loop, we use the fact that the initial integral term is present on both side of the equation and solve for it. If <span class="math display">\[\begin{aligned}
   I = &amp; \int_0^\pi \cos x  e^x dx,\end{aligned}\]</span> then <span class="math display">\[\begin{aligned}
   I    &amp; =   - e^\pi - 1 - I, \\
   2 I  &amp; =   - e^\pi - 1,     \\
   I    &amp; =   \frac{- e^\pi - 1}{2}.\end{aligned}\]</span> Et voilà!</p>
-<p><strong>Exercice </strong> Compute the integral <span class="math display">\[\int_0^1 {  \sinh x e^x dx }\]</span></p>
+<p><strong>Exercice </strong> Compute the integral <span class="math display">\[\int_0^1 {  \sinh x e^x dx }.\]</span></p>
 <h1 id="differential-equations-in-1d">Differential equations in 1D</h1>
 <p>An <strong>ordinary differential equation</strong> (ODE) of <strong>order</strong> <span class="math inline">\(n\)</span> is a relation (i.e. an equation) between a real variable <span class="math inline">\(t \in I \subset \mathbb{R}\)</span>, an unknown function <span class="math inline">\(x: t \to x(t)\)</span> and its derivatives <span class="math inline">\(x&#39;,x&#39;&#39;,x&#39;&#39;&#39;, ..., x^{(n)}\)</span> at point <span class="math inline">\(t\)</span> defined by <span class="math display">\[F\bigl(t,x,x&#39;,x&#39;&#39;,...,x^{(n)}\bigr) = 0,\]</span> where <span class="math inline">\(F\)</span> <em>depends</em> on <span class="math inline">\(x^{(n)}\)</span>. In general, <span class="math inline">\(x(t)\)</span> takes values in <span class="math inline">\(\mathbb{R}^N\)</span>, i.e. it is a vector. We say that the equation is a <strong>scalar differential equation</strong> if <span class="math inline">\(N = 1\)</span>. (The expression <span class="math inline">\(x^{(i)}\)</span> stands for the <span class="math inline">\(i\)</span>-th derivative, not the <span class="math inline">\(i\)</span>-th power.)</p>
 <p>The <strong>normal form</strong> of a differential equation of order <span class="math inline">\(n\)</span> is <span class="math display">\[x^{(n)} = f\bigl(t,x,x&#39;,x&#39;&#39;,...,x^{(n-1)}\bigr).\]</span></p>
@@ -564,14 +571,14 @@ z_i = x^{(i-1)}\)</span> until <span class="math inline">\(z_n = x^{(n-1)}\)</sp
 <p><strong>Tips on Ordinary differential equations</strong></p>
 <ul>
 <li><p>The most frequently used differential equations are order 1, and they usually are represented in their normal form: <span class="math inline">\(x&#39; = f(x)\)</span> for autonomous equations, and <span class="math inline">\(x&#39; = f(t,x)\)</span> for non-autonomous equations</p></li>
-<li><p>For a scalar, autonomous differential equation <span class="math inline">\(x = f(x)\)</span> with <span class="math inline">\(x(t) \in \mathbb{R}\)</span>, the trajectories are monotonous: if <span class="math inline">\(x\)</span> is a solution, then <span class="math inline">\(x\)</span> is either increasing, decreasing, or constant.</p></li>
+<li><p>For a scalar, autonomous differential equation <span class="math inline">\(x&#39; = f(x)\)</span> with <span class="math inline">\(x(t) \in \mathbb{R}\)</span>, the trajectories are monotonous: if <span class="math inline">\(x\)</span> is a solution, then <span class="math inline">\(x\)</span> is either increasing, decreasing, or constant.</p></li>
 </ul>
 <hr />
 <h2 id="finding-solutions-of-differential-equations">Finding solutions of differential equations</h2>
 <p>We consider a <strong>first order scalar differential equation</strong>, <span class="math display">\[a(t) x&#39; + b(t) x = d(t),\]</span> <span class="math inline">\(t \in I\)</span> and <span class="math inline">\(a(t) \neq 0\)</span> on <span class="math inline">\(I\)</span>, <span class="math inline">\(a(t)\)</span> and <span class="math inline">\(b(t)\)</span> continuous on <span class="math inline">\(I\)</span>. If <span class="math inline">\(d(t) = 0\)</span>, we call the equation homogeneous, and <span class="math display">\[a(t) x&#39; + b(t) x = 0.\]</span></p>
-<p><em>First order scalar ODE. Homogeneous case, first method.</em> Write the equation in normal form, <span class="math display">\[x&#39; - \frac{b(t)}{a(t)} x.\]</span> The solution <span class="math inline">\(x\)</span> is either the constant <span class="math inline">\(x = 0\)</span>, or <span class="math inline">\(x(t) \neq 0\)</span> for all <span class="math inline">\(t\in I\)</span>. We know that because of uniqueness of solutions, which implies that trajectories cannot cross. If <span class="math inline">\(x = 0\)</span> we are done, so we can assume that <span class="math inline">\(x(t) \neq 0\)</span>. Dividing the equation by <span class="math inline">\(x\)</span> <span class="math display">\[\frac{x&#39;}{x} = -\frac{b(t)}{a(t)}.\]</span> The terms on both sides are functions of <span class="math inline">\(t\)</span>. We can compute their primitives <span class="math display">\[\int {\frac{x&#39;}{x} dt } = - \int { \frac{b(t)}{a(t)} dt}.\]</span> The integrand of the left-hand side is <span class="math inline">\(x&#39;/x\)</span>. This is a very common form called <strong>log-derivative</strong> and admit a primitve <span class="math inline">\(\ln |x|\)</span>. The right-hand side does not necessarily have a close form, and we leave it as it is. With the inegration constant, we have <span class="math display">\[\ln |x| = - \int { \frac{b(t)}{a(t)} dt } + K.\]</span> We would like an explicit solution <span class="math inline">\(x\)</span>, <span class="math display">\[\begin{aligned}
+<p><em>First order scalar ODE. Homogeneous case, first method.</em> Write the equation in normal form, <span class="math display">\[x&#39; = - \frac{b(t)}{a(t)} x.\]</span> The solution <span class="math inline">\(x\)</span> is either the constant <span class="math inline">\(x = 0\)</span>, or <span class="math inline">\(x(t) \neq 0\)</span> for all <span class="math inline">\(t\in I\)</span>. We know that because of uniqueness of solutions, which implies that trajectories cannot cross. If <span class="math inline">\(x = 0\)</span> we are done, so we can assume that <span class="math inline">\(x(t) \neq 0\)</span>. Dividing the equation by <span class="math inline">\(x\)</span> <span class="math display">\[\frac{x&#39;}{x} = -\frac{b(t)}{a(t)}.\]</span> The terms on both sides are functions of <span class="math inline">\(t\)</span>. We can compute their primitives <span class="math display">\[\int {\frac{x&#39;}{x} dt } = - \int { \frac{b(t)}{a(t)} dt}.\]</span> The integrand of the left-hand side is <span class="math inline">\(x&#39;/x\)</span>. This is a very common form called <strong>log-derivative</strong> and admits the primitve <span class="math inline">\(\ln |x|\)</span>. The right-hand side does not necessarily have a close form, and we leave it as it is. With the integration constant, we obtain implicit solution for <span class="math inline">\(x\)</span> <span class="math display">\[\ln |x| = - \int { \frac{b(t)}{a(t)} dt } + K.\]</span> We would like an explicit solution <span class="math inline">\(x\)</span>, <span class="math display">\[\begin{aligned}
   |x| &amp; = e^{- \int { \frac{b(t)}{a(t)} dt } + K}.\end{aligned}\]</span> Therefore, <span class="math display">\[\begin{aligned}
-  x &amp; = \pm e^K e^{- \int { \frac{b(t)}{a(t)} dt }}.\end{aligned}\]</span> Notice that <span class="math inline">\(t\)</span> is a variable of integration, and does not exist outside the integral, and can be replaced by any other variable. To have <span class="math inline">\(x\)</span> as as function of <span class="math inline">\(t\)</span>, we must define the bounds of the integral. When the domain of definition of <span class="math inline">\(t\)</span> is the interval <span class="math inline">\(I = [t_0,t_1], t_0 &lt; t_1,\)</span> the solution <span class="math inline">\(x(t)\)</span> is obtained by integrating from <span class="math inline">\(t_0\)</span> to <span class="math inline">\(t\)</span>, <span class="math display">\[x = \pm e^K e^{- \int_{t_0}^t { \frac{b(u)}{a(u)} du }},\]</span> where we have replaced the variable of integration by <span class="math inline">\(u\)</span>. Then the integral is function of <span class="math inline">\(t\)</span>. The constant <span class="math inline">\(K\)</span> is determined by the <strong>initial condition</strong> on <span class="math inline">\(x\)</span> at <span class="math inline">\(t_0\)</span>, <span class="math inline">\(x(t_0) = x_0 \in \mathbb{R},\)</span> <span class="math display">\[x(t_0) = \pm e^K e^{- \int_{t_0}^{t_0} { \frac{b(u)}{a(u)} du }} = \pm e^K = x_0.\]</span> The constant <span class="math inline">\(K = \mathrm{sign} \, x_0  \ln x_0.\)</span> The fixed bound at <span class="math inline">\(t_0\)</span> is arbitrary, we could have chosen any other time of reference. However, it is very common to consider differential equations for which we know the value of the solution at the initial time <span class="math inline">\(t_0\)</span>. The problem of solving a differential equation with a given initial condition is called <strong>initial value problem</strong> (IVP) or <strong>Cauchy problem</strong>.</p>
+  x &amp; = \pm e^K e^{- \int { \frac{b(t)}{a(t)} dt }}.\end{aligned}\]</span> Notice that <span class="math inline">\(t\)</span> is a variable of integration, and does not exist outside the integral, and can be replaced by any other variable. To have <span class="math inline">\(x\)</span> as as function of <span class="math inline">\(t\)</span>, we must define the bounds of the integral. When the domain of definition of <span class="math inline">\(t\)</span> is the interval <span class="math inline">\(I = [t_0,t_1], t_0 &lt; t_1,\)</span> the solution <span class="math inline">\(x(t)\)</span> is obtained by integrating from <span class="math inline">\(t_0\)</span> to <span class="math inline">\(t\)</span>, <span class="math display">\[x = \pm e^K e^{- \int_{t_0}^t { \frac{b(u)}{a(u)} du }},\]</span> where we have replaced the variable of integration by <span class="math inline">\(u\)</span>. Then the definite integral is a function of <span class="math inline">\(t\)</span>. The constant <span class="math inline">\(K\)</span> is determined by the <strong>initial condition</strong> on <span class="math inline">\(x\)</span> at <span class="math inline">\(t_0\)</span>, <span class="math inline">\(x(t_0) = x_0 \in \mathbb{R},\)</span> <span class="math display">\[x(t_0) = \pm e^K e^{- \int_{t_0}^{t_0} { \frac{b(u)}{a(u)} du }} = \pm e^K = x_0.\]</span> The constant <span class="math inline">\(K = \mathrm{sign} \, x_0  \ln x_0.\)</span> The fixed bound at <span class="math inline">\(t_0\)</span> is arbitrary, we could have chosen any other time of reference. However, it is very common to consider differential equations for which we know the value of the solution at the initial time <span class="math inline">\(t_0\)</span>. The problem of solving a differential equation with a given initial condition is called an <strong>initial value problem</strong> (IVP) or a <strong>Cauchy problem</strong>.</p>
 <p><em>First order scalar ODE. Homogeneous case, second method.</em> Assume that <span class="math inline">\(a(t) \neq 0\)</span>, and write the equation as <span class="math display">\[x&#39; + \frac{b(t)}{a(t)} x = 0.\]</span> Multiply the equation by the term <span class="math inline">\(e^{\int { \frac{b(t)}{a(t)} dt }}\)</span>, <span class="math display">\[x&#39; e^{\int { \frac{b(t)}{a(t)} dt }} + \frac{b(t)}{a(t)} x e^{\int { \frac{b(t)}{a(t)} dt }} = 0.\]</span> Notice that the first term has the form <span class="math inline">\(x&#39; f\)</span> and the second term the form <span class="math inline">\(x f&#39;\)</span>, with <span class="math display">\[f = e^{\int { \frac{b(t)}{a(t)} dt }}.\]</span> The left-hand-side of the resulting equation, <span class="math inline">\(x&#39; f + x f&#39;\)</span>, is the derivative of the product <span class="math inline">\(xf\)</span>, so the differential equation can be integrated, <span class="math display">\[\begin{aligned}
   x e^{\int { \frac{b(t)}{a(t)} dt }} &amp; = K, \\
   x &amp; = K e^{ - \int { \frac{b(t)}{a(t)} dt }}.\end{aligned}\]</span> The constant <span class="math inline">\(K\)</span> is determined by a condition set on the solution, as in the first method.</p>
