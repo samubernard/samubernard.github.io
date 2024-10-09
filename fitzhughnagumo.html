@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Applet FitzHugh-Nagumo</title>
+    <title>FitzHugh-Nagumo Applet</title>
 
     <!--MATHJAX typing maths like in latex-->
     <script type="text/x-mathjax-config">
@@ -93,13 +93,13 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
-          <h2>Modèle de FitzHugh-Nagumo</h2>
-          <p>Le modèle de FitzHugh-Nagumo (FHN) est une simplification du modèle de Hodgkin-Huxley pour le potentiel d'action des axones géantes du calmar.</p>
+          <h2>FitzHugh-Nagumo Model</h2>
+          <p>The FitzHugh-Nagumo model (FHN) is a simplified version of the Hodgkin-Huxley for the action potential in giant squid axon.</p>
 
           $$\dot v = v - v^3/3 - w + I(t)$$
           $$\dot w = 0.08 (v + 0.7 - 0.8w)$$
 
-          <p>La variable <i>v</i> est le potentiel de la membrane, <i>w</i> un variable de récupération, et <i>I(t)</i> l'intensité de courant appliqué.</p>
+          <p>The variable <i>v</i> is the membrane potential, <i>w</i> is a recovery variable, and <i>I(t)</i> is the intensity of a stimulus current.</p>
         </div>
 
       </div><!--row-->
@@ -108,7 +108,7 @@
     <script>
 
       // Initialise boardtime
-      boardtime = JXG.JSXGraph.initBoard('fitzboxtime', {boundingbox: [-1.0, 3.0, 250.0, -3.0], axis: true, grid: false});
+      boardtime = JXG.JSXGraph.initBoard('fitzboxtime', {boundingbox: [-1.0, 3.0, 250.0, -3.0], axis: true, grid: false, showcopyright: false});
    
       // Define sliders to dynamically change parameters of the equations and create text elements to describe them
       intensite = boardtime.createElement('slider', [[180.0,2.6],[230.0,2.6],[0.0,0.4,1.0]],{name:'I',strokeColor:'black',fillColor:'black'});
@@ -125,7 +125,7 @@
       startw = boardtime.createElement('glider', [0, -0.6243, boardtime.defaultAxes.y], {name:'w',strokeColor:'blue',fillColor:'blue'});
 
       // initialise boardphase
-      boardphase = JXG.JSXGraph.initBoard('fitzboxphase', {boundingbox: [-3.0, 2.0, 3.0, -1.0], axis: true, grid: false});
+      boardphase = JXG.JSXGraph.initBoard('fitzboxphase', {boundingbox: [-3.0, 2.0, 3.0, -1.0], axis: true, grid: false, showcopyright: false});
 
       // add a child to board boardtime
       boardtime.addChild(boardphase);
@@ -165,7 +165,7 @@
    
           // Solve ode
           var data = JXG.Math.Numerics.rungeKutta('rk4', x0, tspan, N, f);
-   
+   	
           // to plot the data against time we need the times where the equations were solved
           var t = [];
           var q = tspan[0];
@@ -176,7 +176,7 @@
           }
    
           return data;
-      }
+      }	
    
       // get data points
       var data = ode();
